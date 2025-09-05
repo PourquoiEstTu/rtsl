@@ -5,6 +5,7 @@ Collected Data Sets:
 - https://www.kaggle.com/datasets/pranavsharma1670/sign-language-recognition-dataset
 - https://www.kaggle.com/datasets/prashant111/grammatical-facial-expressions
 - https://www.kaggle.com/datasets/rtatman/sign-language-analyses
+- https://www.kaggle.com/datasets/gazquez/wlasl-processed/data
 
 Resources to help with translation:
 - https://github.com/commonsense/conceptnet5/wiki
