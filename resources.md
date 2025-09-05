@@ -1,9 +1,14 @@
 Collected Data Sets:
 - https://www.kaggle.com/datasets/usifelshafie/american-sign-language-asl-hand-skeleton-dataset
+-- skeleton drawings of hands for each letter of the alphabet
 - https://www.kaggle.com/datasets/ayuraj/asl-dataset
+-- pictures of hands showing letters and numbers in sign language 
 - https://www.kaggle.com/datasets/risangbaskoro/wlasl-processed
+-- videos of 2000 common words 
 - https://www.kaggle.com/datasets/pranavsharma1670/sign-language-recognition-dataset
+-- images of numbers 0-9, delete, and space with both hands, from different angles and under varied lighting conditions.
 - https://www.kaggle.com/datasets/prashant111/grammatical-facial-expressions
+-- video of sentences in Brazillian sign language using facial expressions to express grammar and help to form the grammatical structure of the language 
 - https://www.kaggle.com/datasets/rtatman/sign-language-analyses
 - https://www.kaggle.com/datasets/gazquez/wlasl-processed/data
 
