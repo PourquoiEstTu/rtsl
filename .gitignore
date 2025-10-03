@@ -5,6 +5,7 @@ __pycache__/
 venv/
 .env
 backend/.venv/
+backend/.python-version
 
 # models / data
 *.onnx
