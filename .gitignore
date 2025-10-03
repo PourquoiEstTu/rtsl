@@ -1,0 +1,27 @@
+# python
+__pycache__/
+*.py[cod]
+*.egg-info/
+venv/
+.env
+backend/.venv/
+
+# models / data
+*.onnx
+*.pt
+/data/
+
+# build / ide
+.idea/
+.vscode/
+node_modules/
+
+# C++ build
+bindings/build/
+build/
+*.o
+*.so
+*.dll
+
+# OS
+.DS_Store
