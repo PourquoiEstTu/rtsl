@@ -6,6 +6,7 @@ venv/
 .env
 backend/.venv/
 backend/.python-version
+.python-version
 
 # models / data
 *.onnx
