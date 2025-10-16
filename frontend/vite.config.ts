@@ -4,6 +4,7 @@ import vue from '@vitejs/plugin-vue'
 import type { PluginOption } from 'vite'
 import mkcert from 'vite-plugin-mkcert'
 import tailwindcss from '@tailwindcss/vite'
+import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -45,4 +46,9 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 5173,
   },
+  resolve: {
+    alias: [
+      { find: "@", replacement: path.resolve(__dirname, "./src") }
+    ]
+  }
 })
