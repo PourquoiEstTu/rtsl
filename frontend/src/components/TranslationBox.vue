@@ -6,12 +6,12 @@ const translation = ref('Waiting for sign input...')
 </script>
 
 <template>
-  <div
-    class="flex flex-col w-72 h-full bg-[#FFF5B8]/90 text-black justify-center items-center p-4 border-l border-yellow-300"
-  >
-    <h2 class="text-lg font-bold mb-2">Translation:</h2>
-    <p class="text-center text-base font-medium leading-relaxed">
-      {{ translation }}
-    </p>
-  </div>
+    <div
+        class="w-80 flex flex-col justify-center items-center
+                bg-white/40 backdrop-blur-md rounded-r-[2.5rem] 
+                px-6 text-gray-800 border-l border-white/30"
+    >
+        <h2 class="text-[#1E3A8A] font-bold text-lg mb-3"> Translation:</h2>
+        <p class="text-gray-700 text-base italic"> {{ translation }}</p>
+    </div>
 </template>
