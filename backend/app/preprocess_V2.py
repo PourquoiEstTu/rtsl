@@ -8,9 +8,10 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 
 # global vars
-JSON_PATH = "videos/info.json"
-VIDEO_DIR = "videos/videos/videos/"  # folder with your video files
-OUTPUT_DIR = "debug_output"          # folder to save .npy feature files
+DIR = "/windows/Users/thats/Documents/archive"
+JSON_PATH = f"{DIR}/WLASL_v0.3.json"
+VIDEO_DIR = f"{DIR}/videos/"  # folder with your video files
+OUTPUT_DIR = f"{DIR}/debug_output"          # folder to save .npy feature files
 TARGET_LENGTH = 64                   # number of frames per sequence
 BATCH_SIZE = 4
 CATEGORIES_TO_USE = ["book", "bye", "hello"]  # Only preprocess these glosses
@@ -24,8 +25,10 @@ holistic = mp_holistic.Holistic(
     static_image_mode=False,
     model_complexity=1,
     smooth_landmarks=True,
-    enable_segmentation=False,
-    refine_face_landmarks=False
+    enable_segmentation=True,
+    refine_face_landmarks=True,
+    min_detection_confidence=0.5,
+    min_tracking_confidence=0.5
 )
 
 # extract features from a video
@@ -68,77 +71,122 @@ def extract_features(video_path):
         frame_features = hand_keypoints + pose_keypoints
         sequence.append(frame_features)
 
+
+        # draw img
+        annotated_image = frame.copy()
+        # condition = np.stack((results.segmentation_mask,) * 3, axis=-1) > 0.1
+        # bg_image = np.zeros(frame.shape, dtype=np.uint8)
+        # print(frame.shape)
+        # bg_image[:] = (0,0,0)
+        # annotated_image = np.where(condition, annotated_image, bg_image)
+
+        mp_drawing = mp.solutions.drawing_utils
+        mp_drawing_styles = mp.solutions.drawing_styles
+        mp_holistic = mp.solutions.holistic
+
+        mp_drawing.draw_landmarks(
+            annotated_image,
+            results.face_landmarks,
+            mp_holistic.FACEMESH_TESSELATION,
+            landmark_drawing_spec=None,
+            connection_drawing_spec=mp_drawing_styles
+            .get_default_face_mesh_tesselation_style())
+        mp_drawing.draw_landmarks(
+            annotated_image,
+            results.pose_landmarks,
+            mp_holistic.POSE_CONNECTIONS,
+            landmark_drawing_spec=mp_drawing_styles.
+            get_default_pose_landmarks_style())
+        mp_drawing.draw_landmarks(
+            annotated_image,
+            results.right_hand_landmarks,
+            mp_holistic.HAND_CONNECTIONS,
+            landmark_drawing_spec=mp_drawing_styles.
+            get_default_pose_landmarks_style())
+        mp_drawing.draw_landmarks(
+            annotated_image,
+            results.left_hand_landmarks,
+            mp_holistic.HAND_CONNECTIONS,
+            landmark_drawing_spec=mp_drawing_styles.
+            get_default_pose_landmarks_style())
+
+        cv2.imshow('annotated_image', annotated_image)
+        # time.sleep(0.2)
+        if cv2.waitKey(40) == ord('q'):
+            break
+
     cap.release()
     sequence = np.array(sequence)
 
     # pad/trim sequence to TARGET_LENGTH
-    if len(sequence) > TARGET_LENGTH:
-        sequence = sequence[:TARGET_LENGTH]
-    elif len(sequence) < TARGET_LENGTH:
-        pad = np.zeros((TARGET_LENGTH - len(sequence), sequence.shape[1]))
-        sequence = np.vstack([sequence, pad])
+    # if len(sequence) > TARGET_LENGTH:
+    #     sequence = sequence[:TARGET_LENGTH]
+    # elif len(sequence) < TARGET_LENGTH:
+    #     pad = np.zeros((TARGET_LENGTH - len(sequence), sequence.shape[1]))
+    #     sequence = np.vstack([sequence, pad])
 
     return sequence.astype(np.float32)
 
-# LOAD JSON AND PROCESS TRAIN VIDEOS ONLY
-with open(JSON_PATH, "r") as f:
-    data = json.load(f)
-
-train_feature_paths = []
-train_labels = []
-
-for entry in data:
-    gloss = entry["gloss"]
-    # only use the categories we care about
-    if gloss not in CATEGORIES_TO_USE:
-        continue  # Skip unwanted categories
-
-    for instance in entry["instances"]:
-        if instance["split"] != "train":
-            continue  # Skip non-training videos
-
-        video_file = os.path.join(VIDEO_DIR, f"{instance['video_id']}.mp4")
-        if not os.path.exists(video_file):
-            print(f"Skipping missing video: {video_file}")
-            continue
-
-        npy_path = os.path.join(OUTPUT_DIR, f"{instance['video_id']}.npy")
-        if not os.path.exists(npy_path):
-            features = extract_features(video_file)
-            np.save(npy_path, features)
-            print(f"Saved features: {npy_path}")
-
-        # Only append if the feature file exists
-        if os.path.exists(npy_path):
-            train_feature_paths.append(npy_path)
-            train_labels.append(gloss)
-
-# ENCODE LABELS
-# essentially converts string labels to numeric labels
-le = LabelEncoder()
-y_numeric = le.fit_transform(train_labels)
-print("Classes:", le.classes_)
-
-# create a dataset class to be used with pytorch dataloader
-class JSONASLDataset(Dataset):
-    def __init__(self, features_paths, labels):
-        self.features_paths = features_paths
-        self.labels = labels
-
-    def __len__(self):
-        return len(self.features_paths)
-
-    def __getitem__(self, idx):
-        X = np.load(self.features_paths[idx])
-        y = self.labels[idx]
-        return torch.tensor(X), torch.tensor(y) #tensor of features and label
-
-# CREATE DATASET AND DATALOADER
-train_dataset = JSONASLDataset(train_feature_paths, y_numeric)
-# save numeric labels for training script
-np.save(os.path.join(OUTPUT_DIR, "labels.npy"), y_numeric)
-
-# not sure what this would be used for?
-# train_dataloader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
-
-print(f"Training dataset ready. Number of samples: {len(train_dataset)}")
+extract_features(f"{VIDEO_DIR}/69210.mp4")
+# # LOAD JSON AND PROCESS TRAIN VIDEOS ONLY
+# with open(JSON_PATH, "r") as f:
+#     data = json.load(f)
+#
+# train_feature_paths = []
+# train_labels = []
+#
+# for entry in data:
+#     gloss = entry["gloss"]
+#     # only use the categories we care about
+#     if gloss not in CATEGORIES_TO_USE:
+#         continue  # Skip unwanted categories
+#
+#     for instance in entry["instances"]:
+#         if instance["split"] != "train":
+#             continue  # Skip non-training videos
+#
+#         video_file = os.path.join(VIDEO_DIR, f"{instance['video_id']}.mp4")
+#         if not os.path.exists(video_file):
+#             print(f"Skipping missing video: {video_file}")
+#             continue
+#
+#         npy_path = os.path.join(OUTPUT_DIR, f"{instance['video_id']}.npy")
+#         if not os.path.exists(npy_path):
+#             features = extract_features(video_file)
+#             np.save(npy_path, features)
+#             print(f"Saved features: {npy_path}")
+#
+#         # Only append if the feature file exists
+#         if os.path.exists(npy_path):
+#             train_feature_paths.append(npy_path)
+#             train_labels.append(gloss)
+#
+# # ENCODE LABELS
+# # essentially converts string labels to numeric labels
+# le = LabelEncoder()
+# y_numeric = le.fit_transform(train_labels)
+# print("Classes:", le.classes_)
+#
+# # create a dataset class to be used with pytorch dataloader
+# class JSONASLDataset(Dataset):
+#     def __init__(self, features_paths, labels):
+#         self.features_paths = features_paths
+#         self.labels = labels
+#
+#     def __len__(self):
+#         return len(self.features_paths)
+#
+#     def __getitem__(self, idx):
+#         X = np.load(self.features_paths[idx])
+#         y = self.labels[idx]
+#         return torch.tensor(X), torch.tensor(y) #tensor of features and label
+#
+# # CREATE DATASET AND DATALOADER
+# train_dataset = JSONASLDataset(train_feature_paths, y_numeric)
+# # save numeric labels for training script
+# np.save(os.path.join(OUTPUT_DIR, "labels.npy"), y_numeric)
+#
+# # not sure what this would be used for?
+# # train_dataloader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
+#
+# print(f"Training dataset ready. Number of samples: {len(train_dataset)}")
