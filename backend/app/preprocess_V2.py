@@ -1,4 +1,5 @@
 import os
+import sys
 import json
 import cv2
 import numpy as np
@@ -33,6 +34,12 @@ holistic = mp_holistic.Holistic(
 
 # extract features from a video
 def extract_features(video_path):
+    """Output is an array of the 21 landmarks on both hands
+       With dimensions a x b x c. a represents the number of 
+       frames in the video. b represents the two hands, first 
+       one is right hand, second one is left hand. c represents
+       the keypoints, each group of 3 represents the x, y, z 
+       coordinates of the keypoint in the image."""
     cap = cv2.VideoCapture(video_path)
     sequence = []
 
@@ -44,32 +51,36 @@ def extract_features(video_path):
 
         # convert the BGR image to RGB before processing?
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        # if we want to de-normalize landmark points later, we can
+        #   multiply by x by width and y by height
+        # img_height, img_width, _ = frame_rgb.shape
         results = holistic.process(frame_rgb) # process the frame
 
         # HANDS
-        hand_keypoints = []
+        right_hand_keypoints = []
         if results.right_hand_landmarks:
             for lm in results.right_hand_landmarks.landmark:
-                hand_keypoints.extend([lm.x, lm.y, lm.z])
+                right_hand_keypoints.extend([lm.x, lm.y, lm.z])
         else:
-            hand_keypoints.extend([0] * 21 * 3)
+            right_hand_keypoints.extend([0] * 21 * 3)
 
+        left_hand_keypoints = []
         if results.left_hand_landmarks:
             for lm in results.left_hand_landmarks.landmark:
-                hand_keypoints.extend([lm.x, lm.y, lm.z])
+                left_hand_keypoints.extend([lm.x, lm.y, lm.z])
         else:
-            hand_keypoints.extend([0] * 21 * 3) # 21 landmarks per hand
+            left_hand_keypoints.extend([0] * 21 * 3) # 21 landmarks per hand
 
         # POSE
-        pose_keypoints = []
-        if results.pose_landmarks:
-            for lm in results.pose_landmarks.landmark:
-                pose_keypoints.extend([lm.x, lm.y, lm.z])
-        else:
-            pose_keypoints.extend([0] * 33 * 3) # 33 pose landmarks
-
-        frame_features = hand_keypoints + pose_keypoints
-        sequence.append(frame_features)
+        # pose_keypoints = []
+        # if results.pose_landmarks:
+        #     for lm in results.pose_landmarks.landmark:
+        #         pose_keypoints.extend([lm.x, lm.y, lm.z])
+        # else:
+        #     pose_keypoints.extend([0] * 33 * 3) # 33 pose landmarks
+        #
+        # frame_features = hand_keypoints# + pose_keypoints
+        sequence.append([right_hand_keypoints, left_hand_keypoints])
 
     cap.release()
     sequence = np.array(sequence)
@@ -83,7 +94,9 @@ def extract_features(video_path):
 
     return sequence.astype(np.float32)
 
-# extract_features(f"{VIDEO_DIR}/69210.mp4")
+np.set_printoptions(threshold=sys.maxsize)
+print(extract_features(f"{VIDEO_DIR}/69210.mp4").shape)
+# print(extract_features(f"{VIDEO_DIR}/69210.mp4")[32])
 # # LOAD JSON AND PROCESS TRAIN VIDEOS ONLY
 # with open(JSON_PATH, "r") as f:
 #     data = json.load(f)
