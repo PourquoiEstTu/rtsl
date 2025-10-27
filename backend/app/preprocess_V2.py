@@ -71,50 +71,6 @@ def extract_features(video_path):
         frame_features = hand_keypoints + pose_keypoints
         sequence.append(frame_features)
 
-
-        # draw img
-        annotated_image = frame.copy()
-        # condition = np.stack((results.segmentation_mask,) * 3, axis=-1) > 0.1
-        # bg_image = np.zeros(frame.shape, dtype=np.uint8)
-        # print(frame.shape)
-        # bg_image[:] = (0,0,0)
-        # annotated_image = np.where(condition, annotated_image, bg_image)
-
-        mp_drawing = mp.solutions.drawing_utils
-        mp_drawing_styles = mp.solutions.drawing_styles
-        mp_holistic = mp.solutions.holistic
-
-        mp_drawing.draw_landmarks(
-            annotated_image,
-            results.face_landmarks,
-            mp_holistic.FACEMESH_TESSELATION,
-            landmark_drawing_spec=None,
-            connection_drawing_spec=mp_drawing_styles
-            .get_default_face_mesh_tesselation_style())
-        mp_drawing.draw_landmarks(
-            annotated_image,
-            results.pose_landmarks,
-            mp_holistic.POSE_CONNECTIONS,
-            landmark_drawing_spec=mp_drawing_styles.
-            get_default_pose_landmarks_style())
-        mp_drawing.draw_landmarks(
-            annotated_image,
-            results.right_hand_landmarks,
-            mp_holistic.HAND_CONNECTIONS,
-            landmark_drawing_spec=mp_drawing_styles.
-            get_default_pose_landmarks_style())
-        mp_drawing.draw_landmarks(
-            annotated_image,
-            results.left_hand_landmarks,
-            mp_holistic.HAND_CONNECTIONS,
-            landmark_drawing_spec=mp_drawing_styles.
-            get_default_pose_landmarks_style())
-
-        cv2.imshow('annotated_image', annotated_image)
-        # time.sleep(0.2)
-        if cv2.waitKey(40) == ord('q'):
-            break
-
     cap.release()
     sequence = np.array(sequence)
 
@@ -127,7 +83,7 @@ def extract_features(video_path):
 
     return sequence.astype(np.float32)
 
-extract_features(f"{VIDEO_DIR}/69210.mp4")
+# extract_features(f"{VIDEO_DIR}/69210.mp4")
 # # LOAD JSON AND PROCESS TRAIN VIDEOS ONLY
 # with open(JSON_PATH, "r") as f:
 #     data = json.load(f)
