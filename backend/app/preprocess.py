@@ -223,16 +223,11 @@ def get_labels_sklearn(features_dir:str, json_path: str=JSON_PATH, overwrite_pre
     le = LabelEncoder()
     y_numeric = le.fit_transform(labels)
     np.save(npy_path, y_numeric)
-    # print("Numeric classes:", y_numeric)
-    # print("Classes:", le.classes_)
-    # print("ALL:\n",labels)
+# get_labels_sklearn(TRAIN_OUTPUT_DIR_CLEANED)
 
-            # print(f"{file.name}")
-    # labels = []
-    # for entry in data :
-    #     labels.append(entry["gloss"])
-get_labels_sklearn(TEST_OUTPUT_DIR_CLEANED)
-
+# TODO: write function to flatten 2d arrays in all feature files into one 
+#   large array where the entries are the features from all frames, this is
+#   is not meant to be saved as a file, but used in the training_svm.py file
 
 # ENCODE LABELS
 # # essentially converts string labels to numeric labels
