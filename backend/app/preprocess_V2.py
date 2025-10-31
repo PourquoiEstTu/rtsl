@@ -8,6 +8,7 @@ from sklearn.preprocessing import LabelEncoder
 import torch
 from torch.utils.data import Dataset, DataLoader
 
+# print numpy arrays without truncation
 np.set_printoptions(threshold=sys.maxsize)
 
 # global vars
@@ -47,7 +48,7 @@ os.makedirs(VALIDATION_OUTPUT_DIR_CLEANED, exist_ok=True)
 # )
 
 # extract features from a video
-def extract_features(video_path):
+def extract_features(video_path: str):
     """Output is an array of the 21 landmarks on both hands
        With dimensions a x b x c. a represents the number of 
        frames in the video. b represents the two hands, first 
@@ -110,7 +111,7 @@ def extract_features(video_path):
 # print(len(extract_features(f"{VIDEO_DIR}/69210.mp4")[0]))
 # print(extract_features(f"{VIDEO_DIR}/69210.mp4")[32])
 
-def gen_videos_features() :
+def gen_videos_features() -> None :
     # LOAD JSON AND PROCESS ALL VIDEOS
     with open(JSON_PATH, "r") as f:
         data = json.load(f)
@@ -147,6 +148,8 @@ def gen_videos_features() :
                 np.save(npy_path, features)
                 print(f"Saved features: {npy_path}")
 
+            # This block is not necessary anymore as we are moving to 
+            #   file-based preprocessing
             # Only append if the feature file exists
             # if os.path.exists(npy_path):
             #     if instance["split"] == "train":
@@ -159,7 +162,7 @@ def gen_videos_features() :
             #         validation_feature_paths.append(npy_path)
             #         validation_labels.append(gloss)
 
-def remove_zero_frames(input_dir: str, output_dir: str) :
+def remove_zero_frames(input_dir: str, output_dir: str) -> None :
     """Frames that have the hands out of view and so don't contribute 
        any keypoints are removed
        input_dir: directory with features from extract_features
@@ -177,12 +180,61 @@ def remove_zero_frames(input_dir: str, output_dir: str) :
             for i in range(nframes) :
                 if np.any(features[i]) :
                     cleaned_features.append(features[i])
+            cleaned_features = np.array(cleaned_features)
             np.save(npy_path, cleaned_features)
             print(f"Saved cleaned features: {npy_path}")
 
-remove_zero_frames(TRAIN_OUTPUT_DIR, TRAIN_OUTPUT_DIR_CLEANED)
+# remove_zero_frames(VALIDATION_OUTPUT_DIR, VALIDATION_OUTPUT_DIR_CLEANED)
 
-# # ENCODE LABELS
+# linear search as of now, maybe add code to order json by gloss or video_id
+#   for a faster search?
+# should probably be moved into a file in utils/
+def find_gloss_by_video_id(video_id: str, json_path: str=JSON_PATH) -> str :
+    video_id = video_id.strip(".npy")
+    with open(json_path, "r") as f :
+        data = json.load(f)
+    for entry in data :
+        for instance in entry["instances"] :
+            if instance["video_id"] == video_id :
+                return entry["gloss"]
+# print(find_gloss_by_video_id("00421"))
+
+def get_labels_sklearn(features_dir:str, json_path: str=JSON_PATH, overwrite_prev_file:bool=False) -> None :
+    """Output corresponding label/gloss for a video in a 1d array
+       that a sklearn SVM can use. Implicitly orders the labels
+       by which file in features_dir is seen first, so ascending
+       numerical order."""
+    npy_path = os.path.join(features_dir, "ordered_labels.npy")
+    if not overwrite_prev_file :
+        if os.path.exists(npy_path) :
+            print("labels file already exists, set the overwrite_prev_file flag to True to overwrite.")
+            return
+    with open(json_path, "r") as f :
+        data = json.load(f)
+    labels = []
+    for file in os.scandir(features_dir) :
+        if file.is_file() :
+            label = find_gloss_by_video_id(f"{file.name.strip('.npy')}")
+            if label != None :
+                labels.append(label)
+                print(f"Added {label} to labels.")
+            else :
+                print(f"Video {file.name} has no label.")
+    le = LabelEncoder()
+    y_numeric = le.fit_transform(labels)
+    np.save(npy_path, y_numeric)
+    # print("Numeric classes:", y_numeric)
+    # print("Classes:", le.classes_)
+    # print("ALL:\n",labels)
+
+            # print(f"{file.name}")
+    # labels = []
+    # for entry in data :
+    #     labels.append(entry["gloss"])
+get_labels_sklearn(TEST_OUTPUT_DIR_CLEANED)
+
+
+# ENCODE LABELS
 # # essentially converts string labels to numeric labels
 # le = LabelEncoder()
 # y_numeric = le.fit_transform(train_labels)
