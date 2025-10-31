@@ -14,9 +14,12 @@ np.set_printoptions(threshold=sys.maxsize)
 DIR = "/windows/Users/thats/Documents/archive"
 JSON_PATH = f"{DIR}/WLASL_v0.3.json"
 VIDEO_DIR = f"{DIR}/videos/"  # folder with your video files
-TRAIN_OUTPUT_DIR = f"{DIR}/train_output"          # folder to save .npy feature files
-TEST_OUTPUT_DIR = f"{DIR}/test_output"          # folder to save .npy feature files
-VALIDATION_OUTPUT_DIR = f"{DIR}/validation_output"          # folder to save .npy feature files
+TRAIN_OUTPUT_DIR = f"{DIR}/train_output" # folder to save .npy feature files
+TEST_OUTPUT_DIR = f"{DIR}/test_output" # folder to save .npy feature files
+VALIDATION_OUTPUT_DIR = f"{DIR}/validation_output" # folder to save .npy feature files
+TRAIN_OUTPUT_DIR_CLEANED = f"{DIR}/train_output_cleaned" # folder to save .npy feature files
+TEST_OUTPUT_DIR_CLEANED = f"{DIR}/test_output_cleaned" # folder to save .npy feature files
+VALIDATION_OUTPUT_DIR_CLEANED = f"{DIR}/validation_output_cleaned" # folder to save .npy feature files
 TARGET_LENGTH = 64                   # number of frames per sequence
 BATCH_SIZE = 4
 CATEGORIES_TO_USE = ["book", "bye", "hello"]  # Only preprocess these glosses
@@ -24,20 +27,24 @@ CATEGORIES_TO_USE = ["book", "bye", "hello"]  # Only preprocess these glosses
 os.makedirs(TRAIN_OUTPUT_DIR, exist_ok=True)
 os.makedirs(TEST_OUTPUT_DIR, exist_ok=True)
 os.makedirs(VALIDATION_OUTPUT_DIR, exist_ok=True)
+os.makedirs(TRAIN_OUTPUT_DIR_CLEANED, exist_ok=True)
+os.makedirs(TEST_OUTPUT_DIR_CLEANED, exist_ok=True)
+os.makedirs(VALIDATION_OUTPUT_DIR_CLEANED, exist_ok=True)
 
 # INITIALIZE MEDIAPIPE HOLISTIC
 # essentially uses the mediapipe holistic model to extract hands and pose features
-mp_holistic = mp.solutions.holistic
-holistic = mp_holistic.Holistic(
-    static_image_mode=False,
-    model_complexity=1,
-    smooth_landmarks=True,
-    enable_segmentation=False, # mediapipe crashes when true? 
-        # someone else run this file with this and refine_face_landmarks=True as well
-    refine_face_landmarks=False,
-    min_detection_confidence=0.5,
-    min_tracking_confidence=0.5
-)
+# commented out because it makes code run slower when not in use
+# mp_holistic = mp.solutions.holistic
+# holistic = mp_holistic.Holistic(
+#     static_image_mode=False,
+#     model_complexity=1,
+#     smooth_landmarks=True,
+#     enable_segmentation=False, # mediapipe crashes when true? 
+#         # someone else run this file with this and refine_face_landmarks=True as well
+#     refine_face_landmarks=False,
+#     min_detection_confidence=0.5,
+#     min_tracking_confidence=0.5
+# )
 
 # extract features from a video
 def extract_features(video_path):
@@ -102,54 +109,79 @@ def extract_features(video_path):
 
 # print(len(extract_features(f"{VIDEO_DIR}/69210.mp4")[0]))
 # print(extract_features(f"{VIDEO_DIR}/69210.mp4")[32])
-# # LOAD JSON AND PROCESS TRAIN VIDEOS ONLY
-with open(JSON_PATH, "r") as f:
-    data = json.load(f)
 
-train_feature_paths = []
-train_labels = []
-test_feature_paths = []
-test_labels = []
-validation_feature_paths = []
-validation_labels = []
+def gen_videos_features() :
+    # LOAD JSON AND PROCESS ALL VIDEOS
+    with open(JSON_PATH, "r") as f:
+        data = json.load(f)
 
-for entry in data:
-    gloss = entry["gloss"]
-    # only use the categories we care about
-    # if gloss not in CATEGORIES_TO_USE:
-    #     continue  # Skip unwanted categories
+    train_feature_paths = []
+    train_labels = []
+    test_feature_paths = []
+    test_labels = []
+    validation_feature_paths = []
+    validation_labels = []
 
-    for instance in entry["instances"]:
+    for entry in data:
+        gloss = entry["gloss"]
+        # only use the categories we care about
+        # if gloss not in CATEGORIES_TO_USE:
+        #     continue  # Skip unwanted categories
 
-        video_file = os.path.join(VIDEO_DIR, f"{instance['video_id']}.mp4")
-        if not os.path.exists(video_file):
-            print(f"Skipping missing video: {video_file}")
-            continue
+        for instance in entry["instances"]:
 
-        if instance["split"] == "train":
-            npy_path = os.path.join(TRAIN_OUTPUT_DIR, f"{instance['video_id']}.npy")
-        elif instance["split"] == "test" :
-            npy_path = os.path.join(TEST_OUTPUT_DIR, f"{instance['video_id']}.npy")
-        elif instance["split"] == "val" :
-            npy_path = os.path.join(VALIDATION_OUTPUT_DIR, f"{instance['video_id']}.npy")
-        if not os.path.exists(npy_path):
-            # print(video_file)
-            features = extract_features(video_file)
-            np.save(npy_path, features)
-            print(f"Saved features: {npy_path}")
+            video_file = os.path.join(VIDEO_DIR, f"{instance['video_id']}.mp4")
+            if not os.path.exists(video_file):
+                print(f"Skipping missing video: {video_file}")
+                continue
 
-        # Only append if the feature file exists
-        if os.path.exists(npy_path):
             if instance["split"] == "train":
-                train_feature_paths.append(npy_path)
-                train_labels.append(gloss)
-            elif instance["split"] == "test":
-                test_feature_paths.append(npy_path)
-                test_labels.append(gloss)
+                npy_path = os.path.join(TRAIN_OUTPUT_DIR, f"{instance['video_id']}.npy")
+            elif instance["split"] == "test" :
+                npy_path = os.path.join(TEST_OUTPUT_DIR, f"{instance['video_id']}.npy")
             elif instance["split"] == "val" :
-                validation_feature_paths.append(npy_path)
-                validation_labels.append(gloss)
-#
+                npy_path = os.path.join(VALIDATION_OUTPUT_DIR, f"{instance['video_id']}.npy")
+            if not os.path.exists(npy_path):
+                # print(video_file)
+                features = extract_features(video_file)
+                np.save(npy_path, features)
+                print(f"Saved features: {npy_path}")
+
+            # Only append if the feature file exists
+            # if os.path.exists(npy_path):
+            #     if instance["split"] == "train":
+            #         train_feature_paths.append(npy_path)
+            #         train_labels.append(gloss)
+            #     elif instance["split"] == "test":
+            #         test_feature_paths.append(npy_path)
+            #         test_labels.append(gloss)
+            #     elif instance["split"] == "val" :
+            #         validation_feature_paths.append(npy_path)
+            #         validation_labels.append(gloss)
+
+def remove_zero_frames(input_dir: str, output_dir: str) :
+    """Frames that have the hands out of view and so don't contribute 
+       any keypoints are removed
+       input_dir: directory with features from extract_features
+       output_dir: directory where processed files are saved"""
+    for file in os.scandir(input_dir) :
+        cleaned_features = []
+        if file.is_file() : # sanity check
+            npy_path = os.path.join(output_dir, f"{file.name}")
+            # assume file has already had all zero frames removed if it
+            #   already exists in output_dir
+            if os.path.exists(npy_path) :
+                continue
+            features = np.load(f"{input_dir}/{file.name}")
+            nframes, nfeatures = features.shape
+            for i in range(nframes) :
+                if np.any(features[i]) :
+                    cleaned_features.append(features[i])
+            np.save(npy_path, cleaned_features)
+            print(f"Saved cleaned features: {npy_path}")
+
+remove_zero_frames(TRAIN_OUTPUT_DIR, TRAIN_OUTPUT_DIR_CLEANED)
+
 # # ENCODE LABELS
 # # essentially converts string labels to numeric labels
 # le = LabelEncoder()
