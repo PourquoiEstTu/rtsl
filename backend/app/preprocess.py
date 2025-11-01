@@ -12,7 +12,7 @@ from torch.utils.data import Dataset, DataLoader
 np.set_printoptions(threshold=sys.maxsize)
 
 # global vars
-DIR = "/windows/Users/thats/Documents/archive"
+DIR = "/windows/Users/thats/Documents/archive" # folder where your dataset is
 JSON_PATH = f"{DIR}/WLASL_v0.3.json"
 VIDEO_DIR = f"{DIR}/videos/"  # folder with your video files
 TRAIN_OUTPUT_DIR = f"{DIR}/train_output" # folder to save .npy feature files
@@ -21,9 +21,6 @@ VALIDATION_OUTPUT_DIR = f"{DIR}/validation_output" # folder to save .npy feature
 TRAIN_OUTPUT_DIR_CLEANED = f"{DIR}/train_output_cleaned" # folder to save .npy feature files
 TEST_OUTPUT_DIR_CLEANED = f"{DIR}/test_output_cleaned" # folder to save .npy feature files
 VALIDATION_OUTPUT_DIR_CLEANED = f"{DIR}/validation_output_cleaned" # folder to save .npy feature files
-TARGET_LENGTH = 64                   # number of frames per sequence
-BATCH_SIZE = 4
-CATEGORIES_TO_USE = ["book", "bye", "hello"]  # Only preprocess these glosses
 
 os.makedirs(TRAIN_OUTPUT_DIR, exist_ok=True)
 os.makedirs(TEST_OUTPUT_DIR, exist_ok=True)
@@ -77,13 +74,16 @@ def extract_features(video_path: str):
             for lm in results.right_hand_landmarks.landmark:
                 hand_keypoints.extend([lm.x, lm.y, lm.z])
         else:
+            # if hand isn't in frame, add 0s as the feature
+            # add 21*3 0's since there's 21 landmarks per hand and they
+            #   are represented using 3D coordinates
             hand_keypoints.extend([0] * 21 * 3)
 
         if results.left_hand_landmarks:
             for lm in results.left_hand_landmarks.landmark:
                 hand_keypoints.extend([lm.x, lm.y, lm.z])
         else:
-            hand_keypoints.extend([0] * 21 * 3) # 21 landmarks per hand
+            hand_keypoints.extend([0] * 21 * 3)
 
         sequence.append(hand_keypoints)
 
@@ -92,9 +92,9 @@ def extract_features(video_path: str):
 
     return sequence.astype(np.float32)
 
-def gen_videos_features() -> None :
-    # LOAD JSON AND PROCESS ALL VIDEOS
-    with open(JSON_PATH, "r") as f:
+def gen_videos_features(json_path: str=JSON_PATH) -> None :
+    """Generate features for each video and save them to disk."""
+    with open(json_path, "r") as f:
         data = json.load(f)
 
     train_feature_paths = []
@@ -106,13 +106,10 @@ def gen_videos_features() -> None :
 
     for entry in data:
         gloss = entry["gloss"]
-        # only use the categories we care about
-        # if gloss not in CATEGORIES_TO_USE:
-        #     continue  # Skip unwanted categories
 
         for instance in entry["instances"]:
-
             video_file = os.path.join(VIDEO_DIR, f"{instance['video_id']}.mp4")
+
             if not os.path.exists(video_file):
                 print(f"Skipping missing video: {video_file}")
                 continue
@@ -130,9 +127,10 @@ def gen_videos_features() -> None :
                 print(f"Saved features: {npy_path}")
 
 def remove_zero_frames(input_dir: str, output_dir: str) -> None :
-    """Frames that have the hands out of view and so don't contribute 
-       any keypoints are removed
-       input_dir: directory with features from extract_features
+    """Frames that have the hands out of view and so don't contribute
+       any keypoints (array representing the frame contains all 0s)
+       are removed.
+       input_dir: directory with features generated from gen_videos_features()
        output_dir: directory where processed files are saved"""
     for file in os.scandir(input_dir) :
         cleaned_features = []
@@ -170,7 +168,9 @@ def get_labels_sklearn(features_dir:str, json_path: str=JSON_PATH, overwrite_pre
     """Output corresponding label/gloss for a video in a 1d array
        that a sklearn SVM can use. Implicitly orders the labels
        by which file in features_dir is seen first, so ascending
-       numerical order."""
+       numerical order.
+       features_dir: directory where features from gen_videos_features()
+         are saved."""
     npy_path = os.path.join(features_dir, "ordered_labels.npy")
     if not overwrite_prev_file :
         if os.path.exists(npy_path) :
