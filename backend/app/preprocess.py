@@ -32,17 +32,17 @@ os.makedirs(VALIDATION_OUTPUT_DIR_CLEANED, exist_ok=True)
 # INITIALIZE MEDIAPIPE HOLISTIC
 # essentially uses the mediapipe holistic model to extract hands and pose features
 # comment out if not needed when running this file
-mp_holistic = mp.solutions.holistic
-holistic = mp_holistic.Holistic(
-    static_image_mode=False,
-    model_complexity=1,
-    smooth_landmarks=True,
-    enable_segmentation=False, # mediapipe crashes when true? 
-        # someone else run this file with this and refine_face_landmarks=True as well
-    refine_face_landmarks=False,
-    min_detection_confidence=0.5,
-    min_tracking_confidence=0.5
-)
+# mp_holistic = mp.solutions.holistic
+# holistic = mp_holistic.Holistic(
+#     static_image_mode=False,
+#     model_complexity=1,
+#     smooth_landmarks=True,
+#     enable_segmentation=False, # mediapipe crashes when true? 
+#         # someone else run this file with this and refine_face_landmarks=True as well
+#     refine_face_landmarks=False,
+#     min_detection_confidence=0.5,
+#     min_tracking_confidence=0.5
+# )
 
 # extract features from a video
 def extract_features(video_path: str):
@@ -92,7 +92,7 @@ def extract_features(video_path: str):
 
     return sequence.astype(np.float32)
 
-def gen_videos_features(json_path: str=JSON_PATH) -> None :
+def gen_videos_features(json_path: str=JSON_PATH, overwrite_prev_files:bool=False) -> None :
     """Generate features for each video and save them to disk."""
     with open(json_path, "r") as f:
         data = json.load(f)
@@ -120,11 +120,19 @@ def gen_videos_features(json_path: str=JSON_PATH) -> None :
                 npy_path = os.path.join(TEST_OUTPUT_DIR, f"{instance['video_id']}.npy")
             elif instance["split"] == "val" :
                 npy_path = os.path.join(VALIDATION_OUTPUT_DIR, f"{instance['video_id']}.npy")
-            if not os.path.exists(npy_path):
-                # print(video_file)
+            if overwrite_prev_files :
                 features = extract_features(video_file)
                 np.save(npy_path, features)
                 print(f"Saved features: {npy_path}")
+            else :
+                if not os.path.exists(npy_path):
+                    # print(video_file)
+                    features = extract_features(video_file)
+                    np.save(npy_path, features)
+                    print(f"Saved features: {npy_path}")
+                else :
+                    print(f"Features already generated for {npy_path}, skipped...")
+# gen_videos_features()
 
 def remove_zero_frames(input_dir: str, output_dir: str) -> None :
     """Frames that have the hands out of view and so don't contribute
@@ -149,7 +157,7 @@ def remove_zero_frames(input_dir: str, output_dir: str) -> None :
             np.save(npy_path, cleaned_features)
             print(f"Saved cleaned features: {npy_path}")
 
-# remove_zero_frames(VALIDATION_OUTPUT_DIR, VALIDATION_OUTPUT_DIR_CLEANED)
+# remove_zero_frames(TEST_OUTPUT_DIR, TEST_OUTPUT_DIR_CLEANED)
 
 # linear search as of now, maybe add code to order json by gloss or video_id
 #   for a faster search?
@@ -190,7 +198,7 @@ def get_labels_sklearn(features_dir:str, json_path: str=JSON_PATH, overwrite_pre
     le = LabelEncoder()
     y_numeric = le.fit_transform(labels)
     np.save(npy_path, y_numeric)
-# get_labels_sklearn(TRAIN_OUTPUT_DIR_CLEANED)
+get_labels_sklearn(TEST_OUTPUT_DIR_CLEANED, JSON_PATH, True)
 
 # TODO: write function to flatten 2d arrays in all feature files into one 
 #   large array where the entries are the features from all frames, this is
