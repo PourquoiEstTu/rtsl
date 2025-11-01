@@ -34,18 +34,18 @@ os.makedirs(VALIDATION_OUTPUT_DIR_CLEANED, exist_ok=True)
 
 # INITIALIZE MEDIAPIPE HOLISTIC
 # essentially uses the mediapipe holistic model to extract hands and pose features
-# comment out if not needed when running this file
-mp_holistic = mp.solutions.holistic
-holistic = mp_holistic.Holistic(
-    static_image_mode=False,
-    model_complexity=1,
-    smooth_landmarks=True,
-    enable_segmentation=False, # mediapipe crashes when true? 
-        # someone else run this file with this and refine_face_landmarks=True as well
-    refine_face_landmarks=False,
-    min_detection_confidence=0.5,
-    min_tracking_confidence=0.5
-)
+# commented out because it makes code run slower when not in use
+# mp_holistic = mp.solutions.holistic
+# holistic = mp_holistic.Holistic(
+#     static_image_mode=False,
+#     model_complexity=1,
+#     smooth_landmarks=True,
+#     enable_segmentation=False, # mediapipe crashes when true? 
+#         # someone else run this file with this and refine_face_landmarks=True as well
+#     refine_face_landmarks=False,
+#     min_detection_confidence=0.5,
+#     min_tracking_confidence=0.5
+# )
 
 # extract features from a video
 def extract_features(video_path: str):
@@ -85,12 +85,31 @@ def extract_features(video_path: str):
         else:
             hand_keypoints.extend([0] * 21 * 3) # 21 landmarks per hand
 
+        # POSE
+        # pose_keypoints = []
+        # if results.pose_landmarks:
+        #     for lm in results.pose_landmarks.landmark:
+        #         pose_keypoints.extend([lm.x, lm.y, lm.z])
+        # else:
+        #     pose_keypoints.extend([0] * 33 * 3) # 33 pose landmarks
+        #
+        # frame_features = hand_keypoints# + pose_keypoints
         sequence.append(hand_keypoints)
 
     cap.release()
     sequence = np.array(sequence)
 
+    # pad/trim sequence to TARGET_LENGTH
+    # if len(sequence) > TARGET_LENGTH:
+    #     sequence = sequence[:TARGET_LENGTH]
+    # elif len(sequence) < TARGET_LENGTH:
+    #     pad = np.zeros((TARGET_LENGTH - len(sequence), sequence.shape[1]))
+    #     sequence = np.vstack([sequence, pad])
+
     return sequence.astype(np.float32)
+
+# print(len(extract_features(f"{VIDEO_DIR}/69210.mp4")[0]))
+# print(extract_features(f"{VIDEO_DIR}/69210.mp4")[32])
 
 def gen_videos_features() -> None :
     # LOAD JSON AND PROCESS ALL VIDEOS
@@ -128,6 +147,20 @@ def gen_videos_features() -> None :
                 features = extract_features(video_file)
                 np.save(npy_path, features)
                 print(f"Saved features: {npy_path}")
+
+            # This block is not necessary anymore as we are moving to 
+            #   file-based preprocessing
+            # Only append if the feature file exists
+            # if os.path.exists(npy_path):
+            #     if instance["split"] == "train":
+            #         train_feature_paths.append(npy_path)
+            #         train_labels.append(gloss)
+            #     elif instance["split"] == "test":
+            #         test_feature_paths.append(npy_path)
+            #         test_labels.append(gloss)
+            #     elif instance["split"] == "val" :
+            #         validation_feature_paths.append(npy_path)
+            #         validation_labels.append(gloss)
 
 def remove_zero_frames(input_dir: str, output_dir: str) -> None :
     """Frames that have the hands out of view and so don't contribute 
@@ -195,3 +228,33 @@ def get_labels_sklearn(features_dir:str, json_path: str=JSON_PATH, overwrite_pre
 # TODO: write function to flatten 2d arrays in all feature files into one 
 #   large array where the entries are the features from all frames, this is
 #   is not meant to be saved as a file, but used in the training_svm.py file
+
+# ENCODE LABELS
+# # essentially converts string labels to numeric labels
+# le = LabelEncoder()
+# y_numeric = le.fit_transform(train_labels)
+# print("Classes:", le.classes_)
+#
+# # create a dataset class to be used with pytorch dataloader
+# class JSONASLDataset(Dataset):
+#     def __init__(self, features_paths, labels):
+#         self.features_paths = features_paths
+#         self.labels = labels
+#
+#     def __len__(self):
+#         return len(self.features_paths)
+#
+#     def __getitem__(self, idx):
+#         X = np.load(self.features_paths[idx])
+#         y = self.labels[idx]
+#         return torch.tensor(X), torch.tensor(y) #tensor of features and label
+#
+# # CREATE DATASET AND DATALOADER
+# train_dataset = JSONASLDataset(train_feature_paths, y_numeric)
+# # save numeric labels for training script
+# np.save(os.path.join(OUTPUT_DIR, "labels.npy"), y_numeric)
+#
+# # not sure what this would be used for?
+# # train_dataloader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
+#
+# print(f"Training dataset ready. Number of samples: {len(train_dataset)}")
