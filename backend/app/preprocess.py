@@ -134,7 +134,7 @@ def gen_videos_features(json_path: str=JSON_PATH, overwrite_prev_files:bool=Fals
                     print(f"Features already generated for {npy_path}, skipped...")
 # gen_videos_features()
 
-def remove_zero_frames(input_dir: str, output_dir: str) -> None :
+def remove_zero_frames(input_dir: str, output_dir: str, overwrite_prev_file: bool=False) -> None :
     """Frames that have the hands out of view and so don't contribute
        any keypoints (array representing the frame contains all 0s)
        are removed.
@@ -144,10 +144,9 @@ def remove_zero_frames(input_dir: str, output_dir: str) -> None :
         cleaned_features = []
         if file.is_file() : # sanity check
             npy_path = os.path.join(output_dir, f"{file.name}")
-            # assume file has already had all zero frames removed if it
-            #   already exists in output_dir
-            if os.path.exists(npy_path) :
-                continue
+            if not overwrite_prev_file :
+                if os.path.exists(npy_path) :
+                    continue
             features = np.load(f"{input_dir}/{file.name}")
             nframes, nfeatures = features.shape
             for i in range(nframes) :
@@ -157,7 +156,7 @@ def remove_zero_frames(input_dir: str, output_dir: str) -> None :
             np.save(npy_path, cleaned_features)
             print(f"Saved cleaned features: {npy_path}")
 
-# remove_zero_frames(TEST_OUTPUT_DIR, TEST_OUTPUT_DIR_CLEANED)
+# remove_zero_frames(TRAIN_OUTPUT_DIR, TRAIN_OUTPUT_DIR_CLEANED)
 
 # linear search as of now, maybe add code to order json by gloss or video_id
 #   for a faster search?
