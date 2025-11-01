@@ -198,7 +198,7 @@ def get_labels_sklearn(features_dir:str, json_path: str=JSON_PATH, overwrite_pre
     le = LabelEncoder()
     y_numeric = le.fit_transform(labels)
     np.save(npy_path, y_numeric)
-get_labels_sklearn(TEST_OUTPUT_DIR_CLEANED, JSON_PATH, True)
+# get_labels_sklearn(VALIDATION_OUTPUT_DIR_CLEANED, JSON_PATH, True)
 
 # TODO: write function to flatten 2d arrays in all feature files into one 
 #   large array where the entries are the features from all frames, this is
