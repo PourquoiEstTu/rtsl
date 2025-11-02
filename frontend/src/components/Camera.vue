@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import Button from '@/volt/Button.vue';
-import EyeIcon from '@primevue/icons/eye';
+import 'primeicons/primeicons.css';
+import TranslationBox from '@/components/TranslationBox.vue'
 
 onMounted(async () => {
   const videoEl = document.getElementById('video') as HTMLMediaElement;
@@ -18,22 +19,52 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="relative w-dvw h-dvh overflow-hidden">
-    <video
-      id="video"
-      class="absolute top-0 left-0 w-full h-full object-cover bg-black"
-      autoplay
-      playsinline
-    />
-    <Button
-      :class="`
-        px-3! absolute! bottom-12 left-1/2 -translate-x-1/2 
-        border-4 border-white backdrop-blur-lg bg-transparent rounded-full! w-24 h-24
-        active:scale-95 transition
-      `"
-      size="large"
+  <div class="flex h-dvh w-dvw overflow-hidden bg-[#E0F2FF]">
+    <aside
+      class="hidden lg:flex w-52 bg-[#3B82F6]/90 
+             flex-col items-center justify-center
+             text-white font-semibold tracking-wide
+             shadow-[4px_0_15px_rgba(0,0,0,0.1)]
+             backdrop-blur-md rounded-r-3xl"
     >
-      <EyeIcon class="w-16 h-16 text-white" />
-    </Button>
+      <span class="text-lg">MENU</span>
+    </aside>
+    <main class="flex-1 flex items-center justify-center p-6">
+      <div
+        class="relative w-full max-w-5xl h-[80vh] 
+               bg-white/20 backdrop-blur-md rounded-[2.5rem]
+               border border-white/30 shadow-[0_8px_40px_rgba(0,0,0,0.1)]
+               overflow-hidden flex"
+      >
+        <div class="relative flex-1 flex items-center justify-center rounded-l-[2.5rem] overflow-hidden">
+          <video
+            id="video"
+            class="absolute top-0 left-0 w-full h-full object-cover bg-[#0F172A]"
+            autoplay
+            playsinline
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+
+          <div
+            class="absolute bottom-8 left-1/2 -translate-x-1/2 
+                   flex items-center justify-center"
+          >
+            <Button
+              class="!rounded-full !p-0 !m-0 !aspect-square
+                     w-14 sm:w-16 md:w-20
+                     border-2 border-white/80 
+                     bg-white/10 backdrop-blur-md
+                     flex items-center justify-center
+                     hover:bg-white/20 active:scale-95
+                     transition-all duration-200
+                     shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+            >
+              <i class="pi pi-play text-white text-2xl sm:text-3xl md:text-4xl drop-shadow-lg"></i>
+            </Button>
+          </div>
+        </div>
+        <TranslationBox />
+      </div>
+    </main>
   </div>
 </template>
