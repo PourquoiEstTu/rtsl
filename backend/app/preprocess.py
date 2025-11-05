@@ -197,17 +197,22 @@ def get_labels_sklearn(features_dir:str, json_path: str=JSON_PATH, overwrite_pre
     np.save(npy_path, np.array(labels))
 # get_labels_sklearn(VALIDATION_OUTPUT_DIR_CLEANED, JSON_PATH, True)
 
-def flatten(npy_path : str) -> np.ndarray:
-    """ Converts feature files from 2D arrays (representing frame x features) into 1D arrays.
-        Input: path to a .npy file of a 2D array
-        Output: 1D array of features"""
-    data_2d = np.load(npy_path)
-    output_1d = np.empty(0)
-
-    if (data_2d.ndim != 2): # sanity check
-        raise Exception("Input is not a 2D array")
+def flatten_directory(input_dir : str):
+    """ Converts a directory of feature .npy files (2D arrays representing frame x features) into a 2D array representing (word x feature).
+        Input: path to a directory of .npy files
+        Output: 2D array of features"""
     
-    for frame in range(len(data_2d)):
-        output_1d = np.append(output_1d, data_2d[frame])
+    output = []
+        
+    for file in os.scandir(input_dir):
+        if file.is_file(): # sanity check
+            features = np.load(f"{input_dir}/{file.name}")
+        
+        if (features.ndim != 2): # sanity check
+            continue
+        
+        output.append(np.ndarray.flatten(features))
     
-    return output_1d
+    # note that we return a python list of np.ndarrays
+    # it isn't an ndarray itself because the flattened features are different lengths
+    return output
