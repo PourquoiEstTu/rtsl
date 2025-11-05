@@ -197,6 +197,17 @@ def get_labels_sklearn(features_dir:str, json_path: str=JSON_PATH, overwrite_pre
     np.save(npy_path, np.array(labels))
 # get_labels_sklearn(VALIDATION_OUTPUT_DIR_CLEANED, JSON_PATH, True)
 
-# TODO: write function to flatten 2d arrays in all feature files into one 
-#   large array where the entries are the features from all frames, this is
-#   is not meant to be saved as a file, but used in the training_svm.py file
+def flatten(npy_path : str) -> np.ndarray:
+    """ Converts feature files from 2D arrays (representing frame x features) into 1D arrays.
+        Input: path to a .npy file of a 2D array
+        Output: 1D array of features"""
+    data_2d = np.load(npy_path)
+    output_1d = np.empty(0)
+
+    if (data_2d.ndim != 2): # sanity check
+        raise Exception("Input is not a 2D array")
+    
+    for frame in range(len(data_2d)):
+        output_1d = np.append(output_1d, data_2d[frame])
+    
+    return output_1d
