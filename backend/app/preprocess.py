@@ -7,20 +7,22 @@ import mediapipe as mp
 from sklearn.preprocessing import LabelEncoder
 import torch
 from torch.utils.data import Dataset, DataLoader
+from pathlib import Path
 
 # print numpy arrays without truncation
 np.set_printoptions(threshold=sys.maxsize)
 
 # global vars
-DIR = "/windows/Users/thats/Documents/archive" # folder where your dataset is
+BASE_DIR = Path(__file__).resolve().parents[3] / "archive"
+DIR = str(BASE_DIR)
+ # folder where your dataset is
 JSON_PATH = f"{DIR}/WLASL_v0.3.json"
 VIDEO_DIR = f"{DIR}/videos/"  # folder with your video files
 TRAIN_OUTPUT_DIR = f"{DIR}/train_output" # folder to save .npy feature files
 TEST_OUTPUT_DIR = f"{DIR}/test_output" # folder to save .npy feature files
 VALIDATION_OUTPUT_DIR = f"{DIR}/validation_output" # folder to save .npy feature files
 
-# TRAIN_OUTPUT_DIR_CLEANED = f"{DIR}/train_output_cleaned" # folder to save .npy feature files
-TRAIN_OUTPUT_DIR_CLEANED = "../../train_output_cleaned"
+TRAIN_OUTPUT_DIR_CLEANED = f"{DIR}/train_output_cleaned" # folder to save .npy feature files
 
 TEST_OUTPUT_DIR_CLEANED = f"{DIR}/test_output_cleaned" # folder to save .npy feature files
 VALIDATION_OUTPUT_DIR_CLEANED = f"{DIR}/validation_output_cleaned" # folder to save .npy feature files
@@ -232,8 +234,13 @@ def normalize_sequence_length(input_dir: str, output_dir, overwrite=False):
                     np.zeros((pad_len, n_features), dtype=np.float32)
                 ])
             elif n_frames > max_length:
-                # safety guard
-                padded = features[:max_length, :]
+                # safety guard, should never enter this branch if data cleaning was done correctly
+                raise ValueError(
+                    f"[NormalizationError] Video '{file.name}' has {n_frames} frames, "
+                    f"which exceeds the expected maximum of {max_length}. "
+                    "This indicates that the dataset contains inconsistent feature lengths. "
+                    "Recheck your cleaning or max_length computation step."
+                )
             else:
                 padded = features
             np.save(out_path, padded)
