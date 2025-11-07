@@ -21,12 +21,13 @@ VIDEO_DIR = f"{DIR}/videos/"  # folder with your video files
 TRAIN_OUTPUT_DIR = f"{DIR}/train_output" # folder to save .npy feature files
 TEST_OUTPUT_DIR = f"{DIR}/test_output" # folder to save .npy feature files
 VALIDATION_OUTPUT_DIR = f"{DIR}/validation_output" # folder to save .npy feature files
-
 TRAIN_OUTPUT_DIR_CLEANED = f"{DIR}/train_output_cleaned" # folder to save .npy feature files
-
 TEST_OUTPUT_DIR_CLEANED = f"{DIR}/test_output_cleaned" # folder to save .npy feature files
 VALIDATION_OUTPUT_DIR_CLEANED = f"{DIR}/validation_output_cleaned" # folder to save .npy feature files
 TRAIN_OUTPUT_DIR_NORMALIZED = f"{DIR}/train_output_normalized"
+TEST_OUTPUT_DIR_NORMALIZED = f"{DIR}/test_output_normalized"
+VALIDATION_OUTPUT_DIR_NORMALIZED = f"{DIR}/validation_output_normalized"
+
 
 os.makedirs(TRAIN_OUTPUT_DIR, exist_ok=True)
 os.makedirs(TEST_OUTPUT_DIR, exist_ok=True)
@@ -35,6 +36,8 @@ os.makedirs(TRAIN_OUTPUT_DIR_CLEANED, exist_ok=True)
 os.makedirs(TEST_OUTPUT_DIR_CLEANED, exist_ok=True)
 os.makedirs(VALIDATION_OUTPUT_DIR_CLEANED, exist_ok=True)
 os.makedirs(TRAIN_OUTPUT_DIR_NORMALIZED, exist_ok=True)
+os.makedirs(TEST_OUTPUT_DIR_NORMALIZED, exist_ok=True)
+os.makedirs(VALIDATION_OUTPUT_DIR_NORMALIZED, exist_ok=True)
 
 # INITIALIZE MEDIAPIPE HOLISTIC
 # essentially uses the mediapipe holistic model to extract hands and pose features
@@ -225,6 +228,11 @@ def normalize_sequence_length(input_dir: str, output_dir, overwrite=False):
             if not overwrite and os.path.exists(out_path):
                 continue
             features = np.load(file.path)
+
+            if features.size == 0 or file.name == "ordered_labels.npy":
+                print(f"[WARNING] Skipping {file.name}: empty or invalid feature array (shape={features.shape}),(size={features.size})")
+                continue
+
             n_frames, n_features = features.shape
             if n_frames < max_length :
                 # pad with zeros
@@ -245,7 +253,10 @@ def normalize_sequence_length(input_dir: str, output_dir, overwrite=False):
                 padded = features
             np.save(out_path, padded)
             print(f"Saved normalized features: {out_path}")
-normalize_sequence_length(TRAIN_OUTPUT_DIR_CLEANED, TRAIN_OUTPUT_DIR_NORMALIZED, True)
+        
+# normalize_sequence_length(TRAIN_OUTPUT_DIR_CLEANED, TRAIN_OUTPUT_DIR_NORMALIZED, True)
+# normalize_sequence_length(VALIDATION_OUTPUT_DIR_CLEANED, VALIDATION_OUTPUT_DIR_NORMALIZED, True)
+# normalize_sequence_length(TEST_OUTPUT_DIR_CLEANED, TEST_OUTPUT_DIR_NORMALIZED, True)
 
 # TODO: write function to flatten 2d arrays in all feature files into one 
 #   large array where the entries are the features from all frames, this is
