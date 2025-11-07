@@ -12,8 +12,10 @@ from torch.utils.data import Dataset, DataLoader
 np.set_printoptions(threshold=sys.maxsize)
 
 # global vars
-DIR = "/windows/Users/thats/Documents/archive"
-JSON_PATH = f"{DIR}/WLASL_v0.3.json"
+# DIR = "/windows/Users/thats/Documents/archive"
+DIR = "../../../"
+# JSON_PATH = f"{DIR}/WLASL_v0.3.json"
+JSON_PATH = f"{DIR}/info.json"
 VIDEO_DIR = f"{DIR}/videos/"  # folder with your video files
 TRAIN_OUTPUT_DIR = f"{DIR}/train_output" # folder to save .npy feature files
 TEST_OUTPUT_DIR = f"{DIR}/test_output" # folder to save .npy feature files
@@ -199,6 +201,27 @@ def find_gloss_by_video_id(video_id: str, json_path: str=JSON_PATH) -> str :
                 return entry["gloss"]
 # print(find_gloss_by_video_id("00421"))
 
+def get_labels_pytorch(features_dir:str, json_path: str=JSON_PATH, overwrite_prev_file:bool=False) -> None :
+    """Output corresponding label/gloss for a video in a 1d array
+       that pytorch code can use. """
+    npy_path = os.path.join(features_dir, "ordered_labels.npy")
+    if not overwrite_prev_file :
+        if os.path.exists(npy_path) :
+            print("labels file already exists, set the overwrite_prev_file flag to True to overwrite.")
+            return
+    with open(json_path, "r") as f :
+        data = json.load(f)
+    labels = []
+    for file in os.scandir(features_dir) :
+        if file.is_file() :
+            label = find_gloss_by_video_id(f"{file.name.strip('.npy')}")
+            if label != None :
+                labels.append(label)
+                print(f"Added {label} to labels.")
+            else :
+                print(f"Video {file.name} has no label.")
+    np.save(npy_path, labels)
+
 def get_labels_sklearn(features_dir:str, json_path: str=JSON_PATH, overwrite_prev_file:bool=False) -> None :
     """Output corresponding label/gloss for a video in a 1d array
        that a sklearn SVM can use. Implicitly orders the labels
@@ -258,3 +281,5 @@ def get_labels_sklearn(features_dir:str, json_path: str=JSON_PATH, overwrite_pre
 # # train_dataloader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
 #
 # print(f"Training dataset ready. Number of samples: {len(train_dataset)}")
+
+# get_labels_pytorch(TRAIN_OUTPUT_DIR_CLEANED, JSON_PATH, overwrite_prev_file=True)
