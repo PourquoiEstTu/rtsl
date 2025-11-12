@@ -5,16 +5,14 @@ import cv2
 import numpy as np
 import mediapipe as mp
 from sklearn.preprocessing import LabelEncoder
-import torch
-from torch.utils.data import Dataset, DataLoader
 from pathlib import Path
 
 # print numpy arrays without truncation
 np.set_printoptions(threshold=sys.maxsize)
 
 # global vars
-BASE_DIR = Path(__file__).resolve().parents[3] / "archive"
-DIR = str(BASE_DIR)
+# BASE_DIR = Path(__file__).resolve().parents[3] / "archive"
+DIR = "/u50/quyumr/rtsl-features" #str(BASE_DIR)
  # folder where your dataset is
 JSON_PATH = f"{DIR}/WLASL_v0.3.json"
 VIDEO_DIR = f"{DIR}/videos/"  # folder with your video files
@@ -256,7 +254,7 @@ def normalize_sequence_length(input_dir: str, output_dir, overwrite=False):
         
 # normalize_sequence_length(TRAIN_OUTPUT_DIR_CLEANED, TRAIN_OUTPUT_DIR_NORMALIZED, True)
 # normalize_sequence_length(VALIDATION_OUTPUT_DIR_CLEANED, VALIDATION_OUTPUT_DIR_NORMALIZED, True)
-# normalize_sequence_length(TEST_OUTPUT_DIR_CLEANED, TEST_OUTPUT_DIR_NORMALIZED, True)
+normalize_sequence_length(TEST_OUTPUT_DIR_CLEANED, TEST_OUTPUT_DIR_NORMALIZED, True)
 
 # TODO: write function to flatten 2d arrays in all feature files into one 
 #   large array where the entries are the features from all frames, this is
