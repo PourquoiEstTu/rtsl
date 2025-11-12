@@ -256,8 +256,13 @@ def normalize_sequence_length(input_dir: str, output_dir, overwrite=False):
         
 # normalize_sequence_length(TRAIN_OUTPUT_DIR_CLEANED, TRAIN_OUTPUT_DIR_NORMALIZED, True)
 # normalize_sequence_length(VALIDATION_OUTPUT_DIR_CLEANED, VALIDATION_OUTPUT_DIR_NORMALIZED, True)
-normalize_sequence_length(TEST_OUTPUT_DIR_CLEANED, TEST_OUTPUT_DIR_NORMALIZED, True)
+# normalize_sequence_length(TEST_OUTPUT_DIR_CLEANED, TEST_OUTPUT_DIR_NORMALIZED, True)
 
-# TODO: write function to flatten 2d arrays in all feature files into one 
-#   large array where the entries are the features from all frames, this is
-#   is not meant to be saved as a file, but used in the training_svm.py file
+def force_equal_dimensions(input_dir: str, label_file: str, overwrite: bool = False) :
+    """Make sure that X and y have the same dimensions. This function will
+       implement deleting words from y to match the number of rows in X 
+       while ensuring that the labels in y still match correctly the feature
+       at the same index in X. If this is needed in the reverse direction,
+       implement when needed."""
+    pass
+    
