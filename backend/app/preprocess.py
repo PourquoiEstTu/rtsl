@@ -216,6 +216,8 @@ def normalize_sequence_length(input_dir: str, output_dir, overwrite=False):
 
     max_length = 0
     for file in os.scandir(input_dir) :
+        if file.name == "ordered_labels.npy":
+            continue
         if file.is_file() and file.name.endswith(".npy"):
             arr = np.load(file.path)
             n_frames = arr.shape[0] # number of rows/frames
