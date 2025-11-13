@@ -3,9 +3,15 @@ import os
 import json
 # import cv2
 import numpy as np
+<<<<<<< HEAD
 # import mediapipe as mp
 # from sklearn.preprocessing import LabelEncoder
 # from pathlib import Path
+=======
+import mediapipe as mp
+from sklearn.preprocessing import LabelEncoder
+from pathlib import Path
+>>>>>>> refs/remotes/origin/fix-23/make-X-y-dimensions-equal
 
 # print numpy arrays without truncation
 # np.set_printoptions(threshold=sys.maxsize)
