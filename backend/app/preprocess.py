@@ -1,24 +1,19 @@
 import os
-# import sys
+import sys
 import json
-# import cv2
+import cv2
 import numpy as np
-<<<<<<< HEAD
-# import mediapipe as mp
-# from sklearn.preprocessing import LabelEncoder
-# from pathlib import Path
-=======
 import mediapipe as mp
 from sklearn.preprocessing import LabelEncoder
 from pathlib import Path
->>>>>>> refs/remotes/origin/fix-23/make-X-y-dimensions-equal
+# commenting some of these out can make script run faster if you only want to call
+#   specific functions
 
 # print numpy arrays without truncation
 # np.set_printoptions(threshold=sys.maxsize)
 
 # global vars
-# BASE_DIR = Path(__file__).resolve().parents[3] / "archive"
-DIR = "/u50/quyumr/rtsl-features" #str(BASE_DIR)
+BASE_DIR = Path(__file__).resolve().parents[3] / "archive"
  # folder where your dataset is
 JSON_PATH = f"{DIR}/WLASL_v0.3.json"
 VIDEO_DIR = f"{DIR}/videos/"  # folder with your video files
