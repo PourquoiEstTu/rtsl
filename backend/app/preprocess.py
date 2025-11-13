@@ -14,6 +14,7 @@ from pathlib import Path
 
 # global vars
 BASE_DIR = Path(__file__).resolve().parents[3] / "archive"
+DIR = str(BASE_DIR)
  # folder where your dataset is
 JSON_PATH = f"{DIR}/WLASL_v0.3.json"
 VIDEO_DIR = f"{DIR}/videos/"  # folder with your video files
