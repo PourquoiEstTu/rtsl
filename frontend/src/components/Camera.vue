@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import Button from '@/volt/Button.vue';
-import 'primeicons/primeicons.css';
 import TranslationBox from '@/components/TranslationBox.vue'
 
 onMounted(async () => {
