@@ -1,11 +1,11 @@
 import os
 import sys
 import json
-# import cv2
+import cv2
 import numpy as np
-# import mediapipe as mp
-# from sklearn.preprocessing import LabelEncoder
-# from pathlib import Path
+import mediapipe as mp
+from sklearn.preprocessing import LabelEncoder
+from pathlib import Path
 # commenting some of these out can make script run faster if you only want to call
 #   specific functions
 
@@ -13,9 +13,8 @@ import numpy as np
 # np.set_printoptions(threshold=sys.maxsize)
 
 # global vars
-# BASE_DIR = Path(__file__).resolve().parents[3] / "archive"
-# DIR = str(BASE_DIR)
-DIR = "/u50/quyumr/rtsl-features"
+BASE_DIR = Path(__file__).resolve().parents[3] / "archive"
+DIR = str(BASE_DIR)
  # folder where your dataset is
 JSON_PATH = f"{DIR}/WLASL_v0.3.json"
 VIDEO_DIR = f"{DIR}/videos/"  # folder with your video files
