@@ -5,12 +5,12 @@ import cv2
 import numpy as np
 import mediapipe as mp
 from sklearn.preprocessing import LabelEncoder
-import torch
-from torch.utils.data import Dataset, DataLoader
 from pathlib import Path
+# commenting some of these out can make script run faster if you only want to call
+#   specific functions
 
 # print numpy arrays without truncation
-np.set_printoptions(threshold=sys.maxsize)
+# np.set_printoptions(threshold=sys.maxsize)
 
 # global vars
 BASE_DIR = Path(__file__).resolve().parents[3] / "archive"
@@ -260,6 +260,49 @@ def normalize_sequence_length(input_dir: str, output_dir, overwrite=False):
 # normalize_sequence_length(VALIDATION_OUTPUT_DIR_CLEANED, VALIDATION_OUTPUT_DIR_NORMALIZED, True)
 # normalize_sequence_length(TEST_OUTPUT_DIR_CLEANED, TEST_OUTPUT_DIR_NORMALIZED, True)
 
-# TODO: write function to flatten 2d arrays in all feature files into one 
-#   large array where the entries are the features from all frames, this is
-#   is not meant to be saved as a file, but used in the training_svm.py file
+def normalize_labels(input_dir: str, label_file: str, json_path: str = JSON_PATH, overwrite: bool = False) :
+    """Make sure that X and y have the same dimensions. This function
+       implements deleting entries from y to match the number of rows in X 
+       (represented by the number of files in input_dir)
+       while ensuring that the labels in y still correctly match the feature
+       at the same index in X. 
+
+       If this is needed in the reverse direction, implement when needed."""
+
+    out_path = f"{input_dir}/ordered_labels_normalized.npy"
+    if not overwrite and os.path.exists(f"{out_path}") :
+        print("Normalized labels already exist. Please set overwrite param to True to execute function.")
+        return
+    labels = np.load(label_file)
+    n_labels = labels.shape[0]
+    idx = 0
+    for file in os.scandir(input_dir) :
+        if file.is_file() and file.name.endswith(".npy"):
+            if "ordered_labels" in file.name :
+                print(f"{file.name} encountered... Skipping.")
+                continue
+
+            gloss = find_gloss_by_video_id(file.name, json_path)
+            if gloss == None :
+                raise Exception(f"{file.name} has no corresponding feature in {json_path}")
+
+            try :
+                if labels[idx] != gloss :
+                    labels[idx] = gloss
+                    print(f"gloss '{gloss}' at {idx} in labels does not match gloss for {file.name}... Value at {idx} has been replaced by matching gloss")
+            except IndexError :
+                raise IndexError("Number of features is greater than number of labels. Please generate the correct number of labels")
+            idx += 1
+    # idx + 1 in if stmt not needed b/c final loop increments idx once 
+    #   more after all elements in input_dir have been checked
+    if idx != n_labels : 
+        labels = labels[0:idx]
+        print("Labels array has been truncated.")
+    np.save(out_path, labels)
+    print("Normalized labels have been saved")
+# normalize_labels(TRAIN_OUTPUT_DIR_NORMALIZED, 
+#       f"{TRAIN_OUTPUT_DIR_CLEANED}/ordered_labels.npy", JSON_PATH, True)
+#normalize_labels(TEST_OUTPUT_DIR_NORMALIZED, 
+#           f"{TEST_OUTPUT_DIR_CLEANED}/ordered_labels.npy", JSON_PATH, True)
+normalize_labels(VALIDATION_OUTPUT_DIR_NORMALIZED, 
+        f"{VALIDATION_OUTPUT_DIR_CLEANED}/ordered_labels.npy", JSON_PATH, True)
