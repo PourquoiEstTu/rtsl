@@ -21,6 +21,7 @@ VALIDATION_OUTPUT_DIR = f"{DIR}/validation_output" # folder to save .npy feature
 TRAIN_OUTPUT_DIR_CLEANED = f"{DIR}/train_output_cleaned" # folder to save .npy feature files
 TEST_OUTPUT_DIR_CLEANED = f"{DIR}/test_output_cleaned" # folder to save .npy feature files
 VALIDATION_OUTPUT_DIR_CLEANED = f"{DIR}/validation_output_cleaned" # folder to save .npy feature files
+FLATTENED_OUTPUT_DIR = f"{DIR}/flattened_outputs"
 
 os.makedirs(TRAIN_OUTPUT_DIR, exist_ok=True)
 os.makedirs(TEST_OUTPUT_DIR, exist_ok=True)
@@ -197,22 +198,29 @@ def get_labels_sklearn(features_dir:str, json_path: str=JSON_PATH, overwrite_pre
     np.save(npy_path, np.array(labels))
 # get_labels_sklearn(VALIDATION_OUTPUT_DIR_CLEANED, JSON_PATH, True)
 
-def flatten_directory(input_dir : str):
-    """ Converts a directory of feature .npy files (2D arrays representing frame x features) into a 2D array representing (word x feature).
+def flatten_directory(input_dir : str, output_file_name : str, overwrite_prev_file : bool=False) -> None :
+    """ Converts a directory of normalized feature .npy files (2D arrays representing frame x features) into a 2D array representing (word x feature).
         Input: path to a directory of .npy files
         Output: 2D array of features"""
     
+    npy_path = os.path.join(FLATTENED_OUTPUT_DIR, output_file_name)
+    if not overwrite_prev_file:
+        if os.path.exists(npy_path):
+            print("Flattened features already exists, set overwrite_prev_file flag to True to overwrite.")
+            return
+    
     output = []
-        
-    for file in os.scandir(input_dir):
+    
+    # sorted scandir to ensure that final order of flattened features is consistent on different machines and labels are properly assigned
+    for file in sorted(os.scandir(input_dir), key=lambda e: e.name):
         if file.is_file(): # sanity check
             features = np.load(f"{input_dir}/{file.name}")
         
         if (features.ndim != 2): # sanity check
+            print(f"Skipped {file.name}.")
             continue
-        
+    
         output.append(np.ndarray.flatten(features))
     
-    # note that we return a python list of np.ndarrays
-    # it isn't an ndarray itself because the flattened features are different lengths
-    return output
+    np.save(npy_path, np.array(output))
+    
