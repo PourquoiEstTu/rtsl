@@ -19,14 +19,55 @@ onMounted(async () => {
 
 <template>
   <div class="flex h-dvh w-dvw overflow-hidden bg-[#E0F2FF]">
-    <aside
-      class="hidden lg:flex w-52 bg-[#3B82F6]/90 
-             flex-col items-center justify-center
-             text-white font-semibold tracking-wide
-             shadow-[4px_0_15px_rgba(0,0,0,0.1)]
-             backdrop-blur-md rounded-r-3xl"
-    >
-      <span class="text-lg">MENU</span>
+  <aside
+    class="hidden lg:flex h-screen w-60 bg-[#93c2e9] 
+          flex-col justify-between items-center
+          text-white font-semibold tracking-wide
+          shadow-[4px_0_15px_rgba(0,0,0,0.1)]
+          backdrop-blur-md rounded-r-3xl"
+  >
+    <!-- Top: App Title -->
+    <div class="flex flex-col items-start space-y-6 w-full px-6">
+      <span class="text-2xl text-black font-bold">RTSL</span>
+
+      <!-- Menu -->
+      <ul class="flex flex-col space-y-4 w-full px-6">
+        <!-- Active item -->
+        <li class="flex items-center space-x-4 bg-[#E0F2FF] rounded-lg px-3 py-2 text-black">
+          <i class="pi pi-home text-xl"></i>
+          <span class="text-m">Home</span>
+        </li>
+
+        <!-- Inactive items -->
+        <li class="flex items-center space-x-4 hover:bg-[#E0F2FF] rounded-lg px-3 py-2 cursor-pointer">
+          <i class="pi pi-book text-xl text-black"></i>
+          <span class="text-m text-black">ASL Game 1</span>
+        </li>
+        <li class="flex items-center space-x-4 hover:bg-[#E0F2FF] rounded-lg px-3 py-2 cursor-pointer">
+          <i class="pi pi-book text-xl text-black"></i>
+          <span class="text-m text-black">ASL Game 2</span>
+        </li>
+        <li class="flex items-center space-x-4 hover:bg-[#E0F2FF] rounded-lg px-3 py-2 cursor-pointer">
+          <i class="pi pi-book text-xl text-black"></i>
+          <span class="text-m text-black">ASL Scenarios</span>
+        </li>
+        <li class="flex items-center space-x-4 hover:bg-[#E0F2FF] rounded-lg px-3 py-2 cursor-pointer">
+          <i class="pi pi-cog text-xl text-black"></i>
+          <span class="text-m text-black">Settings</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Bottom image -->
+    <div class="flex flex-col items-center space-y-2 mt-auto mb-8">
+      <img 
+        src="/logo_bluetheme.png" 
+        alt="Custom Logo" 
+        class="w-24 h-auto opacity-90 hover:opacity-100 transition"
+      />
+      <span class="text-2xl text-black">RTSL</span>
+      <span class="text-m text-black">(Real-Time Sign Language)</span>
+    </div>
     </aside>
     <main class="flex-1 flex items-center justify-center p-6">
       <div
