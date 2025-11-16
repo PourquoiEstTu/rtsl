@@ -95,8 +95,8 @@ class GRU_1DCNN(nn.Module):
         # x: (batch, seq_len, features)
         gru_out, hidden_states = self.gru(x)
 
-        forward_last = hidden_states[-2]  # Last layer forward
-        backward_last = hidden_states[-1:] # Last layer backward
+        forward_last = hidden_states[-2, :, :]  # Last layer forward
+        backward_last = hidden_states[-1, :, :]  # Last layer backward
 
         # Concatenate final forward and backward hidden states
         final_hidden = torch.cat([forward_last, backward_last], dim=1)
@@ -149,4 +149,6 @@ class Sign1DCNN(nn.Module):
         out = self.conv_layers(x)
         out = self.global_pool(out).squeeze(-1)  # (batch, 256)
         return self.fc(out)
+
+
 
