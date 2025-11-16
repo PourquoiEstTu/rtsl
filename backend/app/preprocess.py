@@ -36,6 +36,7 @@ os.makedirs(VALIDATION_OUTPUT_DIR_CLEANED, exist_ok=True)
 os.makedirs(TRAIN_OUTPUT_DIR_NORMALIZED, exist_ok=True)
 os.makedirs(TEST_OUTPUT_DIR_NORMALIZED, exist_ok=True)
 os.makedirs(VALIDATION_OUTPUT_DIR_NORMALIZED, exist_ok=True)
+os.makedirs(FLATTENED_OUTPUT_DIR, exist_ok=True)
 
 # INITIALIZE MEDIAPIPE HOLISTIC
 # essentially uses the mediapipe holistic model to extract hands and pose features
@@ -254,12 +255,12 @@ def normalize_sequence_length(input_dir: str, output_dir, overwrite=False):
             np.save(out_path, padded)
             print(f"Saved normalized features: {out_path}")
             
-def flatten_directory(input_dir : str, output_file_name : str, overwrite_prev_file : bool=False) -> None :
+def flatten_directory(input_dir: str, output_dir_name: str=FLATTENED_OUTPUT_DIR, overwrite_prev_file: bool=False) -> None :
     """ Converts a directory of normalized feature .npy files (2D arrays representing frame x features) into a 2D array representing (word x feature).
         Input: path to a directory of .npy files
         Output: 2D array of features"""
     
-    npy_path = os.path.join(FLATTENED_OUTPUT_DIR, output_file_name)
+    npy_path = os.path.join(output_dir_name, "flattened_" + input_dir + ".npy")
     if not overwrite_prev_file:
         if os.path.exists(npy_path):
             print("Flattened features already exists, set overwrite_prev_file flag to True to overwrite.")
@@ -272,7 +273,7 @@ def flatten_directory(input_dir : str, output_file_name : str, overwrite_prev_fi
         if file.is_file(): # sanity check
             features = np.load(f"{input_dir}/{file.name}")
         
-        if (features.ndim != 2): # sanity check
+        if (features.ndim != 2): # skips ordered labels
             print(f"Skipped {file.name}.")
             continue
     
@@ -290,14 +291,15 @@ def flatten_directory_in_place(input_dir: str) -> list[np_ndarray] :
 
     output = []
 
-    for file in os.scandir(input_dir):
+    for file in sorted(os.scandir(input_dir), key=lambda e: e.name):
         if file.is_file(): # sanity check
-            features = np_load(f"{input_dir}/{file.name}")
+            features = np.load(f"{input_dir}/{file.name}")
 
-        if (features.ndim != 2): # sanity check
+        if (features.ndim != 2): # skips ordered labels
+            print(f"Skipped {file.name}.")
             continue
 
-        output.append(np_ndarray.flatten(features))
+        output.append(np.ndarray.flatten(features))
 
     # Note that we return a python list of np.ndarrays.
     # It isn't an ndarray itself because the flattened features are 
