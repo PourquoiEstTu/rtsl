@@ -1,22 +1,37 @@
 import os
+from collections import Counter
 import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
 from sklearn.preprocessing import LabelEncoder
-from model import Sign1DCNN, Model_CNN, SignTCN, GRU_1DCNN
+from model import Sign1DCNN, GRU_1DCNN
 import numpy as np
 import matplotlib.pyplot as plt
 
 # PARAM CONFIG
-TRAIN_DIR = "/u50/chandd9/capstone/personal_preprocessed2/train_output_normalized"
-VALIDATION_DIR  = "/u50/chandd9/capstone/personal_preprocessed2/validation_output_normalized"
-TEST_DIR = "/u50/chandd9/capstone/personal_preprocessed2/test_output_normalized"
-BATCH_SIZE = 64
-EPOCHS = 1000
-LEARNING_RATE = 0.0001
+
+# dhruv's path
+# DIR = "/u50/chandd9/capstone/personal_preprocessed4"
+# TRAIN_DIR = "/u50/chandd9/capstone/personal_preprocessed2/train_output_normalized"
+# VALIDATION_DIR  = "/u50/chandd9/capstone/personal_preprocessed2/validation_output_normalized"
+# TEST_DIR = "/u50/chandd9/capstone/personal_preprocessed2/test_output_normalized"
+
+# ha's path
+TRAIN_DIR = "/Users/thanhhanguyen/Documents/4th_year_CS/Capstone/archive/train_output_normalized"
+VALIDATION_DIR  = "/Users/thanhhanguyen/Documents/4th_year_CS/Capstone/archive/validation_output_normalized"
+TEST_DIR = "/Users/thanhhanguyen/Documents/4th_year_CS/Capstone/archive/test_output_normalized"
+BATCH_SIZE = 16
+EPOCHS = 400
+LEARNING_RATE = 0.001
 INPUT_SIZE = 126
-DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+if torch.backends.mps.is_available():
+    DEVICE = torch.device("mps")
+    print("Using Apple Silicon GPU (MPS)")
+else:
+    DEVICE = torch.device("cpu")
+    print("MPS not available, using CPU")
+
 torch.backends.cudnn.benchmark = True
 
 # LOAD TRAINING DATA
@@ -65,6 +80,27 @@ y_test_label = np.load(val_label_path)
 # Make sure test labels are encoded using the same classes as training
 y_test_numeric = le.transform(y_test_label)
 
+# Select top K classes = 300 most common glosses
+counts = Counter(y_train_label)
+TOP_K = 300
+top300 = {lbl for lbl, _ in counts.most_common(TOP_K)}
+
+# Filter training data to only include top K classes
+train_mask = np.array([lbl in top300 for lbl in y_train_label])
+X_train = X_train[train_mask]
+y_train_label = y_train_label[train_mask]
+# Filter validation data to only include top K classes
+val_mask = np.array([lbl in top300 for lbl in y_test_label])
+X_val = X_val[val_mask]
+y_test_label = y_test_label[val_mask]
+
+le = LabelEncoder()
+y_train_numeric = le.fit_transform(y_train_label)
+y_test_numeric = le.transform(y_test_label)
+
+num_classes = len(le.classes_)
+print("Final number of classes:", num_classes)
+
 print(f"Training samples: {X_train.shape}, Val samples: {X_val.shape}")
 print(f"Number of classes: {len(le.classes_)}")
 # print(f"Classes: {le.classes_}")
@@ -80,8 +116,8 @@ train_dataset = TensorDataset(torch.tensor(X_train, dtype=torch.float32), torch.
 val_dataset  = TensorDataset(torch.tensor(X_val, dtype=torch.float32),
                               torch.tensor(y_test_numeric, dtype=torch.long))
 
-train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=4, pin_memory=True)
-test_loader  = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=4, pin_memory=True)
+train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=0, pin_memory=False)
+test_loader  = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=0, pin_memory=False)
 
 # model, criterion, optimizer definitions
 num_classes = len(np.unique(y_train_label))

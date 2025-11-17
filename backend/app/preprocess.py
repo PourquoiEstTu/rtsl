@@ -14,9 +14,11 @@ np.set_printoptions(threshold=sys.maxsize)
 
 # global vars
 # DIR = "/windows/Users/thats/Documents/archive"
-DIR = "/u50/chandd9/capstone/personal_preprocessed4"
+# DIR = "/u50/chandd9/capstone/personal_preprocessed4"
+DIR = "/Users/thanhhanguyen/Documents/4th_year_CS/Capstone/archive"
 # JSON_PATH = f"{DIR}/WLASL_v0.3.json"
-JSON_PATH = f"{DIR}/WLASL_v0.3.json"
+JSON_PATH = f"{DIR}/info.json"
+
 VIDEO_DIR = f"/u50/chandd9/capstone/personal_preprocessed2/videos/"  # folder with your video files
 TRAIN_OUTPUT_DIR = f"{DIR}/train_output" # folder to save .npy feature files
 TEST_OUTPUT_DIR = f"{DIR}/test_output" # folder to save .npy feature files
@@ -160,7 +162,7 @@ def extract_features(video_path: str):
     return sequence.astype(np.float32)
 # fe = []
 # fe.append(extract_features(f"{VIDEO_DIR}/69210.mp4"))
-print(len(extract_features(f"{VIDEO_DIR}/69210.mp4")[0]))
+# print(len(extract_features(f"{VIDEO_DIR}/69210.mp4")[0]))
 # print(extract_features(f"{VIDEO_DIR}/69210.mp4")[32])
 
 def gen_videos_features() -> None :
@@ -395,8 +397,9 @@ def get_labels_normalize(features_dir:str, json_path: str=JSON_PATH, overwrite_p
         else :
             print(f"Video {file} has no label.")
     np.save(npy_path, np.array(labels))
-# get_labels_sklearn(TRAIN_OUTPUT_DIR_NORMALIZED, overwrite_prev_file=True)
-# get_labels_sklearn(TEST_OUTPUT_DIR_NORMALIZED, overwrite_prev_file=True)
+get_labels_normalize(TRAIN_OUTPUT_DIR_NORMALIZED, overwrite_prev_file=True)
+get_labels_normalize(TEST_OUTPUT_DIR_NORMALIZED, overwrite_prev_file=True)
+get_labels_normalize(VALIDATION_OUTPUT_DIR_NORMALIZED, overwrite_prev_file=True)
 
 # ENCODE LABELS
 # # essentially converts string labels to numeric labels
@@ -452,9 +455,9 @@ def get_labels_normalize(features_dir:str, json_path: str=JSON_PATH, overwrite_p
 # normalize_sequence_length_NONEZERO(TEST_OUTPUT_DIR_CLEANED, TEST_OUTPUT_DIR_NORMALIZED, overwrite=True, target_frames=157)
 # normalize_sequence_length_NONEZERO(VALIDATION_OUTPUT_DIR_CLEANED, VALIDATION_OUTPUT_DIR_NORMALIZED, overwrite=True, target_frames=157)
 
-# normalize_sequence_length_interpolate(TRAIN_OUTPUT_DIR_CLEANED, TRAIN_OUTPUT_DIR_NORMALIZED, overwrite=True, target_frames=80)
-# normalize_sequence_length_interpolate(TEST_OUTPUT_DIR_CLEANED, TEST_OUTPUT_DIR_NORMALIZED, overwrite=True, target_frames=80)
-# normalize_sequence_length_interpolate(VALIDATION_OUTPUT_DIR_CLEANED, VALIDATION_OUTPUT_DIR_NORMALIZED, overwrite=True, target_frames=80)
+normalize_sequence_length_interpolate(TRAIN_OUTPUT_DIR_CLEANED, TRAIN_OUTPUT_DIR_NORMALIZED, overwrite=True, target_frames=80)
+normalize_sequence_length_interpolate(TEST_OUTPUT_DIR_CLEANED, TEST_OUTPUT_DIR_NORMALIZED, overwrite=True, target_frames=80)
+normalize_sequence_length_interpolate(VALIDATION_OUTPUT_DIR_CLEANED, VALIDATION_OUTPUT_DIR_NORMALIZED, overwrite=True, target_frames=80)
 
 
 # i = 0
