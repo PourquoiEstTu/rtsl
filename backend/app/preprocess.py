@@ -373,6 +373,31 @@ def flatten_directory(input_dir : str):
     # it isn't an ndarray itself because the flattened features are different lengths
     return output
 
+def get_labels_normalize(features_dir:str, json_path: str=JSON_PATH, overwrite_prev_file:bool=False) -> None :
+    """Get the labels for normalizing."""
+    npy_path = os.path.join(features_dir, "ordered_labels_normalized.npy")
+    if not overwrite_prev_file :
+        if os.path.exists(npy_path) :
+            print("labels file already exists, set the overwrite_prev_file flag to True to overwrite.")
+            return
+    with open(json_path, "r") as f :
+        data = json.load(f)
+    labels = []
+    feature_files = sorted([
+        f for f in os.listdir(features_dir)
+        if f.endswith(".npy") and "ordered_labels" not in f
+    ])
+    for file in feature_files :
+        label = find_gloss_by_video_id(f"{os.path.splitext(file)[0]}")
+        if label != None :
+            labels.append(label)
+            print(f"Added {label} to labels.")
+        else :
+            print(f"Video {file} has no label.")
+    np.save(npy_path, np.array(labels))
+# get_labels_sklearn(TRAIN_OUTPUT_DIR_NORMALIZED, overwrite_prev_file=True)
+# get_labels_sklearn(TEST_OUTPUT_DIR_NORMALIZED, overwrite_prev_file=True)
+
 # ENCODE LABELS
 # # essentially converts string labels to numeric labels
 # le = LabelEncoder()
