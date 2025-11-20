@@ -4,8 +4,11 @@ import Button from "@/volt/Button.vue";
 import TranslationBox from "@/components/TranslationBox.vue";
 import { FilesetResolver, HandLandmarker, type HandLandmarkerResult } from "@mediapipe/tasks-vision";
 import { drawConnectors, drawLandmarks } from "@mediapipe/drawing_utils";
+import { useWebSocket } from "@vueuse/core";
 
 let handLandmarker: HandLandmarker | null = null;
+
+const { status, data, send, open, close } = useWebSocket("http://127.0.0.1:8000/ws");
 
 onBeforeUnmount(() => {
   handLandmarker?.close();
@@ -54,36 +57,71 @@ onMounted(async () => {
     const displayWidth = videoEl.offsetWidth;
     const displayHeight = videoEl.offsetHeight;
 
-    canvasEl.width = displayWidth;
-    canvasEl.height = displayHeight;
+    // 1. Set canvas drawing buffer to match video's intrinsic resolution.
+    // This allows MediaPipe's drawing utilities to correctly calculate pixel
+    // positions from the normalized (0 to 1) landmark coordinates.
+    canvasEl.width = videoWidth;
+    canvasEl.height = videoHeight;
+
+    // 2. Set the canvas CSS style dimensions to match the video's displayed dimensions.
+    // This ensures the high-resolution drawing buffer (canvasEl.width/height) is
+    // correctly scaled to the visible area (displayWidth/displayHeight) by the browser.
+    canvasEl.style.width = `${displayWidth}px`;
+    canvasEl.style.height = `${displayHeight}px`;
 
     let startTimeMs = performance.now();
     if (lastVideoTime !== videoEl.currentTime) {
       lastVideoTime = videoEl.currentTime;
       results = handLandmarker!.detectForVideo(videoEl, startTimeMs);
-      // console.log(results);
     }
+
     canvasCtx!.save();
-    canvasCtx!.clearRect(0, 0, canvasEl.width, canvasEl.height);
+    // Clear the high-resolution buffer
+    canvasCtx!.clearRect(0, 0, videoWidth, videoHeight);
+
+    // TEMPORARY: Yellow square check (Remove this line after confirming it works)
+    // canvasCtx!.fillStyle = "yellow";
+    // canvasCtx!.fillRect(videoWidth / 2 - 10, videoHeight / 2 - 10, 20, 20);
+
     if (results?.landmarks) {
+      // Use the video's intrinsic dimensions for de-normalization,
+      // as per the last successful attempt configuration.
+      const W = videoWidth;
+      const H = videoHeight;
+
       for (const landmarks of results.landmarks) {
-        drawConnectors(
-          canvasCtx!,
-          landmarks,
-          HandLandmarker.HAND_CONNECTIONS.map((conn) => [conn.start, conn.end] as [number, number]),
-          {
-            color: "#00FF00",
-            lineWidth: 5,
-          }
-        );
-        drawLandmarks(canvasCtx!, landmarks, {
-          color: "#FF0000",
-          lineWidth: 2,
-        });
+        // Draw all 21 landmarks as circles
+        for (let i = 0; i < landmarks.length; i++) {
+          const landmark = landmarks[i];
+
+          // De-normalize the coordinates (0-1) to pixel values (0-W/H)
+          const x = landmark.x * W;
+          const y = landmark.y * H;
+
+          canvasCtx!.beginPath();
+          canvasCtx!.arc(x, y, 5, 0, 2 * Math.PI); // Draw a circle with radius 5
+          canvasCtx!.fillStyle = "#00FF00"; // Bright Green
+          canvasCtx!.fill();
+          drawConnectors(
+            canvasCtx!,
+            landmarks,
+            HandLandmarker.HAND_CONNECTIONS.map((conn) => [conn.start, conn.end] as [number, number]),
+            {
+              color: "#00FF00",
+              lineWidth: 5,
+            }
+          );
+
+          send(JSON.stringify(results));
+
+          // OPTIONAL: Draw the index number to confirm which point it is
+          // canvasCtx!.font = "10px Arial";
+          // canvasCtx!.fillStyle = "#FF0000";
+          // canvasCtx!.fillText(i.toString(), x + 7, y + 3);
+        }
       }
     }
     canvasCtx!.restore();
-    // recursive call to keep predicting when browser is ready
     window.requestAnimationFrame(predictWebcam);
   }
 });
