@@ -1,0 +1,66 @@
+<script setup lang="ts">
+import logo from '@/assets/logo_without_text-removebg-preview.png';
+import { useRouter } from 'vue-router';
+import "@/screens/style/home.css";
+
+const router = useRouter()
+
+function goToCamera() {
+  console.log("Navigating to camera...");
+  router.push('/camera')
+}
+
+// function goToMeetingBot() {
+//   router.push('/meeting')
+// }
+
+// function goToAbout() {
+//   router.push('/about')
+// }
+</script>
+
+<template>
+  <div class="home-wrapper">
+    <!-- Header -->
+    <div class="home-header">
+      <img :src="logo" alt="RTSL Logo" class="home-logo" />
+
+      <h1 class="home-title">RTSL</h1>
+      <p class="home-subtitle">real-time sign language assistant</p>
+    </div>
+
+    <!-- Cards Section -->
+    <div class="home-card-row">
+
+      <div class="home-card" @click="goToCamera">
+        <div class="home-icon">
+          <i class="pi pi-camera"></i>
+        </div>
+        <h2 class="home-card-title">
+          Open Camera<br />Translator
+        </h2>
+        <p class="home-card-desc">Live ASL → English</p>
+      </div>
+
+      <div class="home-card">
+        <div class="home-icon">
+          <i class="pi pi-android"></i>
+        </div>
+        <h2 class="home-card-title">
+          Add to Online<br />Meeting
+        </h2>
+        <p class="home-card-desc">Zoom / Meet / Teams</p>
+      </div>
+
+      <div class="home-card">
+        <div class="home-icon">
+          <i class="pi pi-question"></i>
+        </div>
+        <h2 class="home-card-title">
+          About &<br />How to Use
+        </h2>
+        <p class="home-card-desc">Setup-guide + tips</p>
+      </div>
+    </div>
+  </div>
+</template>

@@ -1,17 +1,29 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import Button from '@/volt/Button.vue';
 import TranslationBox from '@/components/TranslationBox.vue'
 
-onMounted(async () => {
-  const videoEl = document.getElementById('video') as HTMLMediaElement;
+const video = ref<HTMLVideoElement | null>(null)
+let stream: MediaStream | null = null;
 
-  let stream = null;
+onMounted(async () => {
   try {
-    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
-    videoEl.srcObject = stream;
-  } catch (error) {
-    console.error(error);
+    stream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: false
+    })
+    if (video.value) {
+      video.value.srcObject = stream
+    }
+  } catch (err) {
+    console.error("Camera error:", err)
+  }
+})
+
+onUnmounted(() => {
+  if (stream) {
+    stream.getTracks().forEach(track => track.stop())
+    console.log("Camera stopped")
   }
 })
 
@@ -37,7 +49,7 @@ onMounted(async () => {
       >
         <div class="relative flex-1 flex items-center justify-center rounded-l-[2.5rem] overflow-hidden">
           <video
-            id="video"
+            ref="video"
             class="absolute top-0 left-0 w-full h-full object-cover bg-[#0F172A]"
             autoplay
             playsinline
