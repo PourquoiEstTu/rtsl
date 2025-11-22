@@ -7,17 +7,20 @@ import mediapipe as mp
 from sklearn.preprocessing import LabelEncoder
 import torch
 from torch.utils.data import Dataset, DataLoader
+from pathlib import Path
 import random
 
 # print numpy arrays without truncation
 np.set_printoptions(threshold=sys.maxsize)
 
 # global vars
-# DIR = "/windows/Users/thats/Documents/archive"
+# BASE_DIR = Path(__file__).resolve().parents[3] / "archive"
+# DIR = str(BASE_DIR)
+ # folder where your dataset is
 # DIR = "/u50/chandd9/capstone/personal_preprocessed4"
 DIR = "/Users/thanhhanguyen/Documents/4th_year_CS/Capstone/archive"
-# JSON_PATH = f"{DIR}/WLASL_v0.3.json"
-JSON_PATH = f"{DIR}/info.json"
+JSON_PATH = f"{DIR}/WLASL_v0.3.json"
+# JSON_PATH = f"{DIR}/info.json"
 
 VIDEO_DIR = f"/u50/chandd9/capstone/personal_preprocessed2/videos/"  # folder with your video files
 TRAIN_OUTPUT_DIR = f"{DIR}/train_output" # folder to save .npy feature files
@@ -30,8 +33,8 @@ TRAIN_OUTPUT_DIR_NORMALIZED = f"{DIR}/train_output_normalized" # folder to save 
 TEST_OUTPUT_DIR_NORMALIZED = f"{DIR}/test_output_normalized" # folder to save .npy feature files
 VALIDATION_OUTPUT_DIR_NORMALIZED = f"{DIR}/validation_output_normalized" # folder to
 
-TARGET_LENGTH = 64                   # number of frames per sequence
-BATCH_SIZE = 4
+# TARGET_LENGTH = 64                   # number of frames per sequence
+# BATCH_SIZE = 4
 
 # RAND_CLASS = 3
 # with open(JSON_PATH, "r") as f:
@@ -87,18 +90,18 @@ os.makedirs(VALIDATION_OUTPUT_DIR_NORMALIZED, exist_ok=True)
 
 # INITIALIZE MEDIAPIPE HOLISTIC
 # essentially uses the mediapipe holistic model to extract hands and pose features
-# commented out because it makes code run slower when not in use
-mp_holistic = mp.solutions.holistic
-holistic = mp_holistic.Holistic(
-    static_image_mode=False,
-    model_complexity=1,
-    smooth_landmarks=True,
-    enable_segmentation=False, # mediapipe crashes when true? 
-        # someone else run this file with this and refine_face_landmarks=True as well
-    refine_face_landmarks=False,
-    min_detection_confidence=0.5,
-    min_tracking_confidence=0.5
-)
+# comment out if not needed when running this file
+# mp_holistic = mp.solutions.holistic
+# holistic = mp_holistic.Holistic(
+#     static_image_mode=False,
+#     model_complexity=1,
+#     smooth_landmarks=True,
+#     enable_segmentation=False, # mediapipe crashes when true? 
+#         # someone else run this file with this and refine_face_landmarks=True as well
+#     refine_face_landmarks=False,
+#     min_detection_confidence=0.5,
+#     min_tracking_confidence=0.5
+# )
 
 # extract features from a video
 def extract_features(video_path: str):
@@ -130,44 +133,27 @@ def extract_features(video_path: str):
             for lm in results.right_hand_landmarks.landmark:
                 hand_keypoints.extend([lm.x, lm.y, lm.z])
         else:
+            # if hand isn't in frame, add 0s as the feature
+            # add 21*3 0's since there's 21 landmarks per hand and they
+            #   are represented using 3D coordinates
             hand_keypoints.extend([0] * 21 * 3)
 
         if results.left_hand_landmarks:
             for lm in results.left_hand_landmarks.landmark:
                 hand_keypoints.extend([lm.x, lm.y, lm.z])
         else:
-            hand_keypoints.extend([0] * 21 * 3) # 21 landmarks per hand
+            hand_keypoints.extend([0] * 21 * 3)
 
-        # POSE
-        # pose_keypoints = []
-        # if results.pose_landmarks:
-        #     for lm in results.pose_landmarks.landmark:
-        #         pose_keypoints.extend([lm.x, lm.y, lm.z])
-        # else:
-        #     pose_keypoints.extend([0] * 33 * 3) # 33 pose landmarks
-        #
-        # frame_features = hand_keypoints# + pose_keypoints
         sequence.append(hand_keypoints)
 
     cap.release()
     sequence = np.array(sequence)
 
-    # pad/trim sequence to TARGET_LENGTH
-    # if len(sequence) > TARGET_LENGTH:
-    #     sequence = sequence[:TARGET_LENGTH]
-    # elif len(sequence) < TARGET_LENGTH:
-    #     pad = np.zeros((TARGET_LENGTH - len(sequence), sequence.shape[1]))
-    #     sequence = np.vstack([sequence, pad])
-
     return sequence.astype(np.float32)
-# fe = []
-# fe.append(extract_features(f"{VIDEO_DIR}/69210.mp4"))
-# print(len(extract_features(f"{VIDEO_DIR}/69210.mp4")[0]))
-# print(extract_features(f"{VIDEO_DIR}/69210.mp4")[32])
 
-def gen_videos_features() -> None :
-    # LOAD JSON AND PROCESS ALL VIDEOS
-    with open(JSON_PATH, "r") as f:
+def gen_videos_features(json_path: str=JSON_PATH, overwrite_prev_files:bool=False) -> None :
+    """Generate features for each video and save them to disk."""
+    with open(json_path, "r") as f:
         data = json.load(f)
 
     train_feature_paths = []
@@ -180,12 +166,12 @@ def gen_videos_features() -> None :
     for entry in data:
         gloss = entry["gloss"]
         # only use the categories we care about
-        if gloss not in CATEGORIES_TO_USE:
-            continue  # Skip unwanted categories
+        # if gloss not in CATEGORIES_TO_USE:
+        #     continue  # Skip unwanted categories
 
         for instance in entry["instances"]:
-
             video_file = os.path.join(VIDEO_DIR, f"{instance['video_id']}.mp4")
+
             if not os.path.exists(video_file):
                 print(f"Skipping missing video: {video_file}")
                 continue
@@ -196,41 +182,33 @@ def gen_videos_features() -> None :
                 npy_path = os.path.join(TEST_OUTPUT_DIR, f"{instance['video_id']}.npy")
             elif instance["split"] == "val" :
                 npy_path = os.path.join(VALIDATION_OUTPUT_DIR, f"{instance['video_id']}.npy")
-            if not os.path.exists(npy_path):
-                # print(video_file)
+            if overwrite_prev_files :
                 features = extract_features(video_file)
                 np.save(npy_path, features)
                 print(f"Saved features: {npy_path}")
-
-            # This block is not necessary anymore as we are moving to 
-            #   file-based preprocessing
-            # Only append if the feature file exists
-            # if os.path.exists(npy_path):
-            #     if instance["split"] == "train":
-            #         train_feature_paths.append(npy_path)
-            #         train_labels.append(gloss)
-            #     elif instance["split"] == "test":
-            #         test_feature_paths.append(npy_path)
-            #         test_labels.append(gloss)
-            #     elif instance["split"] == "val" :
-            #         validation_feature_paths.append(npy_path)
-            #         validation_labels.append(gloss)
-
+            else :
+                if not os.path.exists(npy_path):
+                    # print(video_file)
+                    features = extract_features(video_file)
+                    np.save(npy_path, features)
+                    print(f"Saved features: {npy_path}")
+                else :
+                    print(f"Features already generated for {npy_path}, skipped...")
 # gen_videos_features()
 
-def remove_zero_frames(input_dir: str, output_dir: str) -> None :
-    """Frames that have the hands out of view and so don't contribute 
-       any keypoints are removed
-       input_dir: directory with features from extract_features
+def remove_zero_frames(input_dir: str, output_dir: str, overwrite_prev_file: bool=False) -> None :
+    """Frames that have the hands out of view and so don't contribute
+       any keypoints (array representing the frame contains all 0s)
+       are removed.
+       input_dir: directory with features generated from gen_videos_features()
        output_dir: directory where processed files are saved"""
     for file in os.scandir(input_dir) :
         cleaned_features = []
         if file.is_file() : # sanity check
             npy_path = os.path.join(output_dir, f"{file.name}")
-            # assume file has already had all zero frames removed if it
-            #   already exists in output_dir
-            if os.path.exists(npy_path) :
-                continue
+            if not overwrite_prev_file :
+                if os.path.exists(npy_path) :
+                    continue
             features = np.load(f"{input_dir}/{file.name}")
             nframes, nfeatures = features.shape
             for i in range(nframes) :
@@ -240,7 +218,7 @@ def remove_zero_frames(input_dir: str, output_dir: str) -> None :
             np.save(npy_path, cleaned_features)
             print(f"Saved cleaned features: {npy_path}")
 
-# remove_zero_frames(VALIDATION_OUTPUT_DIR, VALIDATION_OUTPUT_DIR_CLEANED)
+# remove_zero_frames(TRAIN_OUTPUT_DIR, TRAIN_OUTPUT_DIR_CLEANED)
 
 # linear search as of now, maybe add code to order json by gloss or video_id
 #   for a faster search?
@@ -274,204 +252,62 @@ def get_labels_pytorch(features_dir:str, json_path: str=JSON_PATH, overwrite_pre
                 print(f"Added {label} to labels.")
             else :
                 print(f"Video {file.name} has no label.")
-    np.save(npy_path, labels)
-
-def get_labels_sklearn(features_dir:str, json_path: str=JSON_PATH, overwrite_prev_file:bool=False) -> None :
-    """Output corresponding label/gloss for a video in a 1d array
-       that a sklearn SVM can use. Implicitly orders the labels
-       by which file in features_dir is seen first, so ascending
-       numerical order.
-       features_dir: directory where features from gen_videos_features()
-         are saved."""
-    npy_path = os.path.join(features_dir, "ordered_labels.npy")
-    if not overwrite_prev_file :
-        if os.path.exists(npy_path) :
-            print("labels file already exists, set the overwrite_prev_file flag to True to overwrite.")
-            return
-    with open(json_path, "r") as f :
-        data = json.load(f)
-    labels = []
-    feature_files = sorted([
-        f for f in os.listdir(features_dir)
-        if f.endswith(".npy") and "ordered_labels" not in f
-    ])
-    for file in feature_files :
-        label = find_gloss_by_video_id(f"{os.path.splitext(file)[0]}")
-        if label != None :
-            labels.append(label)
-            print(f"Added {label} to labels.")
-        else :
-            print(f"Video {file} has no label.")
     np.save(npy_path, np.array(labels))
-# get_labels_sklearn(TRAIN_OUTPUT_DIR_NORMALIZED, overwrite_prev_file=True)
-# get_labels_sklearn(TEST_OUTPUT_DIR_NORMALIZED, overwrite_prev_file=True)
+# get_labels_sklearn(VALIDATION_OUTPUT_DIR_CLEANED, JSON_PATH, True)
 
-def normalize_sequence_length_interpolate(input_dir: str, output_dir, overwrite=False, target_frames=0):
-    """
-    Normalize all feature files to have the same number of frames.
-    Pads, truncates, or interpolates all .npy feature arrays in input_dir 
-    so they all have exactly target_frames rows.
-    
-    input_dir: directory with features generated from gen_videos_features()
-    output_dir: directory where processed files are saved
-    target_frames: number of frames to normalize all sequences to
-    """
+def normalize_sequence_length(input_dir: str, output_dir, overwrite=False):
+    """Normalize all feature files to have the same number of frames.
+       Pads or truncates all .npy feature arrays in input_dir so they all have
+    the same number of frames (rows). Uses the max length found across videos.
+       input_dir: directory with features generated from gen_videos_features()
+       output_dir: directory where processed files are saved"""
 
-    if target_frames <= 0:
-        raise ValueError("target_frames must be > 0 for interpolation-based normalization")
-
-    for file in os.scandir(input_dir):
+    max_length = 0
+    for file in os.scandir(input_dir) :
+        if file.name == "ordered_labels.npy":
+            continue
         if file.is_file() and file.name.endswith(".npy"):
-            if file.name == "ordered_labels.npy":
-                continue
+            arr = np.load(file.path)
+            n_frames = arr.shape[0] # number of rows/frames
+            max_length = max(max_length, n_frames)
+    print(f"[normalize_sequence_length] Max frame length found: {max_length}")
 
+    for file in os.scandir(input_dir) :
+        if file.is_file() and file.name.endswith(".npy"):
             out_path = os.path.join(output_dir, file.name)
             if not overwrite and os.path.exists(out_path):
                 continue
-
             features = np.load(file.path)
 
-            if features.size == 0:
-                print(f"[WARNING] Skipping {file.name}: empty feature array")
+            if features.size == 0 or file.name == "ordered_labels.npy":
+                print(f"[WARNING] Skipping {file.name}: empty or invalid feature array (shape={features.shape}),(size={features.size})")
                 continue
 
             n_frames, n_features = features.shape
-
-            if n_frames == target_frames:
-                normalized = features
+            if n_frames < max_length :
+                # pad with zeros
+                pad_len = max_length - n_frames
+                padded = np.vstack([
+                    features,
+                    np.zeros((pad_len, n_features), dtype=np.float32)
+                ])
+            elif n_frames > max_length:
+                # safety guard, should never enter this branch if data cleaning was done correctly
+                raise ValueError(
+                    f"[NormalizationError] Video '{file.name}' has {n_frames} frames, "
+                    f"which exceeds the expected maximum of {max_length}. "
+                    "This indicates that the dataset contains inconsistent feature lengths. "
+                    "Recheck your cleaning or max_length computation step."
+                )
             else:
-                # Interpolation along the time axis
-                old_indices = np.linspace(0, 1, n_frames)
-                new_indices = np.linspace(0, 1, target_frames)
-                normalized = np.zeros((target_frames, n_features), dtype=features.dtype)
-                for f in range(n_features):
-                    normalized[:, f] = np.interp(new_indices, old_indices, features[:, f])
-
-            np.save(out_path, normalized)
-            print(f"Saved normalized features: {out_path} (original {n_frames} -> {target_frames} frames)")
-
-# normalize_sequence_length(TRAIN_OUTPUT_DIR, TRAIN_OUTPUT_DIR_NORMALIZED, overwrite=True)
-# normalize_sequence_length(TEST_OUTPUT_DIR, TEST_OUTPUT_DIR_NORMALIZED, overwrite=True)
-
-def flatten_directory(input_dir : str):
-    """ Converts a directory of feature .npy files 
-    (2D arrays representing frame x features) into 
-    a 2D array representing (word x feature).
-    Input: path to a directory of .npy files
-    Output: 2D array of features"""
-    
-    output = []
+                padded = features
+            np.save(out_path, padded)
+            print(f"Saved normalized features: {out_path}")
         
-    for file in os.scandir(input_dir):
-        if file.is_file(): # sanity check
-            features = np.load(f"{input_dir}/{file.name}")
-        
-        if (features.ndim != 2): # sanity check
-            continue
-        
-        output.append(np.ndarray.flatten(features))
-    
-    # note that we return a python list of np.ndarrays
-    # it isn't an ndarray itself because the flattened features are different lengths
-    return output
+# normalize_sequence_length(TRAIN_OUTPUT_DIR_CLEANED, TRAIN_OUTPUT_DIR_NORMALIZED, True)
+# normalize_sequence_length(VALIDATION_OUTPUT_DIR_CLEANED, VALIDATION_OUTPUT_DIR_NORMALIZED, True)
+# normalize_sequence_length(TEST_OUTPUT_DIR_CLEANED, TEST_OUTPUT_DIR_NORMALIZED, True)
 
-def get_labels_normalize(features_dir:str, json_path: str=JSON_PATH, overwrite_prev_file:bool=False) -> None :
-    """Get the labels for normalizing."""
-    npy_path = os.path.join(features_dir, "ordered_labels_normalized.npy")
-    if not overwrite_prev_file :
-        if os.path.exists(npy_path) :
-            print("labels file already exists, set the overwrite_prev_file flag to True to overwrite.")
-            return
-    with open(json_path, "r") as f :
-        data = json.load(f)
-    labels = []
-    feature_files = sorted([
-        f for f in os.listdir(features_dir)
-        if f.endswith(".npy") and "ordered_labels" not in f
-    ])
-    for file in feature_files :
-        label = find_gloss_by_video_id(f"{os.path.splitext(file)[0]}")
-        if label != None :
-            labels.append(label)
-            print(f"Added {label} to labels.")
-        else :
-            print(f"Video {file} has no label.")
-    np.save(npy_path, np.array(labels))
-get_labels_normalize(TRAIN_OUTPUT_DIR_NORMALIZED, overwrite_prev_file=True)
-get_labels_normalize(TEST_OUTPUT_DIR_NORMALIZED, overwrite_prev_file=True)
-get_labels_normalize(VALIDATION_OUTPUT_DIR_NORMALIZED, overwrite_prev_file=True)
-
-# ENCODE LABELS
-# # essentially converts string labels to numeric labels
-# le = LabelEncoder()
-# y_numeric = le.fit_transform(train_labels)
-# print("Classes:", le.classes_)
-#
-# # create a dataset class to be used with pytorch dataloader
-# class JSONASLDataset(Dataset):
-#     def __init__(self, features_paths, labels):
-#         self.features_paths = features_paths
-#         self.labels = labels
-#
-#     def __len__(self):
-#         return len(self.features_paths)
-#
-#     def __getitem__(self, idx):
-#         X = np.load(self.features_paths[idx])
-#         y = self.labels[idx]
-#         return torch.tensor(X), torch.tensor(y) #tensor of features and label
-#
-# # CREATE DATASET AND DATALOADER
-# train_dataset = JSONASLDataset(train_feature_paths, y_numeric)
-# # save numeric labels for training script
-# np.save(os.path.join(OUTPUT_DIR, "labels.npy"), y_numeric)
-#
-# # not sure what this would be used for?
-# # train_dataloader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
-#
-# print(f"Training dataset ready. Number of samples: {len(train_dataset)}")
-
-# get_labels_pytorch(TRAIN_OUTPUT_DIR_CLEANED, JSON_PATH, overwrite_prev_file=True)
-
-
-# gen_videos_features()
-
-# for x in os.scandir(TRAIN_OUTPUT_DIR_NORMALIZED):
-#     print(x.name)
-#     print(np.load(f"{TRAIN_OUTPUT_DIR_NORMALIZED}/{x.name}").shape)
-
-
-# remove_zero_frames(TRAIN_OUTPUT_DIR, TRAIN_OUTPUT_DIR_CLEANED)
-# remove_zero_frames(TEST_OUTPUT_DIR, TEST_OUTPUT_DIR_CLEANED)
-# remove_zero_frames(VALIDATION_OUTPUT_DIR, VALIDATION_OUTPUT_DIR_CLEANED)
-# normalize_sequence_length_HA(TRAIN_OUTPUT_DIR_CLEANED, TRAIN_OUTPUT_DIR_NORMALIZED, overwrite=True)
-# normalize_sequence_length_HA(TEST_OUTPUT_DIR_CLEANED, TEST_OUTPUT_DIR_NORMALIZED, overwrite=True, target_frames=158)
-# normalize_sequence_length_HA(VALIDATION_OUTPUT_DIR_CLEANED, VALIDATION_OUTPUT_DIR_NORMALIZED, overwrite=True, target_frames=158)
-# get_labels_sklearn(TRAIN_OUTPUT_DIR_NORMALIZED, overwrite_prev_file=True)
-# get_labels_sklearn(TEST_OUTPUT_DIR_NORMALIZED, overwrite_prev_file=True)
-# get_labels_sklearn(VALIDATION_OUTPUT_DIR_NORMALIZED, overwrite_prev_file=True)
-
-# normalize_sequence_length_NONEZERO(TRAIN_OUTPUT_DIR_CLEANED, TRAIN_OUTPUT_DIR_NORMALIZED, overwrite=True)
-# normalize_sequence_length_NONEZERO(TEST_OUTPUT_DIR_CLEANED, TEST_OUTPUT_DIR_NORMALIZED, overwrite=True, target_frames=157)
-# normalize_sequence_length_NONEZERO(VALIDATION_OUTPUT_DIR_CLEANED, VALIDATION_OUTPUT_DIR_NORMALIZED, overwrite=True, target_frames=157)
-
-normalize_sequence_length_interpolate(TRAIN_OUTPUT_DIR_CLEANED, TRAIN_OUTPUT_DIR_NORMALIZED, overwrite=True, target_frames=80)
-normalize_sequence_length_interpolate(TEST_OUTPUT_DIR_CLEANED, TEST_OUTPUT_DIR_NORMALIZED, overwrite=True, target_frames=80)
-normalize_sequence_length_interpolate(VALIDATION_OUTPUT_DIR_CLEANED, VALIDATION_OUTPUT_DIR_NORMALIZED, overwrite=True, target_frames=80)
-
-
-# i = 0
-# train_label_path = os.path.join(TRAIN_OUTPUT_DIR_NORMALIZED, "ordered_labels_normalized.npy")
-# labels_np = np.load(train_label_path)
-# files = sorted([f.name for f in os.scandir(TRAIN_OUTPUT_DIR_NORMALIZED) if f.name.endswith(".npy") and f.name != "ordered_labels_normalized.npy"])
-# for x in files:
-#     print(f"x.name: {x}, label from json: {find_gloss_by_video_id(x.strip('.npy'))}, label from np: {labels_np[i]}, equal: {find_gloss_by_video_id(x.strip('.npy')) == np.load(train_label_path)[i]}")
-#     i += 1
-
-# i = 0
-# test_label_path = os.path.join(TEST_OUTPUT_DIR_NORMALIZED, "ordered_labels_normalized.npy")
-# labels_np = np.load(test_label_path)
-# files = sorted([f.name for f in os.scandir(TEST_OUTPUT_DIR_NORMALIZED) if f.name.endswith(".npy") and f.name != "ordered_labels_normalized.npy"])
-# for x in files:
-#     print(f"x.name: {x}, label from json: {find_gloss_by_video_id(x.strip('.npy'))}, label from np: {labels_np[i]}, equal: {find_gloss_by_video_id(x.strip('.npy')) == np.load(test_label_path)[i]}")
-#     i += 1
+# TODO: write function to flatten 2d arrays in all feature files into one 
+#   large array where the entries are the features from all frames, this is
+#   is not meant to be saved as a file, but used in the training_svm.py file
