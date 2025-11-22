@@ -233,6 +233,7 @@ def find_gloss_by_video_id(video_id: str, json_path: str=JSON_PATH) -> str :
                 return entry["gloss"]
 # print(find_gloss_by_video_id("00421"))
 
+# same as get_labels_normalize
 def get_labels_pytorch(features_dir:str, json_path: str=JSON_PATH, overwrite_prev_file:bool=False) -> None :
     """Output corresponding label/gloss for a video in a 1d array
        that pytorch code can use. """
@@ -303,11 +304,13 @@ def normalize_sequence_length(input_dir: str, output_dir, overwrite=False):
                 padded = features
             np.save(out_path, padded)
             print(f"Saved normalized features: {out_path}")
-        
+   
+# remove_zero_frames(TRAIN_OUTPUT_DIR, TRAIN_OUTPUT_DIR_CLEANED)
+# remove_zero_frames(TEST_OUTPUT_DIR, TEST_OUTPUT_DIR_CLEANED)
+# remove_zero_frames(VALIDATION_OUTPUT_DIR, VALIDATION_OUTPUT_DIR_CLEANED)        
 # normalize_sequence_length(TRAIN_OUTPUT_DIR_CLEANED, TRAIN_OUTPUT_DIR_NORMALIZED, True)
 # normalize_sequence_length(VALIDATION_OUTPUT_DIR_CLEANED, VALIDATION_OUTPUT_DIR_NORMALIZED, True)
 # normalize_sequence_length(TEST_OUTPUT_DIR_CLEANED, TEST_OUTPUT_DIR_NORMALIZED, True)
-
-# TODO: write function to flatten 2d arrays in all feature files into one 
-#   large array where the entries are the features from all frames, this is
-#   is not meant to be saved as a file, but used in the training_svm.py file
+# get_labels_normalize(TRAIN_OUTPUT_DIR_NORMALIZED, overwrite_prev_file=True)
+# get_labels_normalize(TEST_OUTPUT_DIR_NORMALIZED, overwrite_prev_file=True)
+# get_labels_normalize(VALIDATION_OUTPUT_DIR_NORMALIZED, overwrite_prev_file=True)
