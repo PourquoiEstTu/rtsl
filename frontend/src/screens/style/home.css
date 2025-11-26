@@ -1,7 +1,26 @@
 .home-wrapper {
   min-height: 100vh;
   width: 100%;
-  background: linear-gradient(to bottom, #A6D0F1, #A6D0F1);
+  /* background: linear-gradient(to bottom,#EAF7FF,#D3ECFF,#A6D0F1); */
+  background: linear-gradient(to bottom, #E9F6FF, #B5DAF5, #A6D0F1, #FFFFFF);
+  /* background: radial-gradient(circle at top, #E9F6FF, #A6D0F1, #FFFFFF); */
+  /* background: linear-gradient(
+    100deg,
+    #e9f6ff,
+    #b5daff,
+    #8dc8ff,
+    #6bb9ff,
+    #A6D0F1,
+    #a6e1ff,
+    #ffffff
+  ); */
+  /* background: radial-gradient(circle at 20% 20%, #8dc8ff, 0%, transparent 60%),
+              radial-gradient(circle at 80% 30%, #b5daff 0%, transparent 60%),
+              radial-gradient(circle at 40% 80%, #A6D0F1 0%, transparent 60%),
+              linear-gradient(120deg, #dff3ff, #ffffff); */
+
+  background-size: 200% 200%;
+  /* animation: auroraFlow 3s ease-in-out infinite alternate; */
   padding: 40px 20px;
   display: flex;
   flex-direction: column;
@@ -11,7 +30,7 @@
 /* Header */
 .home-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 
 .home-logo {
@@ -52,14 +71,18 @@
   border-radius: 22px;
   padding: 25px 20px;
   text-align: center;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  box-shadow:
+    0 4px 18px rgba(66, 133, 244, 0.12),
+    0 12px 36px rgba(66, 133, 244, 0.10);
   cursor: pointer;
   transition: 0.18s ease;
 }
 
 .home-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 26px rgba(0,0,0,0.12);
+  box-shadow: 
+    0 6px 22px rgba(66, 133, 244, 0.14),
+    0 18px 44px rgba(66, 133, 244, 0.12);
 }
 
 .home-icon {
@@ -80,22 +103,65 @@
   margin-top: 6px;
 }
 
+/* Mobile first: adjust cards to fit all 3 on one screen */
 @media (max-width: 600px) {
 
   .home-wrapper {
-    padding: 24px 16px;
+    padding-top: 20px;
   }
 
   .home-logo {
-    height: 110px;      /* Smaller logo */
+    height: 120px; /* smaller logo */
   }
 
   .home-title {
-    font-size: 32px;
+    font-size: 32px; /* smaller title */
   }
 
   .home-subtitle {
-    font-size: 15px;
+    font-size: 14px;
+  }
+
+  .home-card-row {
+    gap: 16px; /* less spacing */
+  }
+
+  .home-card {
+    width: 85%;
+    height: 180px;        /* smaller card height */
+    padding: 16px;        /* reduce padding */
+    border-radius: 18px;  /* slightly smaller radius */
+  }
+
+  .home-icon {
+    font-size: 40px;  /* smaller icon */
+    margin-bottom: 8px;
+  }
+
+  .home-card-title {
+    font-size: 16px;   /* smaller title */
+  }
+
+  .home-card-desc {
+    font-size: 12px;   /* smaller text */
+  }
+}
+@media (max-width: 600px) {
+
+  .home-wrapper {
+    padding: 24px 10px;
+  }
+
+  .home-logo {
+    height: 80px;      /* Smaller logo */
+  }
+
+  .home-title {
+    font-size: 30px;
+  }
+
+  .home-subtitle {
+    font-size: 12px;
   }
 
   .home-card-row {
@@ -103,21 +169,56 @@
   }
 
   .home-card {
-    width: 95%;         /* full-width cards */
+    width: 90%;         /* full-width cards */
     height: auto;
-    padding: 22px 18px;
+    padding: 18px 18px;
     border-radius: 18px;
   }
 
   .home-icon {
-    font-size: 44px;    /* smaller icon */
+    font-size: 40px;    /* smaller icon */
   }
 
   .home-card-title {
-    font-size: 18px;
+    font-size: 17px;
   }
 
   .home-card-desc {
-    font-size: 13px;
+    font-size: 12px;
+  }
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes breathe {
+  0%   { background-size: 100% 100%; }
+  50%  { background-size: 105% 105%; }
+  100% { background-size: 100% 100%; }
+}
+
+@keyframes gradientWave {
+  0%   { background-position: 0% 50%; }
+  25%  { background-position: 50% 70%; }
+  50%  { background-position: 100% 50%; }
+  75%  { background-position: 50% 30%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes auroraFlow {
+  0% {
+    background-position: 0% 0%;
+    filter: hue-rotate(0deg);
+  }
+  50% {
+    background-position: 100% 50%;
+    filter: hue-rotate(15deg);
+  }
+  100% {
+    background-position: 0% 100%;
+    filter: hue-rotate(-15deg);
   }
 }
