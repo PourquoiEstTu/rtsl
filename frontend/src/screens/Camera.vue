@@ -32,7 +32,7 @@ onUnmounted(() => {
 <template>
   <div class="flex h-dvh w-dvw overflow-hidden bg-[#E0F2FF]">
     <aside
-      class="hidden lg:flex w-52 bg-[#3B82F6]/90 
+      class="hidden lg:flex w-52 bg-[#93c2e9]/90 
              flex-col items-center justify-center
              text-white font-semibold tracking-wide
              shadow-[4px_0_15px_rgba(0,0,0,0.1)]

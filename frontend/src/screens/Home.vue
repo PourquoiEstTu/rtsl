@@ -26,7 +26,7 @@ function goToCamera() {
       <img :src="logo" alt="RTSL Logo" class="home-logo" />
 
       <h1 class="home-title">RTSL</h1>
-      <p class="home-subtitle">real-time sign language assistant</p>
+      <p class="home-subtitle">Real-Time Sign Language Assistant</p>
     </div>
 
     <!-- Cards Section -->
@@ -39,15 +39,15 @@ function goToCamera() {
         <h2 class="home-card-title">
           Open Camera<br />Translator
         </h2>
-        <p class="home-card-desc">Live ASL → English</p>
+        <p class="home-card-desc">Translate ASL to English</p>
       </div>
 
       <div class="home-card">
         <div class="home-icon">
-          <i class="pi pi-android"></i>
+          <i class="pi pi-microchip"></i>
         </div>
         <h2 class="home-card-title">
-          Add to Online<br />Meeting
+          Download the<br />Web Extension
         </h2>
         <p class="home-card-desc">Zoom / Meet / Teams</p>
       </div>
@@ -59,7 +59,7 @@ function goToCamera() {
         <h2 class="home-card-title">
           About &<br />How to Use
         </h2>
-        <p class="home-card-desc">Setup-guide + tips</p>
+        <p class="home-card-desc">Setup-guide + Tips</p>
       </div>
     </div>
   </div>
