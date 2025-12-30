@@ -9,7 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@mediapipe/drawing_utils": "^0.3.1675466124",
     "@mediapipe/tasks-vision": "^0.10.21",
     "@tailwindcss/vite": "^4.1.17",
     "@types/node": "^24.10.0",
