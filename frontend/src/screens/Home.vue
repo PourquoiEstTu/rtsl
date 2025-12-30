@@ -10,13 +10,15 @@ function goToCamera() {
   router.push('/camera')
 }
 
-// function goToMeetingBot() {
-//   router.push('/meeting')
-// }
+function goToWebExtension() {
+  console.log("Navigating to web extension...");
+  router.push('/web_extension')
+}
 
-// function goToAbout() {
-//   router.push('/about')
-// }
+function goToAbout() {
+  console.log("Navigating to about...");
+  router.push('/about')
+}
 </script>
 
 <template>
@@ -42,7 +44,7 @@ function goToCamera() {
         <p class="home-card-desc">Translate ASL to English</p>
       </div>
 
-      <div class="home-card">
+      <div class="home-card" @click="goToWebExtension">
         <div class="home-icon">
           <i class="pi pi-microchip"></i>
         </div>
@@ -52,7 +54,7 @@ function goToCamera() {
         <p class="home-card-desc">Zoom / Meet / Teams</p>
       </div>
 
-      <div class="home-card">
+      <div class="home-card" @click="goToAbout">
         <div class="home-icon">
           <i class="pi pi-question"></i>
         </div>
