@@ -32,35 +32,19 @@ onBeforeUnmount(() => {
 onMounted(async () => {
   try {
     // If these are null, the template does not have refs to the needed elements
-    if (videoEl.value === null || canvasEl.value === null) {
+    if (!videoEl.value || !canvasEl.value) {
       console.error("Missing references to video or canvas elements");
       return;
     }
 
-    // Before we can use HandLandmarker class we must wait for it to finish
-    // loading. Machine Learning models can be large and take a moment to
-    // get everything needed to run.
-    const createHandLandmarker = async () => {
-      const vision = await FilesetResolver.forVisionTasks("/wasm");
-      handLandmarker = await HandLandmarker.createFromOptions(vision, {
-        baseOptions: {
-          modelAssetPath: "/models/hand_landmarker.task",
-          delegate: "GPU",
-        },
-        runningMode: "VIDEO",
-        numHands: 2,
-      });
-    };
-
-    await createHandLandmarker();
-
-    if (handLandmarker === null) {
+    handLandmarker = await initMediaPipe();
+    if (!handLandmarker) {
       console.error("Failed to initialize Hand Landmarker");
       return;
     }
 
     const canvasCtx = canvasEl.value.getContext("2d");
-    if (canvasCtx === null) {
+    if (!canvasCtx) {
       console.error("Failed to get canvas context");
       return;
     }
@@ -76,7 +60,7 @@ onMounted(async () => {
 
     const predictWebcam = () => {
       try {
-        if (!videoEl.value || !canvasEl.value) return;
+        if (!videoEl.value || !canvasEl.value || !handLandmarker) return;
 
         const videoWidth = videoEl.value.videoWidth;
         const videoHeight = videoEl.value.videoHeight;
@@ -88,44 +72,13 @@ onMounted(async () => {
         const startTimeMs = performance.now();
         if (lastVideoTime !== videoEl.value.currentTime) {
           lastVideoTime = videoEl.value.currentTime;
-          results = handLandmarker!.detectForVideo(videoEl.value, startTimeMs);
+          results = handLandmarker.detectForVideo(videoEl.value, startTimeMs);
         }
 
         canvasCtx.clearRect(0, 0, canvasEl.value.width, canvasEl.value.height);
 
         if (results?.landmarks) {
-          const W = canvasEl.value.width;
-          const H = canvasEl.value.height;
-
-          for (const landmarks of results.landmarks) {
-            // Draw all 21 landmarks as circles
-            for (const landmark of landmarks) {
-              const x = landmark.x * W;
-              const y = landmark.y * H;
-
-              canvasCtx.beginPath();
-              canvasCtx.arc(x, y, 5, 0, 2 * Math.PI);
-              canvasCtx.fillStyle = "#00FF00";
-              canvasCtx.fill();
-            }
-
-            // Draw connections between landmarks
-            const connections = HandLandmarker.HAND_CONNECTIONS;
-            canvasCtx.strokeStyle = "#00FF00";
-            canvasCtx.lineWidth = 2;
-
-            for (const conn of connections) {
-              const start = landmarks[conn.start];
-              const end = landmarks[conn.end];
-              if (!start || !end) continue;
-
-              canvasCtx.beginPath();
-              canvasCtx.moveTo(start.x * W, start.y * H);
-              canvasCtx.lineTo(end.x * W, end.y * H);
-              canvasCtx.stroke();
-            }
-          }
-
+          drawLandmarks(canvasCtx, results, canvasEl.value.width, canvasEl.value.height);
           // Send results via WebSocket once per frame
           send(JSON.stringify(results));
         }
@@ -144,6 +97,52 @@ onMounted(async () => {
     // e.g., "Camera access denied" or "Failed to load hand tracking model"
   }
 });
+
+// Before we can use HandLandmarker class we must wait for it to finish
+// loading. Machine Learning models can be large and take a moment to
+// get everything needed to run.
+async function initMediaPipe() {
+  const vision = await FilesetResolver.forVisionTasks("/wasm");
+  return await HandLandmarker.createFromOptions(vision, {
+    baseOptions: {
+      modelAssetPath: "/models/hand_landmarker.task",
+      delegate: "GPU",
+    },
+    runningMode: "VIDEO",
+    numHands: 2,
+  });
+}
+
+function drawLandmarks(ctx: CanvasRenderingContext2D, results: HandLandmarkerResult, W: number, H: number) {
+  for (const landmarks of results.landmarks) {
+    // Draw all 21 landmarks as circles
+    for (const landmark of landmarks) {
+      const x = landmark.x * W;
+      const y = landmark.y * H;
+
+      ctx.beginPath();
+      ctx.arc(x, y, 5, 0, 2 * Math.PI);
+      ctx.fillStyle = "#00FF00";
+      ctx.fill();
+    }
+
+    // Draw connections between landmarks
+    const connections = HandLandmarker.HAND_CONNECTIONS;
+    ctx.strokeStyle = "#00FF00";
+    ctx.lineWidth = 2;
+
+    for (const conn of connections) {
+      const start = landmarks[conn.start];
+      const end = landmarks[conn.end];
+      if (!start || !end) continue;
+
+      ctx.beginPath();
+      ctx.moveTo(start.x * W, start.y * H);
+      ctx.lineTo(end.x * W, end.y * H);
+      ctx.stroke();
+    }
+  }
+}
 </script>
 
 <template>
