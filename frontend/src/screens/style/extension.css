@@ -1,0 +1,130 @@
+.extension-wrapper {
+    min-height: 100vh;
+    width: 100%;
+    /* background: linear-gradient(to bottom,#EAF7FF,#D3ECFF,#A6D0F1); */
+    background: linear-gradient(to bottom, #E9F6FF, #B5DAF5, #A6D0F1, #FFFFFF);
+    /* background: radial-gradient(circle at top, #E9F6FF, #A6D0F1, #FFFFFF); */
+    /* background: linear-gradient(
+      100deg,
+      #e9f6ff,
+      #b5daff,
+      #8dc8ff,
+      #6bb9ff,
+      #A6D0F1,
+      #a6e1ff,
+      #ffffff
+    ); */
+    /* background: radial-gradient(circle at 20% 20%, #8dc8ff, 0%, transparent 60%),
+                radial-gradient(circle at 80% 30%, #b5daff 0%, transparent 60%),
+                radial-gradient(circle at 40% 80%, #A6D0F1 0%, transparent 60%),
+                linear-gradient(120deg, #dff3ff, #ffffff); */
+  
+    background-size: 200% 200%;
+    /* animation: auroraFlow 3s ease-in-out infinite alternate; */
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Header */
+  .extension-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .extension-logo {
+    height: 180px;
+    width: auto;
+    margin: 0 auto;
+  }
+  
+  .extension-title {
+    font-size: 48px;
+    font-weight: 700;
+    color: #1f2d3d;
+    margin: 0 auto;
+  
+  }
+  
+  .extension-subtitle {
+    font-size: 18px;
+    color: #475569;
+    margin-top: 8px;
+  }
+  
+  
+  /* Mobile first: adjust cards to fit all 3 on one screen */
+  @media (max-width: 600px) {
+  
+    .extension-wrapper {
+      padding-top: 20px;
+    }
+  
+    .extension-logo {
+      height: 120px; /* smaller logo */
+    }
+  
+    .extension-title {
+      font-size: 32px; /* smaller title */
+    }
+  
+    .extension-subtitle {
+      font-size: 14px;
+    }
+  
+    
+  }
+  @media (max-width: 600px) {
+  
+    .extension-wrapper {
+      padding: 24px 10px;
+    }
+  
+    .extension-logo {
+      height: 80px;      /* Smaller logo */
+    }
+  
+    .extension-title {
+      font-size: 30px;
+    }
+  
+    .extension-subtitle {
+      font-size: 12px;
+    }
+  }
+  
+  @keyframes gradientShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  @keyframes breathe {
+    0%   { background-size: 100% 100%; }
+    50%  { background-size: 105% 105%; }
+    100% { background-size: 100% 100%; }
+  }
+  
+  @keyframes gradientWave {
+    0%   { background-position: 0% 50%; }
+    25%  { background-position: 50% 70%; }
+    50%  { background-position: 100% 50%; }
+    75%  { background-position: 50% 30%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  @keyframes auroraFlow {
+    0% {
+      background-position: 0% 0%;
+      filter: hue-rotate(0deg);
+    }
+    50% {
+      background-position: 100% 50%;
+      filter: hue-rotate(15deg);
+    }
+    100% {
+      background-position: 0% 100%;
+      filter: hue-rotate(-15deg);
+    }
+  }

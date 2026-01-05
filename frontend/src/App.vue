@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Home from '@/components/Home.vue';
+// import Home from '@/screens/Home.vue';
 </script>
 
 <template>
-  <Home />
+  <router-view />
 </template>
