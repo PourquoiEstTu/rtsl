@@ -275,14 +275,14 @@ def flatten_directory(input_dir: str, output_dir_name: str=FLATTENED_OUTPUT_DIR,
     
     # sorted scandir to ensure that final order of flattened features is consistent on different machines and labels are properly assigned
     for file in sorted(os.scandir(input_dir), key=lambda e: e.name):
-        if file.is_file(): # sanity check
+        if file.is_file() and file.name.endswith(".npy"): # sanity check
             features = np.load(f"{input_dir}/{file.name}")
+            
+            if (features.ndim != 2): # skips ordered labels
+                print(f"Skipped {file.name}.")
+                continue
         
-        if (features.ndim != 2): # skips ordered labels
-            print(f"Skipped {file.name}.")
-            continue
-    
-        output.append(np.ndarray.flatten(features))
+            output.append(np.ndarray.flatten(features))
     
     np.save(npy_path, np.array(output))
     print(f"Saved flattened features at {npy_path}")
@@ -298,18 +298,13 @@ def flatten_directory_in_place(input_dir: str) -> list[np.ndarray] :
     output = []
 
     for file in sorted(os.scandir(input_dir), key=lambda e: e.name):
-        if file.is_file(): # sanity check
+        if file.is_file() and file.name.endswith(".npy"): # sanity check
             features = np.load(f"{input_dir}/{file.name}")
 
-        if (features.ndim != 2): # skips ordered labels
-            print(f"Skipped {file.name}.")
-            continue
+            if (features.ndim != 2): # skips ordered labels
+                print(f"Skipped {file.name}.")
+                continue
 
-        output.append(np.ndarray.flatten(features))
+            output.append(np.ndarray.flatten(features))
 
-    # Note that we return a python list of np.ndarrays.
-    # It isn't an ndarray itself because the flattened features are 
-    #   different lengths
     return output
-flatten_directory_in_place("/u50/quyumr/archive/test_output_normalized")
-  
