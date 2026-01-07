@@ -1,7 +1,7 @@
 import os
 import sys
 import json
-# import cv2
+import cv2
 import numpy as np
 import mediapipe as mp
 from sklearn.preprocessing import LabelEncoder
