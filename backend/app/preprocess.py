@@ -283,11 +283,9 @@ def flatten_directory(input_dir: str, output_dir_name: str=FLATTENED_OUTPUT_DIR,
             continue
     
         output.append(np.ndarray.flatten(features))
-        print(f"{input_dir}/{file.name} processed")
     
     np.save(npy_path, np.array(output))
     print(f"Saved flattened features at {npy_path}")
-print(flatten_directory("/u50/quyumr/archive/test_output_normalized", "/u50/quyumr/archive/test_output_normalized_flattened", True))
 
 def flatten_directory_in_place(input_dir: str) -> list[np.ndarray] :
     """Converts a directory of feature .npy files (2D arrays representing 
@@ -313,5 +311,5 @@ def flatten_directory_in_place(input_dir: str) -> list[np.ndarray] :
     # It isn't an ndarray itself because the flattened features are 
     #   different lengths
     return output
-  
+flatten_directory_in_place("/u50/quyumr/archive/test_output_normalized")
   
