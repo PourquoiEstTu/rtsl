@@ -260,7 +260,7 @@ def normalize_sequence_length(input_dir: str, output_dir, overwrite=False):
 # normalize_sequence_length(VALIDATION_OUTPUT_DIR_CLEANED, VALIDATION_OUTPUT_DIR_NORMALIZED, True)
 # normalize_sequence_length(TEST_OUTPUT_DIR_CLEANED, TEST_OUTPUT_DIR_NORMALIZED, True)
 
-def normalize_labels(input_dir: str, label_file: str, json_path: str = JSON_PATH, overwrite: bool = False) :
+def force_equal_dims_features_labels(input_dir: str, label_file: str, json_path: str = JSON_PATH, overwrite: bool = False) :
     """Make sure that X and y have the same dimensions. This function
        implements deleting entries from y to match the number of rows in X 
        (represented by the number of files in input_dir)
