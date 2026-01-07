@@ -1,7 +1,7 @@
 import os
 import sys
 import json
-import cv2
+# import cv2
 import numpy as np
 import mediapipe as mp
 from sklearn.preprocessing import LabelEncoder
@@ -259,8 +259,13 @@ def flatten_directory(input_dir: str, output_dir_name: str=FLATTENED_OUTPUT_DIR,
     """ Converts a directory of normalized feature .npy files (2D arrays representing frame x features) into a 2D array representing (word x feature).
         Input: path to a directory of .npy files
         Output: 2D array of features"""
-    
-    npy_path = os.path.join(output_dir_name, "flattened_" + input_dir + ".npy")
+
+    input_dir_no_backslashes = input_dir.replace("/", "_")
+    npy_path = os.path.join(output_dir_name, "flattened_" + input_dir_no_backslashes + ".npy")
+
+    if not os.path.exists(output_dir_name) :
+        os.makedirs(output_dir_name, exist_ok=False)
+
     if not overwrite_prev_file:
         if os.path.exists(npy_path):
             print("Flattened features already exists, set overwrite_prev_file flag to True to overwrite.")
@@ -278,10 +283,13 @@ def flatten_directory(input_dir: str, output_dir_name: str=FLATTENED_OUTPUT_DIR,
             continue
     
         output.append(np.ndarray.flatten(features))
+        print(f"{input_dir}/{file.name} processed")
     
     np.save(npy_path, np.array(output))
+    print(f"Saved flattened features at {npy_path}")
+print(flatten_directory("/u50/quyumr/archive/test_output_normalized", "/u50/quyumr/archive/test_output_normalized_flattened", True))
 
-def flatten_directory_in_place(input_dir: str) -> list[np_ndarray] :
+def flatten_directory_in_place(input_dir: str) -> list[np.ndarray] :
     """Converts a directory of feature .npy files (2D arrays representing 
        frame x features) into a 2D array representing (word x feature). It
        is recommended to use the non-in-place version of this function 
