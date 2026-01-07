@@ -276,7 +276,7 @@ def normalize_labels(input_dir: str, label_file: str, json_path: str = JSON_PATH
     labels = np.load(label_file)
     n_labels = labels.shape[0]
     idx = 0
-    for file in os.scandir(input_dir) :
+    for file in sorted(os.scandir(input_dir), key=lambda e: e.name) :
         if file.is_file() and file.name.endswith(".npy"):
             if "ordered_labels" in file.name :
                 print(f"{file.name} encountered... Skipping.")
@@ -304,5 +304,5 @@ def normalize_labels(input_dir: str, label_file: str, json_path: str = JSON_PATH
 #       f"{TRAIN_OUTPUT_DIR_CLEANED}/ordered_labels.npy", JSON_PATH, True)
 #normalize_labels(TEST_OUTPUT_DIR_NORMALIZED, 
 #           f"{TEST_OUTPUT_DIR_CLEANED}/ordered_labels.npy", JSON_PATH, True)
-normalize_labels(VALIDATION_OUTPUT_DIR_NORMALIZED, 
-        f"{VALIDATION_OUTPUT_DIR_CLEANED}/ordered_labels.npy", JSON_PATH, True)
+# normalize_labels(VALIDATION_OUTPUT_DIR_NORMALIZED, 
+#         f"{VALIDATION_OUTPUT_DIR_CLEANED}/ordered_labels.npy", JSON_PATH, True)
