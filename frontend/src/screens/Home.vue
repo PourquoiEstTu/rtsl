@@ -1,23 +1,41 @@
 <script setup lang="ts">
-import logo from '@/assets/logo_without_text-removebg-preview.png';
-import { useRouter } from 'vue-router';
+import { ref, computed, onMounted, onUnmounted } from "vue";
+import logo from "@/assets/logo_without_text-removebg-preview.png";
+import { useRouter } from "vue-router";
 import "@/screens/style/home.css";
 
-const router = useRouter()
+const router = useRouter();
+
+// Track screen width
+const screenWidth = ref(window.innerWidth);
+
+// Update on resize
+function updateWidth() {
+  screenWidth.value = window.innerWidth;
+}
+
+onMounted(() => {
+  window.addEventListener("resize", updateWidth);
+});
+onUnmounted(() => {
+  window.removeEventListener("resize", updateWidth);
+});
+// Define what counts as desktop/laptop
+const isDesktop = computed(() => screenWidth.value >= 1024);
 
 function goToCamera() {
   console.log("Navigating to camera...");
-  router.push('/camera')
+  router.push("/camera");
 }
 
 function goToWebExtension() {
   console.log("Navigating to web extension...");
-  router.push('/web_extension')
+  router.push("/web_extension");
 }
 
 function goToAbout() {
   console.log("Navigating to about...");
-  router.push('/about')
+  router.push("/about");
 }
 </script>
 
@@ -33,24 +51,19 @@ function goToAbout() {
 
     <!-- Cards Section -->
     <div class="home-card-row">
-
       <div class="home-card" @click="goToCamera">
         <div class="home-icon">
           <i class="pi pi-camera"></i>
         </div>
-        <h2 class="home-card-title">
-          Open Camera<br />Translator
-        </h2>
+        <h2 class="home-card-title">Open Camera<br />Translator</h2>
         <p class="home-card-desc">Translate ASL to English</p>
       </div>
 
-      <div class="home-card" @click="goToWebExtension">
+      <div class="home-card" v-if="isDesktop" @click="goToWebExtension">
         <div class="home-icon">
           <i class="pi pi-microchip"></i>
         </div>
-        <h2 class="home-card-title">
-          Download the<br />Web Extension
-        </h2>
+        <h2 class="home-card-title">Download the<br />Web Extension</h2>
         <p class="home-card-desc">Zoom / Meet / Teams</p>
       </div>
 
@@ -58,9 +71,7 @@ function goToAbout() {
         <div class="home-icon">
           <i class="pi pi-question"></i>
         </div>
-        <h2 class="home-card-title">
-          About Us
-        </h2>
+        <h2 class="home-card-title">About Us</h2>
         <p class="home-card-desc">Setup-guide + Tips</p>
       </div>
     </div>
