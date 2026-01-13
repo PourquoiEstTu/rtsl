@@ -5,13 +5,11 @@ import cv2
 import numpy as np
 import mediapipe as mp
 from sklearn.preprocessing import LabelEncoder
-import torch
-from torch.utils.data import Dataset, DataLoader
 from pathlib import Path
 import random
 
 # print numpy arrays without truncation
-np.set_printoptions(threshold=sys.maxsize)
+# np.set_printoptions(threshold=sys.maxsize)
 
 # global vars
 # BASE_DIR = Path(__file__).resolve().parents[3] / "archive"
@@ -29,54 +27,10 @@ VALIDATION_OUTPUT_DIR = f"{DIR}/validation_output" # folder to save .npy feature
 TRAIN_OUTPUT_DIR_CLEANED = f"{DIR}/train_output_cleaned" # folder to save .npy feature files
 TEST_OUTPUT_DIR_CLEANED = f"{DIR}/test_output_cleaned" # folder to save .npy feature files
 VALIDATION_OUTPUT_DIR_CLEANED = f"{DIR}/validation_output_cleaned" # folder to save .npy feature files
-TRAIN_OUTPUT_DIR_NORMALIZED = f"{DIR}/train_output_normalized" # folder to save .npy feature files
-TEST_OUTPUT_DIR_NORMALIZED = f"{DIR}/test_output_normalized" # folder to save .npy feature files
-VALIDATION_OUTPUT_DIR_NORMALIZED = f"{DIR}/validation_output_normalized" # folder to
-
-# TARGET_LENGTH = 64                   # number of frames per sequence
-# BATCH_SIZE = 4
-
-# RAND_CLASS = 3
-# with open(JSON_PATH, "r") as f:
-#     data = json.load(f)
-
-# # 21082 videos with 2000 glosses
-# all_glosses = [entry["gloss"] for entry in data]
-
-# print(f"Total glosses available: {len(all_glosses)}")
-# print("Instances per gloss:")
-
-# gloss_x_count = {}
-
-# for gloss in all_glosses:
-#     for entry in data:
-#         if entry["gloss"] == gloss:
-#             count = len(entry["instances"])
-#             gloss_x_count[gloss] = count
-#             print(f"  {gloss}: {count}")
-#             break
-
-# print("sorted gloss instances:", sorted(gloss_x_count.items(), key=lambda x: x[1]))
-
-# # only keep glosses with at least 13 instances
-# gloss_x_count = {k: v for k, v in gloss_x_count.items() if v >= 13}
-# print(f"Glosses with at least 13 instances: {len(gloss_x_count)}")
-
-# # convert back to list of glosses
-# all_glosses_13 = list(gloss_x_count.keys())
-
-
-# # Randomly select categories
-# if RAND_CLASS > len(all_glosses):
-#     print(f"Warning: requested {RAND_CLASS} categories but only {len(all_glosses)} exist. Using all glosses.")
-#     CATEGORIES_TO_USE = all_glosses
-# else:
-#     CATEGORIES_TO_USE = random.sample(all_glosses, RAND_CLASS)
-
-# # CATEGORIES_TO_USE = all_glosses_13
-
-# print(CATEGORIES_TO_USE)
-# CATEGORIES_TO_USE = ["book", "bye", "hello", "actor", "allergy", "professor", "sofa", "skip", "brother", "disagree"]  # Only preprocess these glosses
+TRAIN_OUTPUT_DIR_NORMALIZED = f"{DIR}/train_output_normalized"
+TEST_OUTPUT_DIR_NORMALIZED = f"{DIR}/test_output_normalized"
+VALIDATION_OUTPUT_DIR_NORMALIZED = f"{DIR}/validation_output_normalized"
+FLATTENED_OUTPUT_DIR = f"{DIR}/flattened_outputs"
 
 os.makedirs(TRAIN_OUTPUT_DIR, exist_ok=True)
 os.makedirs(TEST_OUTPUT_DIR, exist_ok=True)
@@ -87,6 +41,7 @@ os.makedirs(VALIDATION_OUTPUT_DIR_CLEANED, exist_ok=True)
 os.makedirs(TRAIN_OUTPUT_DIR_NORMALIZED, exist_ok=True)
 os.makedirs(TEST_OUTPUT_DIR_NORMALIZED, exist_ok=True)
 os.makedirs(VALIDATION_OUTPUT_DIR_NORMALIZED, exist_ok=True)
+os.makedirs(FLATTENED_OUTPUT_DIR, exist_ok=True)
 
 # INITIALIZE MEDIAPIPE HOLISTIC
 # essentially uses the mediapipe holistic model to extract hands and pose features
@@ -304,6 +259,108 @@ def normalize_sequence_length(input_dir: str, output_dir, overwrite=False):
                 padded = features
             np.save(out_path, padded)
             print(f"Saved normalized features: {out_path}")
+            
+def flatten_directory(input_dir: str, output_dir_name: str=FLATTENED_OUTPUT_DIR, overwrite_prev_file: bool=False) -> None :
+    """ Converts a directory of normalized feature .npy files (2D arrays representing frame x features) into a 2D array representing (word x feature).
+        Input: path to a directory of .npy files
+        Output: 2D array of features"""
+
+    input_dir_no_backslashes = input_dir.replace("/", "_")
+    npy_path = os.path.join(output_dir_name, "flattened_" + input_dir_no_backslashes + ".npy")
+
+    if not os.path.exists(output_dir_name) :
+        os.makedirs(output_dir_name, exist_ok=False)
+
+    if not overwrite_prev_file:
+        if os.path.exists(npy_path):
+            print("Flattened features already exists, set overwrite_prev_file flag to True to overwrite.")
+            return
+    
+    output = []
+    
+    # sorted scandir to ensure that final order of flattened features is consistent on different machines and labels are properly assigned
+    for file in sorted(os.scandir(input_dir), key=lambda e: e.name):
+        if file.is_file() and file.name.endswith(".npy"): # sanity check
+            features = np.load(f"{input_dir}/{file.name}")
+            
+            if (features.ndim != 2): # skips ordered labels
+                print(f"Skipped {file.name}.")
+                continue
+        
+            output.append(np.ndarray.flatten(features))
+    
+    np.save(npy_path, np.array(output))
+    print(f"Saved flattened features at {npy_path}")
+
+def flatten_directory_in_place(input_dir: str) -> list[np.ndarray] :
+    """Converts a directory of feature .npy files (2D arrays representing 
+       frame x features) into a 2D array representing (word x feature). It
+       is recommended to use the non-in-place version of this function 
+       (flatten_directory()) instead of this.
+       Input: path to a directory of .npy files
+       Output: 2D array of features"""
+
+    output = []
+
+    for file in sorted(os.scandir(input_dir), key=lambda e: e.name):
+        if file.is_file() and file.name.endswith(".npy"): # sanity check
+            features = np.load(f"{input_dir}/{file.name}")
+
+            if (features.ndim != 2): # skips ordered labels
+                print(f"Skipped {file.name}.")
+                continue
+
+            output.append(np.ndarray.flatten(features))
+    
+    return output
+
+def force_equal_dims_features_labels(input_dir: str, label_file: str, json_path: str = JSON_PATH, overwrite: bool = False) :
+    """Make sure that X and y have the same dimensions. This function
+       implements deleting entries from y to match the number of rows in X 
+       (represented by the number of files in input_dir)
+       while ensuring that the labels in y still correctly match the feature
+       at the same index in X. 
+
+       If this is needed in the reverse direction, implement when needed."""
+
+    out_path = f"{input_dir}/ordered_labels_normalized.npy"
+    if not overwrite and os.path.exists(f"{out_path}") :
+        print("Normalized labels already exist. Please set overwrite param to True to execute function.")
+        return
+    labels = np.load(label_file)
+    n_labels = labels.shape[0]
+    idx = 0
+    for file in sorted(os.scandir(input_dir), key=lambda e: e.name) :
+        if file.is_file() and file.name.endswith(".npy"):
+            if "ordered_labels" in file.name :
+                print(f"{file.name} encountered... Skipping.")
+                continue
+
+            gloss = find_gloss_by_video_id(file.name, json_path)
+            if gloss == None :
+                raise Exception(f"{file.name} has no corresponding feature in {json_path}")
+
+            try :
+                if labels[idx] != gloss :
+                    labels[idx] = gloss
+                    print(f"gloss '{gloss}' at {idx} in labels does not match gloss for {file.name}... Value at {idx} has been replaced by matching gloss")
+            except IndexError :
+                raise IndexError("Number of features is greater than number of labels. Please generate the correct number of labels")
+            idx += 1
+    # idx + 1 in if stmt not needed b/c final loop increments idx once 
+    #   more after all elements in input_dir have been checked
+    if idx != n_labels : 
+        labels = labels[0:idx]
+        print("Labels array has been truncated.")
+    np.save(out_path, labels)
+    print("Normalized labels have been saved")
+# normalize_labels(TRAIN_OUTPUT_DIR_NORMALIZED, 
+#       f"{TRAIN_OUTPUT_DIR_CLEANED}/ordered_labels.npy", JSON_PATH, True)
+#normalize_labels(TEST_OUTPUT_DIR_NORMALIZED, 
+#           f"{TEST_OUTPUT_DIR_CLEANED}/ordered_labels.npy", JSON_PATH, True)
+# normalize_labels(VALIDATION_OUTPUT_DIR_NORMALIZED, 
+#         f"{VALIDATION_OUTPUT_DIR_CLEANED}/ordered_labels.npy", JSON_PATH, True)
+
    
 # remove_zero_frames(TRAIN_OUTPUT_DIR, TRAIN_OUTPUT_DIR_CLEANED)
 # remove_zero_frames(TEST_OUTPUT_DIR, TEST_OUTPUT_DIR_CLEANED)
