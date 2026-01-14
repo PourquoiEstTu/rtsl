@@ -44,17 +44,17 @@ os.makedirs(VALIDATION_OUTPUT_DIR_NORMALIZED, exist_ok=True)
 # INITIALIZE MEDIAPIPE HOLISTIC
 # essentially uses the mediapipe holistic model to extract hands and pose features
 # comment out if not needed when running this file
-# mp_holistic = mp.solutions.holistic
-# holistic = mp_holistic.Holistic(
-#     static_image_mode=False,
-#     model_complexity=1,
-#     smooth_landmarks=True,
-#     enable_segmentation=False, # mediapipe crashes when true? 
-#         # someone else run this file with this and refine_face_landmarks=True as well
-#     refine_face_landmarks=False,
-#     min_detection_confidence=0.5,
-#     min_tracking_confidence=0.5
-# )
+mp_holistic = mp.solutions.holistic
+holistic = mp_holistic.Holistic(
+    static_image_mode=False,
+    model_complexity=1,
+    smooth_landmarks=True,
+    enable_segmentation=False, # mediapipe crashes when true? 
+        # someone else run this file with this and refine_face_landmarks=True as well
+    refine_face_landmarks=False,
+    min_detection_confidence=0.5,
+    min_tracking_confidence=0.5
+)
 
 # extract features from a video
 def extract_features(video_path: str):
@@ -65,7 +65,9 @@ def extract_features(video_path: str):
        the keypoints, each group of 3 represents the x, y, z 
        coordinates of the keypoint in the image."""
     cap = cv2.VideoCapture(video_path)
-    sequence = []
+    hand_sequence = []
+    pose_sequence = []
+    face_sequence = []
 
     # read frames from video
     while cap.isOpened():
@@ -97,12 +99,40 @@ def extract_features(video_path: str):
         else:
             hand_keypoints.extend([0] * 21 * 3)
 
-        sequence.append(hand_keypoints)
+        # pose 
+        pose_keypoints = []
+        if results.pose_landmarks :
+            for lm in results.pose_landmarks.landmark :
+                # all 3 coords added in due to prev functions assuming 3 coords,
+                #   but z coord is currently not usable per mediapipe docs
+                pose_keypoints.extend([lm.x, lm.y, lm.z])
+        else :
+            pose_keypoints.extend([0] * 21 * 3)
+
+        # face
+        face_keypoints = []
+        if results.face_landmarks :
+            for lm in results.face_landmarks.landmark :
+                face_keypoints.extend([lm.x, lm.y, lm.z])
+        else :
+            face_keypoints.extend([0] * 21 * 3)
+
+        hand_sequence.append(hand_keypoints)
+        pose_sequence.append(pose_keypoints)
+        face_sequence.append(face_keypoints)
 
     cap.release()
-    sequence = np.array(sequence)
 
-    return sequence.astype(np.float32)
+    hand_sequence = np.array(hand_sequence)
+    pose_sequence = np.array(pose_sequence)
+    face_sequence = np.array(face_sequence)
+
+    hand_sequence = hand_sequence.astype(np.float32)
+    pose_sequence = pose_sequence.astype(np.float32)
+    face_sequence = face_sequence.astype(np.float32)
+
+    return {"hands": hand_sequence, "pose": pose_sequence, "face": face_sequence}
+# print(extract_features(f"{DIR}/videos/69547.mp4"))
 
 def gen_videos_features(json_path: str=JSON_PATH, overwrite_prev_files:bool=False) -> None :
     """Generate features for each video and save them to disk."""
@@ -342,7 +372,6 @@ def hand_keypoint_to_img(keypoint_file: str, img_size: int = 200) :
             patience += 1
         else :
             patience = 0
-
         if patience >= 3 :
             break
         # print(patience)
@@ -366,6 +395,7 @@ def hand_keypoint_to_img(keypoint_file: str, img_size: int = 200) :
     return imgs
 # hand_keypoint_to_img(f"{TRAIN_OUTPUT_DIR_NORMALIZED}/69538.npy")
 
+# currently always overwrites old files; make it not overwrite them
 def convert_keypoints_dir_to_video(input_dir: str, output_dir: str) :
     if not os.path.exists(input_dir) :
         raise Exception("Input directory does not exist.")
@@ -381,4 +411,4 @@ def convert_keypoints_dir_to_video(input_dir: str, output_dir: str) :
             npy_path = os.path.join(output_dir, file.name)
             np.save(npy_path, video)
             print(f"{file.name} saved to {output_dir}")
-convert_keypoints_dir_to_video(TRAIN_OUTPUT_DIR_NORMALIZED, f"{DIR}/train_output_normalized_video")
+# convert_keypoints_dir_to_video(TRAIN_OUTPUT_DIR_NORMALIZED, f"{DIR}/train_output_normalized_video")
