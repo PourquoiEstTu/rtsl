@@ -6,18 +6,21 @@ import numpy as np
 import mediapipe as mp
 from sklearn.preprocessing import LabelEncoder
 from pathlib import Path
-# commenting some of these out can make script run faster if you only want to call
-#   specific functions
+import random
 
 # print numpy arrays without truncation
 # np.set_printoptions(threshold=sys.maxsize)
 
 # global vars
-BASE_DIR = Path(__file__).resolve().parents[3] / "archive"
-DIR = str(BASE_DIR)
+# BASE_DIR = Path(__file__).resolve().parents[3] / "archive"
+# DIR = str(BASE_DIR)
  # folder where your dataset is
+# DIR = "/u50/chandd9/capstone/personal_preprocessed4"
+DIR = "/Users/thanhhanguyen/Documents/4th_year_CS/Capstone/archive"
 JSON_PATH = f"{DIR}/WLASL_v0.3.json"
-VIDEO_DIR = f"{DIR}/videos/"  # folder with your video files
+# JSON_PATH = f"{DIR}/info.json"
+
+VIDEO_DIR = f"/u50/chandd9/capstone/personal_preprocessed2/videos/"  # folder with your video files
 TRAIN_OUTPUT_DIR = f"{DIR}/train_output" # folder to save .npy feature files
 TEST_OUTPUT_DIR = f"{DIR}/test_output" # folder to save .npy feature files
 VALIDATION_OUTPUT_DIR = f"{DIR}/validation_output" # folder to save .npy feature files
@@ -117,6 +120,9 @@ def gen_videos_features(json_path: str=JSON_PATH, overwrite_prev_files:bool=Fals
 
     for entry in data:
         gloss = entry["gloss"]
+        # only use the categories we care about
+        # if gloss not in CATEGORIES_TO_USE:
+        #     continue  # Skip unwanted categories
 
         for instance in entry["instances"]:
             video_file = os.path.join(VIDEO_DIR, f"{instance['video_id']}.mp4")
@@ -182,13 +188,10 @@ def find_gloss_by_video_id(video_id: str, json_path: str=JSON_PATH) -> str :
                 return entry["gloss"]
 # print(find_gloss_by_video_id("00421"))
 
-def get_labels_sklearn(features_dir:str, json_path: str=JSON_PATH, overwrite_prev_file:bool=False) -> None :
+# same as get_labels_normalize
+def get_labels_pytorch(features_dir:str, json_path: str=JSON_PATH, overwrite_prev_file:bool=False) -> None :
     """Output corresponding label/gloss for a video in a 1d array
-       that a sklearn SVM can use. Implicitly orders the labels
-       by which file in features_dir is seen first, so ascending
-       numerical order.
-       features_dir: directory where features from gen_videos_features()
-         are saved."""
+       that pytorch code can use. """
     npy_path = os.path.join(features_dir, "ordered_labels.npy")
     if not overwrite_prev_file :
         if os.path.exists(npy_path) :
@@ -357,3 +360,14 @@ def force_equal_dims_features_labels(input_dir: str, label_file: str, json_path:
 #           f"{TEST_OUTPUT_DIR_CLEANED}/ordered_labels.npy", JSON_PATH, True)
 # normalize_labels(VALIDATION_OUTPUT_DIR_NORMALIZED, 
 #         f"{VALIDATION_OUTPUT_DIR_CLEANED}/ordered_labels.npy", JSON_PATH, True)
+
+   
+# remove_zero_frames(TRAIN_OUTPUT_DIR, TRAIN_OUTPUT_DIR_CLEANED)
+# remove_zero_frames(TEST_OUTPUT_DIR, TEST_OUTPUT_DIR_CLEANED)
+# remove_zero_frames(VALIDATION_OUTPUT_DIR, VALIDATION_OUTPUT_DIR_CLEANED)        
+# normalize_sequence_length(TRAIN_OUTPUT_DIR_CLEANED, TRAIN_OUTPUT_DIR_NORMALIZED, True)
+# normalize_sequence_length(VALIDATION_OUTPUT_DIR_CLEANED, VALIDATION_OUTPUT_DIR_NORMALIZED, True)
+# normalize_sequence_length(TEST_OUTPUT_DIR_CLEANED, TEST_OUTPUT_DIR_NORMALIZED, True)
+# get_labels_normalize(TRAIN_OUTPUT_DIR_NORMALIZED, overwrite_prev_file=True)
+# get_labels_normalize(TEST_OUTPUT_DIR_NORMALIZED, overwrite_prev_file=True)
+# get_labels_normalize(VALIDATION_OUTPUT_DIR_NORMALIZED, overwrite_prev_file=True)
