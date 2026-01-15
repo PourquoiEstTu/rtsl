@@ -1,4 +1,4 @@
-import np
+import numpy as np
 import os
 
 def normalize_sequence_length(input_dir: str, output_dir, overwrite=False):
