@@ -1,3 +1,6 @@
+import np
+import os
+
 def normalize_sequence_length(input_dir: str, output_dir, overwrite=False):
     """Normalize all feature files to have the same number of frames.
        Pads or truncates all .npy feature arrays in input_dir so they all have
