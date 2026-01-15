@@ -1,7 +1,7 @@
 import numpy as np
 import os
 
-def extract_statistics_features(input_file):
+def extract_statistics_features(input_file:str):
     """ Extracts mean, std, min, max, velocity_mean, velocity_std from a features file
     Input: 2D array .npy file of n frames by 126 features
     Output: 1D array of 756 features of mean, std, min, max, velocity, velocity_mean, velocity_std for each coordinate"""

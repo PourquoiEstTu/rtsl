@@ -6,6 +6,7 @@ import numpy as np
 import mediapipe as mp
 from sklearn.preprocessing import LabelEncoder
 from pathlib import Path
+from scipy.interpolate import interp1d
 # commenting some of these out can make script run faster if you only want to call
 #   specific functions
 
@@ -207,7 +208,42 @@ def get_labels_sklearn(features_dir:str, json_path: str=JSON_PATH, overwrite_pre
                 print(f"Video {file.name} has no label.")
     np.save(npy_path, np.array(labels))
 # get_labels_sklearn(VALIDATION_OUTPUT_DIR_CLEANED, JSON_PATH, True)
+
+def interpolate_features(features:np.ndarray, target_length:int):
+    """Normalizes a 2d list of features that is Y elements long with X-dimensional features into a 2d list that is target_length long with X-dimensional features.
+    In the context of RTSL, is used to interpolate 2D array of unknown_frames x 126-dimensional features into a normalized frame count where hand motion is preserved. 
+    Input: 2d array of features and desired target length
+    Output: interpolated 2d array of features
+    """
+    number_of_frames = features.shape[0]
+    features_per_frame = features.shape[1]
+    
+    old_frame_times = np.linspace(0, 1, number_of_frames)
+    new_frame_times = np.linspace(0, 1, target_length)
+
+    interpolated = np.zeros((target_length, features_per_frame))
+    
+    for i in range(features.shape[1]):
+        f = interp1d(old_frame_times, features[:, i], kind="linear", fill_value="extrapolate")
+        interpolated[:, i] = f(new_frame_times)
+        
+    return interpolated
+ 
+def normalize_features_interpolation(input_dir:str, output_dir:str, target_length:int, overwrite:bool=False):
+    """Takes an input of features and an output directory. Populates output directory with normalized features
+    where each normalized feature file is an interpolated 2d array with consistent dimension
+    Input: directory with generated features, directory where processed files are saved"""
+    
+    for file in sorted(os.scandir(input_dir), key=lambda e: e.name):
+        if file.name == "ordered_labels.npy":
+            continue
+        if file.is_file() and file.name.endswith(".npy"):
+            out_path = os.path.join(output_dir, file.name)
+            if os.path.exists(out_path) and not overwrite:
+                continue
             
+            np.save(out_path, interpolate_features(np.load(file.path), target_length))
+
 def flatten_directory(input_dir: str, output_dir_name: str=FLATTENED_OUTPUT_DIR, overwrite_prev_file: bool=False) -> None :
     """ Converts a directory of normalized feature .npy files (2D arrays representing frame x features) into a 2D array representing (word x feature).
         Input: path to a directory of .npy files
