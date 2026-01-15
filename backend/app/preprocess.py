@@ -16,10 +16,12 @@ import utils.utils as utils
 # global vars
 # BASE_DIR = Path(__file__).resolve().parents[3] / "archive"
 # DIR = str(BASE_DIR)
-DIR = "/windows/Users/thats/Documents/archive"
+# DIR = "/windows/Users/thats/Documents/archive"
+DIR = "/u50/chandd9/capstone/face_pose"
  # folder where your dataset is
 JSON_PATH = f"{DIR}/WLASL_v0.3.json"
-VIDEO_DIR = f"{DIR}/videos/"  # folder with your video files
+# VIDEO_DIR = f"{DIR}/videos/"  # folder with your video files
+VIDEO_DIR = f"/u50/chandd9/downloads/videos"  # folder with your video files
 TRAIN_OUTPUT_DIR = f"{DIR}/train_output" # folder to save .npy feature files
 TEST_OUTPUT_DIR = f"{DIR}/test_output" # folder to save .npy feature files
 VALIDATION_OUTPUT_DIR = f"{DIR}/validation_output" # folder to save .npy feature files
@@ -29,7 +31,6 @@ VALIDATION_OUTPUT_DIR_CLEANED = f"{DIR}/validation_output_cleaned" # folder to s
 TRAIN_OUTPUT_DIR_NORMALIZED = f"{DIR}/train_output_normalized"
 TEST_OUTPUT_DIR_NORMALIZED = f"{DIR}/test_output_normalized"
 VALIDATION_OUTPUT_DIR_NORMALIZED = f"{DIR}/validation_output_normalized"
-
 
 os.makedirs(TRAIN_OUTPUT_DIR, exist_ok=True)
 os.makedirs(TEST_OUTPUT_DIR, exist_ok=True)
@@ -163,18 +164,30 @@ def gen_videos_features(json_path: str=JSON_PATH, overwrite_prev_files:bool=Fals
             elif instance["split"] == "val" :
                 npy_path = os.path.join(VALIDATION_OUTPUT_DIR, f"{instance['video_id']}.npy")
             if overwrite_prev_files :
-                features = extract_features(video_file)
+                # features = extract_features(video_file) #to be changed
+                feature_dict = extract_features(video_file)
+                features = np.concatenate([
+                    feature_dict["hands"],
+                    feature_dict["pose"],
+                    feature_dict["face"]
+                ], axis=0)
                 np.save(npy_path, features)
                 print(f"Saved features: {npy_path}")
             else :
                 if not os.path.exists(npy_path):
                     # print(video_file)
-                    features = extract_features(video_file)
+                    # features = extract_features(video_file) #to be changed
+                    feature_dict = extract_features(video_file)
+                    features = np.concatenate([
+                        feature_dict["hands"],
+                        feature_dict["pose"],
+                        feature_dict["face"]
+                    ], axis=0)
                     np.save(npy_path, features)
                     print(f"Saved features: {npy_path}")
                 else :
                     print(f"Features already generated for {npy_path}, skipped...")
-# gen_videos_features()
+gen_videos_features()
 
 def remove_zero_frames(input_dir: str, output_dir: str, overwrite_prev_file: bool=False) -> None :
     """Frames that have the hands out of view and so don't contribute
