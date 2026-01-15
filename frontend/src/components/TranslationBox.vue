@@ -4,7 +4,6 @@ import { ref } from 'vue'
 // bind this with ML model output later
 const translation = ref('Waiting for sign input...')
 </script>
-
 <template>
     <div
         class="w-80 flex flex-col justify-center items-center
