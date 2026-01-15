@@ -17,14 +17,14 @@ import utils.utils as utils
 # BASE_DIR = Path(__file__).resolve().parents[3] / "archive"
 # DIR = str(BASE_DIR)
 # DIR = "/windows/Users/thats/Documents/archive"
-DIR = "/u50/chandd9/capstone/face_pose"
+DIR = "/windows/Users/thats/Documents/archive"
  # folder where your dataset is
 JSON_PATH = f"{DIR}/WLASL_v0.3.json"
 # VIDEO_DIR = f"{DIR}/videos/"  # folder with your video files
-VIDEO_DIR = f"/u50/chandd9/downloads/videos"  # folder with your video files
-TRAIN_OUTPUT_DIR = f"{DIR}/train_output" # folder to save .npy feature files
-TEST_OUTPUT_DIR = f"{DIR}/test_output" # folder to save .npy feature files
-VALIDATION_OUTPUT_DIR = f"{DIR}/validation_output" # folder to save .npy feature files
+VIDEO_DIR = f"{DIR}/videos/"  # folder with your video files
+TRAIN_OUTPUT_DIR = f"{DIR}/train_output_json" # folder to save .npy feature files
+TEST_OUTPUT_DIR = f"{DIR}/test_output_json" # folder to save .npy feature files
+VALIDATION_OUTPUT_DIR = f"{DIR}/validation_output_json" # folder to save .npy feature files
 TRAIN_OUTPUT_DIR_CLEANED = f"{DIR}/train_output_cleaned" # folder to save .npy feature files
 TEST_OUTPUT_DIR_CLEANED = f"{DIR}/test_output_cleaned" # folder to save .npy feature files
 VALIDATION_OUTPUT_DIR_CLEANED = f"{DIR}/validation_output_cleaned" # folder to save .npy feature files
@@ -124,16 +124,15 @@ def extract_features(video_path: str):
 
     cap.release()
 
-    hand_sequence = np.array(hand_sequence)
-    pose_sequence = np.array(pose_sequence)
-    face_sequence = np.array(face_sequence)
-
-    hand_sequence = hand_sequence.astype(np.float32)
-    pose_sequence = pose_sequence.astype(np.float32)
-    face_sequence = face_sequence.astype(np.float32)
+    # ndarray's aren't serializable to json, could use array.to_list() on them
+    #   but not doing that because its expensive
+    # hand_sequence = np.array(hand_sequence)
+    # pose_sequence = np.array(pose_sequence)
+    # face_sequence = np.array(face_sequence)
 
     return {"hands": hand_sequence, "pose": pose_sequence, "face": face_sequence}
-# print(extract_features(f"{DIR}/videos/69547.mp4"))
+extract_features(f"{DIR}/videos/69547.mp4")
+# sys.exit()
 
 def gen_videos_features(json_path: str=JSON_PATH, overwrite_prev_files:bool=False) -> None :
     """Generate features for each video and save them to disk."""
@@ -158,32 +157,25 @@ def gen_videos_features(json_path: str=JSON_PATH, overwrite_prev_files:bool=Fals
                 continue
 
             if instance["split"] == "train":
-                npy_path = os.path.join(TRAIN_OUTPUT_DIR, f"{instance['video_id']}.npy")
+                npy_path = os.path.join(TRAIN_OUTPUT_DIR, f"{instance['video_id']}.json")
             elif instance["split"] == "test" :
-                npy_path = os.path.join(TEST_OUTPUT_DIR, f"{instance['video_id']}.npy")
+                npy_path = os.path.join(TEST_OUTPUT_DIR, f"{instance['video_id']}.json")
             elif instance["split"] == "val" :
-                npy_path = os.path.join(VALIDATION_OUTPUT_DIR, f"{instance['video_id']}.npy")
+                npy_path = os.path.join(VALIDATION_OUTPUT_DIR, f"{instance['video_id']}.json")
             if overwrite_prev_files :
                 # features = extract_features(video_file) #to be changed
                 feature_dict = extract_features(video_file)
-                features = np.concatenate([
-                    feature_dict["hands"],
-                    feature_dict["pose"],
-                    feature_dict["face"]
-                ], axis=0)
-                np.save(npy_path, features)
+                with open(npy_path, 'w') as f :
+                    json.dump(feature_dict, f)
                 print(f"Saved features: {npy_path}")
             else :
                 if not os.path.exists(npy_path):
                     # print(video_file)
                     # features = extract_features(video_file) #to be changed
+                    # not sure what above comment is talking about so leaving it in
                     feature_dict = extract_features(video_file)
-                    features = np.concatenate([
-                        feature_dict["hands"],
-                        feature_dict["pose"],
-                        feature_dict["face"]
-                    ], axis=0)
-                    np.save(npy_path, features)
+                    with open(npy_path, 'w') as f :
+                        json.dump(feature_dict, f)
                     print(f"Saved features: {npy_path}")
                 else :
                     print(f"Features already generated for {npy_path}, skipped...")
