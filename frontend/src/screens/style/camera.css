@@ -1,0 +1,159 @@
+.camera-wrapper {
+  min-height: 100vh;
+  width: 100%;
+  background: #e0f2ff;
+  /* background: linear-gradient(to bottom, #e9f6ff, #b5daf5, #a6d0f1, #ffffff); */
+  background-size: 200% 200%;
+  display: flex;
+}
+
+.sidebar {
+  display: none; /* hidden */ /* lg:flex */
+}
+@media (min-width: 1024px) {
+  .sidebar {
+    display: flex;
+  }
+}
+.sidebar {
+  width: 13rem; /* w-52 */
+  background-color: rgba(147, 194, 233, 0.9); /* bg-[#93c2e9]/90 */
+  flex-direction: column; /* flex-col */
+  align-items: center; /* items-center */
+  justify-content: center; /* justify-center */
+  color: white; /* text-white */
+  font-weight: 600; /* font-semibold */
+  letter-spacing: 0.025em; /* tracking-wide */
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1); /* shadow-[...] */
+  backdrop-filter: blur(12px); /* backdrop-blur-md */
+  border-top-right-radius: 1.5rem; /* rounded-r-3xl */
+  border-bottom-right-radius: 1.5rem;
+}
+
+main {
+  flex: 1; /* flex-1 */
+  display: flex; /* flex */
+  align-items: center; /* items-center */
+  justify-content: center; /* justify-center */
+  padding: 1.5rem; /* p-6 */
+}
+
+.outer-container {
+  position: relative; /* relative */
+  width: 100%; /* w-full */
+  max-width: 64rem; /* max-w-5xl */
+  height: 80vh; /* h-[80vh] */
+  background-color: rgba(255, 255, 255, 0.2); /* bg-white/20 */
+  backdrop-filter: blur(12px); /* backdrop-blur-md */
+  border-radius: 2.5rem; /* rounded-[2.5rem] */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* border-white/30 */
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1); /* shadow-[...] */
+  overflow: hidden; /* overflow-hidden */
+  display: flex; /* flex */
+  flex-direction: column;
+}
+
+.camera-panel {
+  position: relative; /* relative */
+  flex: 3.5; /* flex-1 */
+  display: flex; /* flex */
+  align-items: center; /* items-center */
+  justify-content: center; /* justify-center */
+  border-top-left-radius: 2.5rem;
+  border-top-right-radius: 2.5rem;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  overflow: hidden; /* overflow-hidden */
+}
+
+.translation-box {
+  flex: 0.5;
+  width: 100%; /* ensure full width */
+  border-bottom-left-radius: 2.5rem;
+  border-bottom-right-radius: 2.5rem;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.camera-panel video {
+  position: absolute; /* absolute */
+  top: 0; /* top-0 */
+  left: 0; /* left-0 */
+  width: 100%; /* w-full */
+  height: 100%; /* h-full */
+  object-fit: cover; /* object-cover */
+  background-color: #0f172a; /* bg-[#0F172A] */
+}
+
+.gradient-overlay {
+  position: absolute; /* absolute */
+  inset: 0; /* inset-0 */
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.4),
+    transparent,
+    transparent
+  ); /* from-black/40 via-transparent to-transparent */
+}
+
+.button-container {
+  position: absolute; /* absolute */
+  bottom: 2rem; /* bottom-8 */
+  left: 50%; /* left-1/2 */
+  transform: translateX(-50%); /* -translate-x-1/2 */
+  display: flex; /* flex */
+  align-items: center; /* items-center */
+  justify-content: center; /* justify-center */
+}
+
+.button {
+  border-radius: 9999px; /* rounded-full */
+  padding: 0; /* p-0 */
+  margin: 0; /* m-0 */
+  aspect-ratio: 1 / 1; /* aspect-square */
+  width: 3.5rem; /* w-14 */
+  border: 2px solid rgba(255, 255, 255, 0.8); /* border-white/80 */
+  background-color: rgba(255, 255, 255, 0.1); /* bg-white/10 */
+  backdrop-filter: blur(12px); /* backdrop-blur-md */
+  display: flex; /* flex */
+  align-items: center; /* items-center */
+  justify-content: center; /* justify-center */
+  transition: all 200ms; /* transition-all duration-200 */
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); /* shadow-[...] */
+}
+.button:hover {
+  background-color: rgba(255, 255, 255, 0.2); /* hover:bg-white/20 */
+}
+.button:active {
+  transform: scale(0.95); /* active:scale-95 */
+} /* Responsive widths */
+@media (min-width: 640px) {
+  /* sm */
+  .button {
+    width: 4rem;
+  } /* sm:w-16 */
+}
+@media (min-width: 768px) {
+  /* md */
+  .button {
+    width: 5rem;
+  } /* md:w-20 */
+}
+
+.button i {
+  color: white; /* text-white */
+  font-size: 1.5rem; /* text-2xl */
+  filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.4)); /* drop-shadow-lg */
+}
+@media (min-width: 640px) {
+  /* sm */
+  .button i {
+    font-size: 1.875rem;
+  } /* text-3xl */
+}
+@media (min-width: 768px) {
+  /* md */
+  .button i {
+    font-size: 2.25rem;
+  } /* text-4xl */
+}
