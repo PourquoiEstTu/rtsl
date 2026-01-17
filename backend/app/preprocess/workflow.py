@@ -234,6 +234,11 @@ def normalize_features_interpolation(input_dir:str, output_dir:str, target_lengt
     where each normalized feature file is an interpolated 2d array with consistent dimension
     Input: directory with generated features, directory where processed files are saved"""
     
+    # when output directory doesn't exist
+    if not os.path.isdir(output_dir):
+        print("ERROR: output directory doesn't exist")
+        return
+    
     for file in sorted(os.scandir(input_dir), key=lambda e: e.name):
         if file.name == "ordered_labels.npy":
             continue
@@ -242,7 +247,11 @@ def normalize_features_interpolation(input_dir:str, output_dir:str, target_lengt
             if os.path.exists(out_path) and not overwrite:
                 continue
             
-            np.save(out_path, interpolate_features(np.load(file.path), target_length))
+            features = np.load(file.path)
+            if len(features > 0):
+                np.save(out_path, interpolate_features(features, target_length))
+            else:
+                print(f"ERROR: Skipping {file.name}")
 
 def flatten_directory(input_dir: str, output_dir_name: str=FLATTENED_OUTPUT_DIR, overwrite_prev_file: bool=False) -> None :
     """ Converts a directory of normalized feature .npy files (2D arrays representing frame x features) into a 2D array representing (word x feature).
