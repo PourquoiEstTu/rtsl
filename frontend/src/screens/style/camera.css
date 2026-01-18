@@ -20,7 +20,7 @@
   background-color: rgba(147, 194, 233, 0.9); /* bg-[#93c2e9]/90 */
   flex-direction: column; /* flex-col */
   align-items: center; /* items-center */
-  justify-content: center; /* justify-center */
+  justify-content: space-between; /* justify-center */
   color: white; /* text-white */
   font-weight: 600; /* font-semibold */
   letter-spacing: 0.025em; /* tracking-wide */
@@ -28,6 +28,33 @@
   backdrop-filter: blur(12px); /* backdrop-blur-md */
   border-top-right-radius: 1.5rem; /* rounded-r-3xl */
   border-bottom-right-radius: 1.5rem;
+}
+
+.camera-logo {
+  height: 100px;
+  width: auto;
+  margin: 0 auto;
+}
+
+.sidebar-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1f2d3d;
+  margin: 0 auto;
+}
+
+.sidebar-subtitle {
+  font-size: 14px;
+  color: #475569;
+  margin-top: 0px;
+  text-align: center;
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 10px;
 }
 
 main {
@@ -42,7 +69,7 @@ main {
   position: relative; /* relative */
   width: 100%; /* w-full */
   max-width: 64rem; /* max-w-5xl */
-  height: 80vh; /* h-[80vh] */
+  height: 90vh; /* h-[80vh] */
   background-color: rgba(255, 255, 255, 0.2); /* bg-white/20 */
   backdrop-filter: blur(12px); /* backdrop-blur-md */
   border-radius: 2.5rem; /* rounded-[2.5rem] */

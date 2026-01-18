@@ -2,6 +2,7 @@
 import { onMounted, onUnmounted, ref } from "vue";
 import Button from "@/volt/Button.vue";
 import TranslationBox from "@/components/TranslationBox.vue";
+import logo from "@/assets/logo_without_text-removebg-preview.png";
 import "@/screens/style/camera.css";
 
 const video = ref<HTMLVideoElement | null>(null);
@@ -32,7 +33,12 @@ onUnmounted(() => {
 <template>
   <div class="camera-wrapper">
     <aside class="sidebar">
-      <span class="text-lg">MENU</span>
+      <span class="sidebar-title">Translator</span>
+      <div class="logo">
+        <img :src="logo" alt="RTSL Logo" class="camera-logo" />
+        <h1 class="sidebar-title">RTSL</h1>
+        <p class="sidebar-subtitle">Real-Time Sign Language</p>
+      </div>
     </aside>
     <main>
       <div class="outer-container">
