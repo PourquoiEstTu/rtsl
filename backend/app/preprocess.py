@@ -32,15 +32,15 @@ TRAIN_OUTPUT_DIR_NORMALIZED = f"{DIR}/train_output_normalized"
 TEST_OUTPUT_DIR_NORMALIZED = f"{DIR}/test_output_normalized"
 VALIDATION_OUTPUT_DIR_NORMALIZED = f"{DIR}/validation_output_normalized"
 
-os.makedirs(TRAIN_OUTPUT_DIR, exist_ok=True)
-os.makedirs(TEST_OUTPUT_DIR, exist_ok=True)
-os.makedirs(VALIDATION_OUTPUT_DIR, exist_ok=True)
-os.makedirs(TRAIN_OUTPUT_DIR_CLEANED, exist_ok=True)
-os.makedirs(TEST_OUTPUT_DIR_CLEANED, exist_ok=True)
-os.makedirs(VALIDATION_OUTPUT_DIR_CLEANED, exist_ok=True)
-os.makedirs(TRAIN_OUTPUT_DIR_NORMALIZED, exist_ok=True)
-os.makedirs(TEST_OUTPUT_DIR_NORMALIZED, exist_ok=True)
-os.makedirs(VALIDATION_OUTPUT_DIR_NORMALIZED, exist_ok=True)
+# os.makedirs(TRAIN_OUTPUT_DIR, exist_ok=True)
+# os.makedirs(TEST_OUTPUT_DIR, exist_ok=True)
+# os.makedirs(VALIDATION_OUTPUT_DIR, exist_ok=True)
+# os.makedirs(TRAIN_OUTPUT_DIR_CLEANED, exist_ok=True)
+# os.makedirs(TEST_OUTPUT_DIR_CLEANED, exist_ok=True)
+# os.makedirs(VALIDATION_OUTPUT_DIR_CLEANED, exist_ok=True)
+# os.makedirs(TRAIN_OUTPUT_DIR_NORMALIZED, exist_ok=True)
+# os.makedirs(TEST_OUTPUT_DIR_NORMALIZED, exist_ok=True)
+# os.makedirs(VALIDATION_OUTPUT_DIR_NORMALIZED, exist_ok=True)
 
 # INITIALIZE MEDIAPIPE HOLISTIC
 # essentially uses the mediapipe holistic model to extract hands and pose features
@@ -405,6 +405,39 @@ def hand_keypoint_to_img(keypoint_file: str, img_size: int = 200) :
                     keypoint_frame[x_coord] = img_size - 1
                 img[keypoint_frame[y_coord]][keypoint_frame[x_coord]] = 1
         imgs.append(img)
+        # add line between pose keypoints for better visualization
+        POSE_CONNECTIONS = [
+            (11, 13), (13, 15), # left arm points?
+            (12, 14), (14, 16), # right arm points?
+            (11, 12) # shoulder points?
+        ]
+        HAND_CONNECTIONS = [
+            (0, 1), (1, 2), (2, 3), (3, 4), # thumb
+            (0, 5), (5, 6), (6, 7), (7, 8), # index finger
+            (0, 9), (9,10), (10,11), (11,12), # middle finger
+            (0,13), (13,14), (14,15), (15,16), # ring finger
+            (0,17), (17,18), (18,19), (19,20), # pinky finger
+            # palm connections?
+        ]
+        for connection in POSE_CONNECTIONS :
+            x1 = pose_keypoints[frame][connection[0]*3]
+            y1 = pose_keypoints[frame][connection[0]*3 + 1]
+            x2 = pose_keypoints[frame][connection[1]*3]
+            y2 = pose_keypoints[frame][connection[1]*3 + 1]
+            cv2.line(img, (x1, y1), (x2, y2), (1), 1)
+        for connection in HAND_CONNECTIONS :
+            # right hand
+            x1 = hand_keypoints[frame][connection[0]*3]
+            y1 = hand_keypoints[frame][connection[0]*3 + 1]
+            x2 = hand_keypoints[frame][connection[1]*3]
+            y2 = hand_keypoints[frame][connection[1]*3 + 1]
+            cv2.line(img, (x1, y1), (x2, y2), (1), 1)
+            # left hand
+            x1 = hand_keypoints[frame][(connection[0]+21)*3]
+            y1 = hand_keypoints[frame][(connection[0]+21)*3 + 1]
+            x2 = hand_keypoints[frame][(connection[1]+21)*3]
+            y2 = hand_keypoints[frame][(connection[1]+21)*3 + 1]
+            cv2.line(img, (x1, y1), (x2, y2), (1), 1)
         # visualizing each frame (hold esc to play it like a video)
         while 1 :
             cv2.imshow('', img)
@@ -414,7 +447,8 @@ def hand_keypoint_to_img(keypoint_file: str, img_size: int = 200) :
             elif k==-1:  # normally -1 returned,so don't print it
                 continue
     return imgs
-hand_keypoint_to_img(f"{TRAIN_OUTPUT_DIR}/69534.json")
+# hand_keypoint_to_img(f"{TRAIN_OUTPUT_DIR}/69534.json")
+# hand_keypoint_to_img(f"00335.json")
 
 # currently always overwrites old files; make it not overwrite them
 def convert_keypoints_dir_to_video(input_dir: str, output_dir: str) :
