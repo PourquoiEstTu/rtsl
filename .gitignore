@@ -38,3 +38,21 @@ backend/translation/cache/
 *.pt
 backend/translation/outputs/
 backend/translation/logs/
+
+
+# Hugging Face cache
+cache/
+**/cache/
+.cache/
+**/.cache/
+**/huggingface/
+
+
+# TensorBoard
+events.out.tfevents.*
+
+# PyTorch
+*.pt
+*.pth
+*.bin
+*.safetensors
