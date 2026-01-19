@@ -27,7 +27,7 @@ build/
 # OS
 .DS_Store
 
-# ML outputs
+#ML outputs 
 backend/translation/outputs/
 backend/translation/logs/
 backend/translation/cache/
@@ -36,5 +36,3 @@ backend/translation/cache/
 *.safetensors
 *.bin
 *.pt
-backend/translation/outputs/
-backend/translation/logs/
