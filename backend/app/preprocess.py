@@ -353,9 +353,12 @@ def hand_keypoint_to_img(keypoint_file: str, img_size: int = 300) :
     with open(keypoint_file, 'r') as f :
         data = json.load(f)
     # keypoints are all between 0 and 1, so we un-normalize them
-    hand_keypoints = ( np.array(data["hands"]) * img_size ).astype(np.int64)
-    face_keypoints = ( np.array(data["face"]) * img_size ).astype(np.int64)
-    pose_keypoints = ( np.array(data["pose"]) * img_size ).astype(np.int64)
+    hand_keypoints = ( np.array(data["hands"][:-1]) * img_size ).astype(np.int64)
+    # for frame in data["face"] :
+    #     print(len(frame))
+    # return
+    face_keypoints = ( np.array(data["face"][:-1]) * img_size ).astype(np.int64)
+    pose_keypoints = ( np.array(data["pose"][:-1]) * img_size ).astype(np.int64)
     
     keypoints_per_frame_hand = hand_keypoints.shape[1]
     keypoints_per_frame_face = face_keypoints.shape[1]
@@ -432,31 +435,43 @@ def hand_keypoint_to_img(keypoint_file: str, img_size: int = 300) :
             y2 = hand_keypoints[frame][(connection[1]+21)*3 + 1]
             cv2.line(img, (x1, y1), (x2, y2), (1), 1)
         # visualizing each frame (hold esc to play it like a video)
-        while 1 :
-            cv2.imshow('', img)
-            k = cv2.waitKey(100)
-            if k==27:    # Esc key to stop
-                break
-            elif k==-1:  # normally -1 returned,so don't print it
-                continue
+        # while 1 :
+        #     cv2.imshow('', img)
+        #     k = cv2.waitKey(100)
+        #     if k==27:    # Esc key to stop
+        #         break
+        #     elif k==-1:  # normally -1 returned,so don't print it
+        #         continue
     return imgs
-hand_keypoint_to_img(f"{TRAIN_OUTPUT_DIR}/69538.json")
+# hand_keypoint_to_img(f"{TRAIN_OUTPUT_DIR}/01384.json")
 # hand_keypoint_to_img(f"00335.json")
 
 # currently always overwrites old files; make it not overwrite them
-def convert_keypoints_dir_to_video(input_dir: str, output_dir: str) :
+def convert_keypoints_dir_to_video(input_dir: str, output_dir: str, overwrite_file: bool = False) :
     if not os.path.exists(input_dir) :
         raise Exception("Input directory does not exist.")
     if not os.path.exists(output_dir) :
         os.makedirs(output_dir, exist_ok=False)
 
+    fail_count = 0
+
     for file in sorted(os.scandir(input_dir), key=lambda e: e.name) :
-        if file.is_file() and file.name.endswith(".npy") :
+        if file.is_file() and file.name.endswith(".json") :
+            if not overwrite_file and os.path.exists(f"{output_dir}/{file.name.strip('.json')}.npy") :
+                print(f"{file.name.strip('.json')}.npy already exists... skipped")
+                continue
             if "ordered_labels" in file.name :
                 print(f"{file.name} encountered... Skipping.")
                 continue
-            video = hand_keypoint_to_img(f"{input_dir}/{file.name}", 200)
-            npy_path = os.path.join(output_dir, file.name)
+            # print(file.name)
+            try :
+                video = hand_keypoint_to_img(f"{input_dir}/{file.name}", 300)
+            except :
+                fail_count += 1
+                print(f"Saving {file.name} failed")
+                continue
+            npy_path = os.path.join(output_dir, f"{file.name.strip('.json')}.npy")
             np.save(npy_path, video)
-            print(f"{file.name} saved to {output_dir}")
-# convert_keypoints_dir_to_video(TRAIN_OUTPUT_DIR_NORMALIZED, f"{DIR}/train_output_normalized_video")
+            print(f"{file.name.strip('.json')}.npy saved to {output_dir}")
+    print(f"{fail_count} number of files failed to save")
+convert_keypoints_dir_to_video(TRAIN_OUTPUT_DIR, f"{DIR}/train_output_video", True)
