@@ -1,11 +1,13 @@
 import os
 import sys
 import json
+import time
 import cv2
 import numpy as np
 import mediapipe as mp
 from sklearn.preprocessing import LabelEncoder
 from pathlib import Path
+import ffmpeg
 import utils.utils as utils
 # commenting some of these out can make script run faster if you only want to call
 #   specific functions
@@ -353,12 +355,12 @@ def hand_keypoint_to_img(keypoint_file: str, img_size: int = 300) :
     with open(keypoint_file, 'r') as f :
         data = json.load(f)
     # keypoints are all between 0 and 1, so we un-normalize them
-    hand_keypoints = ( np.array(data["hands"][:-1]) * img_size ).astype(np.int64)
+    hand_keypoints = ( np.array(data["hands"][:-1]) * img_size ).astype(np.int16)
     # for frame in data["face"] :
     #     print(len(frame))
     # return
-    face_keypoints = ( np.array(data["face"][:-1]) * img_size ).astype(np.int64)
-    pose_keypoints = ( np.array(data["pose"][:-1]) * img_size ).astype(np.int64)
+    face_keypoints = ( np.array(data["face"][:-1]) * img_size ).astype(np.uint16)
+    pose_keypoints = ( np.array(data["pose"][:-1]) * img_size ).astype(np.uint16)
     
     keypoints_per_frame_hand = hand_keypoints.shape[1]
     keypoints_per_frame_face = face_keypoints.shape[1]
@@ -442,9 +444,36 @@ def hand_keypoint_to_img(keypoint_file: str, img_size: int = 300) :
         #         break
         #     elif k==-1:  # normally -1 returned,so don't print it
         #         continue
+    # for img in imgs :
+    #     cv2.imshow('', img)
+    #     k = cv2.waitKey(100)
+    #     if k==27:    # Esc key to stop
+    #         break
+    #     elif k==-1:  # normally -1 returned,so don't print it
+    #         continue
     return imgs
-# hand_keypoint_to_img(f"{TRAIN_OUTPUT_DIR}/01384.json")
+# hand_keypoint_to_img(f"{TRAIN_OUTPUT_DIR}/69538.json")
 # hand_keypoint_to_img(f"00335.json")
+
+# def vidwrite(fn, images, framerate=60, vcodec='libx264'):
+#     if not isinstance(images, np.ndarray):
+#         images = np.asarray(images)
+#     n,height,width,channels = images.shape
+#     process = (
+#         ffmpeg
+#             .input('pipe:', format='rawvideo', pix_fmt='rgb24', s='{}x{}'.format(width, height))
+#             .output(fn, pix_fmt='yuv420p', vcodec=vcodec, r=framerate)
+#             .overwrite_output()
+#             .run_async(pipe_stdin=True)
+#     )
+#     for frame in images:
+#         process.stdin.write(
+#             frame
+#                 .astype(np.uint8)
+#                 .tobytes()
+#         )
+#     process.stdin.close()
+#     process.wait()
 
 # currently always overwrites old files; make it not overwrite them
 def convert_keypoints_dir_to_video(input_dir: str, output_dir: str, overwrite_file: bool = False) :
@@ -457,8 +486,8 @@ def convert_keypoints_dir_to_video(input_dir: str, output_dir: str, overwrite_fi
 
     for file in sorted(os.scandir(input_dir), key=lambda e: e.name) :
         if file.is_file() and file.name.endswith(".json") :
-            if not overwrite_file and os.path.exists(f"{output_dir}/{file.name.strip('.json')}.npy") :
-                print(f"{file.name.strip('.json')}.npy already exists... skipped")
+            if not overwrite_file and os.path.exists(f"{output_dir}/{file.name.strip('.json')}.mp4") :
+                print(f"{file.name.strip('.json')}.mp4 already exists... skipped")
                 continue
             if "ordered_labels" in file.name :
                 print(f"{file.name} encountered... Skipping.")
@@ -470,8 +499,48 @@ def convert_keypoints_dir_to_video(input_dir: str, output_dir: str, overwrite_fi
                 fail_count += 1
                 print(f"Saving {file.name} failed")
                 continue
-            npy_path = os.path.join(output_dir, f"{file.name.strip('.json')}.npy")
-            np.save(npy_path, video)
-            print(f"{file.name.strip('.json')}.npy saved to {output_dir}")
+            # npy_path = os.path.join(output_dir, f"{file.name.strip('.json')}.npy")
+            # np.save(npy_path, video)
+            size = 300, 300
+            duration = 2
+            fps = 25
+            out = cv2.VideoWriter(f"{output_dir}/{file.name.strip('.json')}.mp4", cv2.VideoWriter_fourcc(*'ffv1'), fps, (300, 300), False)
+            for frame in video :
+                # data = np.random.randint(0, 256, size, dtype='uint8')
+                out.write(frame.astype(np.uint16))
+                # while 1 :
+                #     cv2.imshow('', frame)
+                #     k = cv2.waitKey(100)
+                #     if k==27:    # Esc key to stop
+                #         break
+                #     elif k==-1:  # normally -1 returned,so don't print it
+                #         continue
+            out.release()
+            # for frame in video :
+            #     cv2.imshow('', frame)
+            #     k = cv2.waitKey(100)
+            #     if k==27:    # Esc key to stop
+            #         break
+            #     elif k==-1:  # normally -1 returned,so don't print it
+            #         continue
+            return
+            # framerate=20
+            # process = (
+            #     ffmpeg
+            #         .input('pipe:', format='rawvideo', pix_fmt='grayf16', s='300x300')
+            #         .output("strict", "2", f"{output_dir}/{file.name.strip('.json')}.avi", pix_fmt='grayf16', vcodec="ffv1", r=framerate)
+            #         .overwrite_output()
+            #         .run_async(pipe_stdin=True)
+            # )
+            # for frame in video:
+            #     process.stdin.write(
+            #         frame
+            #             .astype(np.uint8)
+            #             .tobytes()
+            #     )
+            # process.stdin.close()
+            # process.wait()
+            # vidwrite(f"{output_dir}/{file.name.strip('.json')}.avi", video)
+            print(f"{file.name.strip('.json')}.mp4 saved to {output_dir}")
     print(f"{fail_count} number of files failed to save")
 convert_keypoints_dir_to_video(TRAIN_OUTPUT_DIR, f"{DIR}/train_output_video", True)
