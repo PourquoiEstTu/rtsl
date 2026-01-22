@@ -1,6 +1,3 @@
-"""
-Model creation for ASL gloss-to-text translation
-"""
 import logging
 from transformers import T5ForConditionalGeneration, PreTrainedModel
 
@@ -9,11 +6,8 @@ logger = logging.getLogger(__name__)
 
 def create_model(model_name: str = "t5-small") -> PreTrainedModel:
     """
-    Args:
-        model_name: Name of pretrained T5 model (Options: t5-small, t5-base, t5-large)
-    
-    Returns:
-        Initialized T5 model
+    Args: model_name: Name of pretrained T5 model (Options: t5-small, t5-base, t5-large)  
+    Returns: Initialized T5 model
     """
     logger.info(f"Loading model: {model_name}")
     

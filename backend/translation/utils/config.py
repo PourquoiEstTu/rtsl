@@ -1,6 +1,3 @@
-"""
-Configuration for ASL gloss-to-text translation
-"""
 from dataclasses import dataclass, field
 from typing import Optional
 from pathlib import Path
@@ -8,7 +5,6 @@ from pathlib import Path
 
 @dataclass
 class ModelConfig:
-    """Model architecture configuration"""
     model_name: str = "t5-small"  # t5-small, t5-base, t5-large
     max_input_length: int = 128
     max_target_length: int = 128
@@ -21,7 +17,6 @@ class ModelConfig:
 
 @dataclass
 class DataConfig:
-    """Dataset configuration"""
     use_flores: bool = True  # 2M-Flores-ASL (small, high-quality)
     use_aslg: bool = False   # ASLG-PC12 (large, synthetic)
     
@@ -31,7 +26,6 @@ class DataConfig:
 
 @dataclass
 class TrainingConfig:
-    """Training hyperparameters"""
     # Training
     num_epochs: int = 10
     batch_size: int = 8  # Reduced from 16 for better stability
@@ -70,7 +64,6 @@ class TrainingConfig:
 
 @dataclass
 class Config:
-    """Main configuration"""
     model: ModelConfig = field(default_factory=ModelConfig)
     data: DataConfig = field(default_factory=DataConfig)
     training: TrainingConfig = field(default_factory=TrainingConfig)
