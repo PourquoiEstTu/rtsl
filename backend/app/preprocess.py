@@ -9,6 +9,7 @@ from sklearn.preprocessing import LabelEncoder
 from pathlib import Path
 import ffmpeg
 import utils.utils as utils
+import torch
 # commenting some of these out can make script run faster if you only want to call
 #   specific functions
 
@@ -19,7 +20,7 @@ import utils.utils as utils
 # BASE_DIR = Path(__file__).resolve().parents[3] / "archive"
 # DIR = str(BASE_DIR)
 # DIR = "/windows/Users/thats/Documents/archive"
-DIR = "/Users/dhruv/Desktop/Capstone/directory"
+DIR = "/u50/chandd9/capstone/face_pose"
  # folder where your dataset is
 JSON_PATH = f"{DIR}/WLASL_v0.3.json"
 # VIDEO_DIR = f"{DIR}/videos/"  # folder with your video files
@@ -557,3 +558,74 @@ def convert_keypoints_dir_to_video(input_dir: str, output_dir: str, overwrite_fi
 # convert_keypoints_dir_to_video(TRAIN_OUTPUT_DIR, f"{DIR}/train_output_video", True)
 # print(hand_keypoint_to_img(f"{TRAIN_OUTPUT_DIR}/00335.json"))
 
+
+# alternative method to prepare images for resnet
+def prepare_img_for_resnet(keypoint_file: str, img_size: int = 224, resnet_size: int = 224):
+    """Takes a keypoint JSON file and returns a tensor for ResNet"""
+    # Generate keypoint images
+    imgs = hand_keypoint_to_img(keypoint_file, img_size)
+
+    resnet_imgs = []
+
+    # for each frame in the video
+    # goes from (H, W, 1) -> (H, W) -> normalize -> 
+    # create (3, H, W) tensor -> 
+    # imagenet normalized tensor -> list of tensors
+    for img in imgs:
+        # convert the frame to (H, W) format from (H, W, 1) format 
+        img = img.squeeze(-1)  # -> (H, W)
+        # Resize to ResNet size (224x224)
+        img = cv2.resize(img, (resnet_size, resnet_size), interpolation=cv2.INTER_NEAREST)
+        # Convert to float32 (i think float 32 is the max precision torch supports)
+        img = img.astype(np.float32)
+        # Normalize to [0, 1] (normailization before ImageNet normalization)
+        if img.max() > 0: img /= img.max()
+        # 1-channel → 3-channel
+        img = np.stack([img, img, img], axis=0)  # (3, H, W)
+        # To torch tensor
+        tensor = torch.from_numpy(img)
+        # ImageNet normalization (taken from online)
+        mean = torch.tensor([0.485, 0.456, 0.406]).view(3, 1, 1)
+        std  = torch.tensor([0.229, 0.224, 0.225]).view(3, 1, 1)
+        tensor = (tensor - mean) / std
+        resnet_imgs.append(tensor)
+
+    # stack all frames into a single tensor that resnet can take
+    tensor = torch.stack(resnet_imgs)  # (T, 3, 224, 224)
+
+    # save tensor
+    # base_filename = os.path.basename(keypoint_file).replace('.json', '.pt')
+    # output_path = os.path.join(output_dir, base_filename)
+    # torch.save(tensor, output_path)
+    # print(f"Saved tensor to {output_path}")
+    return tensor
+
+def perpare_all_keypoint_files_for_resnet(input_dir: str, output_dir: str, overwrite: bool = False):
+    """basically runs the prepare_img_for_resnet function on all keypoint files in a directory
+       and saves the resulting tensors to output_dir."""
+    if not os.path.exists(input_dir):
+        raise Exception("Input directory does not exist.")
+
+    for file in sorted(os.scandir(input_dir), key=lambda e: e.name):
+        if file.is_file() and file.name.endswith(".json"):
+            base_filename = os.path.basename(file.path).replace('.json', '.pt')
+            output_path = os.path.join(output_dir, base_filename)
+            if not overwrite and os.path.exists(output_path):
+                print(f"{base_filename} already exists... skipped")
+                continue
+            try:
+                tensor = prepare_img_for_resnet(file.path, img_size=300, resnet_size=224)
+                torch.save(tensor, output_path)
+            except Exception as e:
+                print(f"Preparing {file.name} failed: {e}")
+                continue
+            print(f"{base_filename} prepared for ResNet and saved to {output_dir}")
+    return 
+# perpare_all_keypoint_files_for_resnet(TRAIN_OUTPUT_DIR, f"{DIR}/train_output_resnet", True)
+# perpare_all_keypoint_files_for_resnet(TEST_OUTPUT_DIR, f"{DIR}/test_output_resnet", True)
+# perpare_all_keypoint_files_for_resnet(VALIDATION_OUTPUT_DIR, f"{DIR}/val_output_resnet", True)
+
+# print(prepare_img_for_resnet(f"{TRAIN_OUTPUT_DIR}/00335.json").shape)
+# outputs torch.Size([44, 3, 224, 224])
+# 44 frames in video 
+# each frame is a 3x224x224 tensor
