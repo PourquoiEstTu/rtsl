@@ -3,6 +3,7 @@ import { ref, computed, onMounted, onUnmounted } from "vue";
 import logo from "@/assets/logo_without_text-removebg-preview.png";
 import { useRouter } from "vue-router";
 import "@/screens/style/home.css";
+import "@coreui/icons/css/all.min.css";
 
 const router = useRouter();
 
@@ -61,7 +62,7 @@ function goToAbout() {
 
       <div class="home-card" v-if="isDesktop" @click="goToWebExtension">
         <div class="home-icon">
-          <i class="pi pi-microchip"></i>
+          <i class="cil-puzzle"></i>
         </div>
         <h2 class="home-card-title">Download the<br />Web Extension</h2>
         <p class="home-card-desc">Zoom / Meet / Teams</p>

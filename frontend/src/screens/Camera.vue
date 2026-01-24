@@ -2,6 +2,8 @@
 import { onMounted, onUnmounted, ref } from "vue";
 import Button from "@/volt/Button.vue";
 import TranslationBox from "@/components/TranslationBox.vue";
+import logo from "@/assets/logo_without_text-removebg-preview.png";
+import "@/screens/style/camera.css";
 import Sidebar from "@/components/Sidebar.vue";
 
 const video = ref<HTMLVideoElement | null>(null);
@@ -30,13 +32,44 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <!-- Root layout -->
+  <div class="camera-wrapper">
+    <aside class="sidebar">
+      <div>
+        <span class="sidebar-title">Translator</span>
+        <Sidebar />
+      </div>
+      <div class="logo">
+        <img :src="logo" alt="RTSL Logo" class="camera-logo" />
+        <h1 class="sidebar-title">RTSL</h1>
+        <p class="sidebar-subtitle">Real-Time Sign Language</p>
+      </div>
+    </aside>
+    <main>
+      <div class="outer-container">
+        <div class="camera-panel">
+          <video ref="video" autoplay playsinline />
+          <div class="background-gradient"></div>
+
+          <div class="button-container">
+            <Button class="button">
+              <i class="play-icon pi pi-play"></i>
+            </Button>
+          </div>
+        </div>
+        <TranslationBox class="translation-box" />
+      </div>
+    </main>
+  </div>
+</template>
+<!---
+<template>
+   Root layout
   <div class="flex h-dvh w-full overflow-hidden bg-[#E0F2FF]">
 
-    <!-- Sidebar (visible on laptop only via Sidebar.vue CSS) -->
+    Sidebar (visible on laptop only via Sidebar.vue CSS)
     <Sidebar />
 
-    <!-- Main camera area -->
+    Main camera area
     <main class="flex-1 flex items-center justify-center p-6">
       <div
         class="relative w-full max-w-5xl h-[80vh]
@@ -45,7 +78,7 @@ onUnmounted(() => {
                overflow-hidden flex"
       >
 
-        <!-- Camera feed -->
+        Camera feed
         <div
           class="relative flex-1 flex items-center justify-center
                  rounded-l-[2.5rem] overflow-hidden"
@@ -57,10 +90,10 @@ onUnmounted(() => {
             playsinline
           />
 
-          <!-- Subtle overlay -->
+          Subtle overlay
           <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
 
-          <!-- Play button -->
+          Play button
           <div
             class="absolute bottom-8 left-1/2 -translate-x-1/2
                    flex items-center justify-center"
@@ -82,9 +115,10 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <!-- Translation panel -->
+        Translation panel
         <TranslationBox />
       </div>
     </main>
   </div>
 </template>
+-->

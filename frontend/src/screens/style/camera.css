@@ -63,6 +63,7 @@ main {
   align-items: center; /* items-center */
   justify-content: center; /* justify-center */
   padding: 1.5rem; /* p-6 */
+  margin-left: 220px;
 }
 
 .outer-container {
@@ -183,4 +184,10 @@ main {
   .button i {
     font-size: 2.25rem;
   } /* text-4xl */
+}
+
+@media (min-width: 768px) {
+  main {
+    margin-left: 0;
+  }
 }
