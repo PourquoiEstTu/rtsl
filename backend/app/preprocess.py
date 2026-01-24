@@ -19,7 +19,7 @@ import utils.utils as utils
 # BASE_DIR = Path(__file__).resolve().parents[3] / "archive"
 # DIR = str(BASE_DIR)
 # DIR = "/windows/Users/thats/Documents/archive"
-DIR = "/windows/Users/thats/Documents/archive"
+DIR = "/Users/dhruv/Desktop/Capstone/directory"
  # folder where your dataset is
 JSON_PATH = f"{DIR}/WLASL_v0.3.json"
 # VIDEO_DIR = f"{DIR}/videos/"  # folder with your video files
@@ -504,10 +504,21 @@ def convert_keypoints_dir_to_video(input_dir: str, output_dir: str, overwrite_fi
             size = 300, 300
             duration = 2
             fps = 25
-            out = cv2.VideoWriter(f"{output_dir}/{file.name.strip('.json')}.mp4", cv2.VideoWriter_fourcc(*'ffv1'), fps, (300, 300), False)
+            out = cv2.VideoWriter(f"{output_dir}/{file.name.strip('.json')}.avi", cv2.VideoWriter_fourcc(*'ffv1'), fps, (300, 300), False)
             for frame in video :
                 # data = np.random.randint(0, 256, size, dtype='uint8')
-                out.write(frame.astype(np.uint16))
+                # print(frame.dtype, frame.min(), frame.max())
+                # need to normalize the data because its float16 and cv2.VideoWriter takes uint8 (from what i found online)
+                frame_norm = cv2.normalize(
+                    frame,
+                    None,
+                    alpha=0,
+                    beta=255,
+                    norm_type=cv2.NORM_MINMAX
+                )
+                frame_u8 = frame_norm.astype(np.uint8)
+                out.write(frame_u8)
+                # out.write(frame.astype(np.uint8))
                 # while 1 :
                 #     cv2.imshow('', frame)
                 #     k = cv2.waitKey(100)
@@ -543,4 +554,6 @@ def convert_keypoints_dir_to_video(input_dir: str, output_dir: str, overwrite_fi
             # vidwrite(f"{output_dir}/{file.name.strip('.json')}.avi", video)
             print(f"{file.name.strip('.json')}.mp4 saved to {output_dir}")
     print(f"{fail_count} number of files failed to save")
-convert_keypoints_dir_to_video(TRAIN_OUTPUT_DIR, f"{DIR}/train_output_video", True)
+# convert_keypoints_dir_to_video(TRAIN_OUTPUT_DIR, f"{DIR}/train_output_video", True)
+# print(hand_keypoint_to_img(f"{TRAIN_OUTPUT_DIR}/00335.json"))
+
