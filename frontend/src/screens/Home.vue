@@ -59,7 +59,7 @@ function goToAbout() {
           <i class="pi pi-question"></i>
         </div>
         <h2 class="home-card-title">
-          About &<br />How to Use
+          About Us
         </h2>
         <p class="home-card-desc">Setup-guide + Tips</p>
       </div>

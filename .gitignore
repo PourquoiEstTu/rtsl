@@ -5,6 +5,7 @@ __pycache__/
 venv/
 .env
 backend/.venv/
+rtsl/
 
 # models / data
 *.onnx
