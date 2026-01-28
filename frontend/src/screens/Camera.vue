@@ -122,13 +122,13 @@ function drawLandmarks(ctx: CanvasRenderingContext2D, results: HandLandmarkerRes
 
       ctx.beginPath();
       ctx.arc(x, y, 5, 0, 2 * Math.PI);
-      ctx.fillStyle = "#00FF00";
+      ctx.fillStyle = "#FFFF00";
       ctx.fill();
     }
 
     // Draw connections between landmarks
     const connections = HandLandmarker.HAND_CONNECTIONS;
-    ctx.strokeStyle = "#00FF00";
+    ctx.strokeStyle = "#FFFF00";
     ctx.lineWidth = 2;
 
     for (const conn of connections) {
