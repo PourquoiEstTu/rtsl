@@ -7,7 +7,7 @@ import numpy as np
 import mediapipe as mp
 from sklearn.preprocessing import LabelEncoder
 from pathlib import Path
-import ffmpeg
+# import ffmpeg
 import utils.utils as utils
 import torch
 # commenting some of these out can make script run faster if you only want to call
@@ -487,38 +487,43 @@ def convert_keypoints_dir_to_video(input_dir: str, output_dir: str, overwrite_fi
 
     for file in sorted(os.scandir(input_dir), key=lambda e: e.name) :
         if file.is_file() and file.name.endswith(".json") :
-            if not overwrite_file and os.path.exists(f"{output_dir}/{file.name.strip('.json')}.mp4") :
-                print(f"{file.name.strip('.json')}.mp4 already exists... skipped")
-                continue
+            # if not overwrite_file and os.path.exists(f"{output_dir}/{file.name.strip('.json')}.mp4") :
+            #     print(f"{file.name.strip('.json')}.mp4 already exists... skipped")
+            #     continue
             if "ordered_labels" in file.name :
                 print(f"{file.name} encountered... Skipping.")
                 continue
             # print(file.name)
             try :
                 video = hand_keypoint_to_img(f"{input_dir}/{file.name}", 300)
+                save_path = os.path.join(output_dir, file.name.strip(".json"))
+                np.save(save_path, video)
+                print(f"Video {file.name} saved to {output_dir}")
+                # print(save_path)
+                return
             except :
                 fail_count += 1
                 print(f"Saving {file.name} failed")
                 continue
             # npy_path = os.path.join(output_dir, f"{file.name.strip('.json')}.npy")
             # np.save(npy_path, video)
-            size = 300, 300
-            duration = 2
-            fps = 25
-            out = cv2.VideoWriter(f"{output_dir}/{file.name.strip('.json')}.avi", cv2.VideoWriter_fourcc(*'ffv1'), fps, (300, 300), False)
-            for frame in video :
+            # size = 300, 300
+            # duration = 2
+            # fps = 25
+            # out = cv2.VideoWriter(f"{output_dir}/{file.name.strip('.json')}.avi", cv2.VideoWriter_fourcc(*'ffv1'), fps, (300, 300), False)
+            # for frame in video :
                 # data = np.random.randint(0, 256, size, dtype='uint8')
                 # print(frame.dtype, frame.min(), frame.max())
                 # need to normalize the data because its float16 and cv2.VideoWriter takes uint8 (from what i found online)
-                frame_norm = cv2.normalize(
-                    frame,
-                    None,
-                    alpha=0,
-                    beta=255,
-                    norm_type=cv2.NORM_MINMAX
-                )
-                frame_u8 = frame_norm.astype(np.uint8)
-                out.write(frame_u8)
+                # frame_norm = cv2.normalize(
+                #     frame,
+                #     None,
+                #     alpha=0,
+                #     beta=255,
+                #     norm_type=cv2.NORM_MINMAX
+                # )
+                # frame_u8 = frame_norm.astype(np.uint8)
+                # out.write(frame_u8)
                 # out.write(frame.astype(np.uint8))
                 # while 1 :
                 #     cv2.imshow('', frame)
@@ -527,7 +532,7 @@ def convert_keypoints_dir_to_video(input_dir: str, output_dir: str, overwrite_fi
                 #         break
                 #     elif k==-1:  # normally -1 returned,so don't print it
                 #         continue
-            out.release()
+            # out.release()
             # for frame in video :
             #     cv2.imshow('', frame)
             #     k = cv2.waitKey(100)
@@ -535,7 +540,6 @@ def convert_keypoints_dir_to_video(input_dir: str, output_dir: str, overwrite_fi
             #         break
             #     elif k==-1:  # normally -1 returned,so don't print it
             #         continue
-            return
             # framerate=20
             # process = (
             #     ffmpeg
@@ -553,9 +557,9 @@ def convert_keypoints_dir_to_video(input_dir: str, output_dir: str, overwrite_fi
             # process.stdin.close()
             # process.wait()
             # vidwrite(f"{output_dir}/{file.name.strip('.json')}.avi", video)
-            print(f"{file.name.strip('.json')}.mp4 saved to {output_dir}")
+            # print(f"{file.name.strip('.json')}.mp4 saved to {output_dir}")
     print(f"{fail_count} number of files failed to save")
-# convert_keypoints_dir_to_video(TRAIN_OUTPUT_DIR, f"{DIR}/train_output_video", True)
+convert_keypoints_dir_to_video("/u50/quyumr/archive/train_output_json", "/u50/quyumr/archive/train_output_json_video", True)
 # print(hand_keypoint_to_img(f"{TRAIN_OUTPUT_DIR}/00335.json"))
 
 
@@ -621,7 +625,7 @@ def perpare_all_keypoint_files_for_resnet(input_dir: str, output_dir: str, overw
                 continue
             print(f"{base_filename} prepared for ResNet and saved to {output_dir}")
     return 
-# perpare_all_keypoint_files_for_resnet(TRAIN_OUTPUT_DIR, f"{DIR}/train_output_resnet", True)
+# perpare_all_keypoint_files_for_resnet("/u50/quyumr/archive/train_output_json", f"/u50/quyumr/archive/resnet-keypoints", False)
 # perpare_all_keypoint_files_for_resnet(TEST_OUTPUT_DIR, f"{DIR}/test_output_resnet", True)
 # perpare_all_keypoint_files_for_resnet(VALIDATION_OUTPUT_DIR, f"{DIR}/val_output_resnet", True)
 
