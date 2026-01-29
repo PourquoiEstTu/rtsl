@@ -26,3 +26,6 @@ build/
 
 # OS
 .DS_Store
+
+# Logs
+landmarks.json
