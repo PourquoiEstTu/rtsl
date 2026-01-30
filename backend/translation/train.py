@@ -5,7 +5,7 @@ from pathlib import Path
 
 import torch
 from transformers import (
-    T5Tokenizer,
+    AutoTokenizer,
     Trainer,
     TrainingArguments,
     DataCollatorForSeq2Seq,
@@ -17,7 +17,6 @@ from transformers import (
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from data.dataset import get_dataset
-from models.transformer import create_model, get_model_info
 from utils.config import Config
 
 logging.basicConfig(
@@ -33,7 +32,10 @@ logger = logging.getLogger(__name__)
 
 def main():
     config = Config()
-    
+    if config.model.model_name.startswith("rrrr66254"):
+        from models.transformer2 import create_model, get_model_info
+    else:
+        from models.transformer import create_model, get_model_info
     # Override defaults if needed
 
     # config.data.use_flores = True
@@ -56,10 +58,7 @@ def main():
     # Load Tokenizer
     # used in decoding from tokens to text
     logger.info(f"Loading tokenizer: {config.model.model_name}")
-    tokenizer = T5Tokenizer.from_pretrained(
-        config.model.model_name,
-        cache_dir=config.training.cache_dir
-    )
+    tokenizer = AutoTokenizer.from_pretrained(config.model.model_name)
     logger.info("Tokenizer loaded!")
     
     # Load Datasets
@@ -100,7 +99,7 @@ def main():
     data_collator = DataCollatorForSeq2Seq(
         tokenizer=tokenizer,
         model=model,
-        padding=True,
+        padding='max_length',
         max_length=config.model.max_target_length,
     )
     
@@ -151,7 +150,7 @@ def main():
     # Callbacks for early stopping
     callbacks = [
         EarlyStoppingCallback(
-            early_stopping_patience=5,  # Stop if no improvement for 5 evals
+            early_stopping_patience=20,  # Stop if no improvement for 5 evals
             early_stopping_threshold=0.0
         )
     ]
@@ -232,6 +231,72 @@ def main():
     logger.info("To view training progress:")
     logger.info(f"  tensorboard --logdir {config.training.log_dir}")
 
+    logger.info("\n" + "=" * 60)
+    logger.info("Running sample predictions")
+    logger.info("=" * 60)
+
+    sample_glosses = [
+        "HELLO MY NAME J-O-H-N",
+        "NICE MEET YOU",
+        "HOW YOU",
+        "I FINE",
+        "YOUR NAME WHAT",
+        "WHERE YOU LIVE",
+        "I HUNGRY",
+        "I THIRSTY WANT WATER",
+        "TOMORROW STORE I GO",
+        "YESTERDAY SCHOOL I GO",
+        "LAST-WEEK MOVIE I WATCH",
+        "PAST NIGHT I SLEEP EARLY",
+        "COFFEE I DRINK WANT",
+        "MUSIC I LISTEN ENJOY",
+        "IF RAIN TOMORROW GAME CANCEL",
+        "TEACHER SAY TEST DIFFICULT BUT I STUDY HARD",
+        "AFTER EAT DINNER I WATCH TV",
+    ]
+
+    for gloss in sample_glosses:
+        prediction = run_inference(model, tokenizer, gloss, device)
+        logger.info(f"\nGloss: {gloss}")
+        logger.info(f"Prediction: {prediction}")
+
+
+def run_inference(model, tokenizer, gloss: str, device: str):
+    model.eval()
+    model.to(device)
+
+    input_text = f"translate ASL gloss to English: {gloss}"
+
+    inputs = tokenizer(
+        input_text,
+        return_tensors="pt",
+        truncation=True,
+        max_length=128
+    ).to(device)
+
+    with torch.no_grad():
+        outputs = model.generate(
+            **inputs,
+            max_length=128,
+            num_beams=4,
+            early_stopping=True
+        )
+
+    prediction = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    return prediction
+
 
 if __name__ == "__main__":
     main()
+
+# logger.info("\nRunning final evaluation (BLEU / ROUGE / METEOR)...")
+# os.system("python evaluate.py")
+
+'''
+total number of optimizer steps = (number of training samples / (batch size * gradient accumulation steps)) * number of epochs
+For example, with 87710 training samples, batch size 8, gradient accumulation steps 2, and 50 epochs:
+steps_per_epoch = 87710 / (8 * 2) = 5481.875
+total optimizer steps = 5481.875 * 50 = 274093.75 steps
+
+
+'''

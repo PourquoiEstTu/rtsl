@@ -5,7 +5,8 @@ from pathlib import Path
 
 @dataclass
 class ModelConfig:
-    model_name: str = "t5-small"  # t5-small, t5-base, t5-large
+    # model_name: str = "t5-small"  # t5-small, t5-base, t5-large
+    model_name: str = "rrrr66254/Glossa-BART"  # Glossa-BART for ASL gloss-to-text
     max_input_length: int = 128
     max_target_length: int = 128
     
@@ -18,7 +19,7 @@ class ModelConfig:
 @dataclass
 class DataConfig:
     use_flores: bool = True  # 2M-Flores-ASL (small, high-quality)
-    use_aslg: bool = False   # ASLG-PC12 (large, synthetic)
+    use_aslg: bool = False  # ASLG-PC12 (large, synthetic)
     
     # Validation split
     val_split_size: float = 0.05  # 5% of train for validation
@@ -27,7 +28,7 @@ class DataConfig:
 @dataclass
 class TrainingConfig:
     # Training
-    num_epochs: int = 10
+    num_epochs: int = 3
     batch_size: int = 8  # Reduced from 16 for better stability
     learning_rate: float = 3e-4  # Higher for small datasets
     weight_decay: float = 0.01
@@ -99,20 +100,3 @@ class Config:
         print(f"  Learning rate: {self.training.learning_rate}")
         print(f"  Output dir: {self.training.output_dir}")
         print("="*60 + "\n")
-
-
-def get_config(
-    model_name: str = "t5-small",
-    use_flores: bool = True,
-    use_aslg: bool = False,
-    num_epochs: int = 10,
-    batch_size: int = 8,
-) -> Config:
-    """Get a configuration with custom parameters"""
-    config = Config()
-    config.model.model_name = model_name
-    config.data.use_flores = use_flores
-    config.data.use_aslg = use_aslg
-    config.training.num_epochs = num_epochs
-    config.training.batch_size = batch_size
-    return config

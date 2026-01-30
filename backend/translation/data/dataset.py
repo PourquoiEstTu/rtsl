@@ -12,8 +12,8 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class DatasetOptions:
-    use_aslg: bool = False
-    use_flores: bool = True
+    use_aslg: bool = True
+    use_flores: bool = False
 
 
 class ASLGlossDataset:
@@ -41,11 +41,22 @@ class ASLGlossDataset:
         ds = ds.rename_column("text", "sentence")
         
         # Keep only 2 needed columns
-        for split in ds.keys():
-            cols_to_remove = [c for c in ds[split].column_names if c not in ['gloss', 'sentence']]
-            if cols_to_remove:
-                ds[split] = ds[split].remove_columns(cols_to_remove)
+        cols_to_keep = ["gloss", "sentence"]
+        ds["train"] = ds["train"].remove_columns(
+            [c for c in ds["train"].column_names if c not in cols_to_keep]
+        )
         
+        # Split train into train/val/test (80/10/10)
+        split_1 = ds["train"].train_test_split(test_size=0.1, seed=42)
+        train_ds = split_1["train"]
+        temp_ds = split_1["test"]
+        split_2 = temp_ds.train_test_split(test_size=0.5, seed=42)
+
+        ds = DatasetDict({
+            "train": train_ds,
+            "validation": split_2["train"],
+            "test": split_2["test"],
+        })
         logger.info(f"ASLG-PC12 loaded: train={len(ds['train'])}, val={len(ds['validation'])}, test={len(ds['test'])}")
         return ds
 
