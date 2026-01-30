@@ -4,12 +4,12 @@ import json
 import time
 import cv2
 import numpy as np
-import mediapipe as mp
-from sklearn.preprocessing import LabelEncoder
+# import mediapipe as mp
+# from sklearn.preprocessing import LabelEncoder
 from pathlib import Path
 # import ffmpeg
 import utils.utils as utils
-import torch
+# import torch
 # commenting some of these out can make script run faster if you only want to call
 #   specific functions
 
@@ -500,7 +500,6 @@ def convert_keypoints_dir_to_video(input_dir: str, output_dir: str, overwrite_fi
                 np.save(save_path, video)
                 print(f"Video {file.name} saved to {output_dir}")
                 # print(save_path)
-                return
             except :
                 fail_count += 1
                 print(f"Saving {file.name} failed")
@@ -559,7 +558,7 @@ def convert_keypoints_dir_to_video(input_dir: str, output_dir: str, overwrite_fi
             # vidwrite(f"{output_dir}/{file.name.strip('.json')}.avi", video)
             # print(f"{file.name.strip('.json')}.mp4 saved to {output_dir}")
     print(f"{fail_count} number of files failed to save")
-convert_keypoints_dir_to_video("/u50/quyumr/archive/train_output_json", "/u50/quyumr/archive/train_output_json_video", True)
+# convert_keypoints_dir_to_video("/u50/quyumr/archive/train_output_json", "/u50/quyumr/archive/train_output_json_video", True)
 # print(hand_keypoint_to_img(f"{TRAIN_OUTPUT_DIR}/00335.json"))
 
 
@@ -633,3 +632,57 @@ def perpare_all_keypoint_files_for_resnet(input_dir: str, output_dir: str, overw
 # outputs torch.Size([44, 3, 224, 224])
 # 44 frames in video 
 # each frame is a 3x224x224 tensor
+
+
+# code taken from PR #36
+def normalize_sequence_length(input_dir: str, output_dir, overwrite=False):
+    """Normalize all feature files to have the same number of frames.
+       Pads or truncates all .npy feature arrays in input_dir so they all have
+    the same number of frames (rows). Uses the max length found across videos.
+       input_dir: directory with features generated from gen_videos_features()
+       output_dir: directory where processed files are saved"""
+
+    max_length = 0
+    for file in os.scandir(input_dir) :
+        if file.name == "ordered_labels.npy":
+            continue
+        if file.is_file() and file.name.endswith(".npy"):
+            arr = np.load(file.path)
+            # print("here")
+            n_frames = arr.shape[0] # number of rows/frames
+            max_length = max(max_length, n_frames)
+    print(f"[normalize_sequence_length] Max frame length found: {max_length}")
+    return
+
+    for file in os.scandir(input_dir) :
+        if file.is_file() and file.name.endswith(".npy"):
+            out_path = os.path.join(output_dir, file.name)
+            if not overwrite and os.path.exists(out_path):
+                continue
+            features = np.load(file.path)
+
+            if features.size == 0 or file.name == "ordered_labels.npy":
+                print(f"[WARNING] Skipping {file.name}: empty or invalid feature array (shape={features.shape}),(size={features.size})")
+                continue
+
+            n_frames, n_features = features.shape
+            if n_frames < max_length :
+                # pad with zeros
+                pad_len = max_length - n_frames
+                padded = np.vstack([
+                    features,
+                    np.zeros((pad_len, n_features), dtype=np.float32)
+                ])
+            elif n_frames > max_length:
+                # safety guard, should never enter this branch if data cleaning was done correctly
+                raise ValueError(
+                    f"[NormalizationError] Video '{file.name}' has {n_frames} frames, "
+                    f"which exceeds the expected maximum of {max_length}. "
+                    "This indicates that the dataset contains inconsistent feature lengths. "
+                    "Recheck your cleaning or max_length computation step."
+                )
+            else:
+                padded = features
+            np.save(out_path, padded)
+            print(f"Saved normalized features: {out_path}")
+normalize_sequence_length("/u50/quyumr/archive/train_output_json_video", "/u50/quyumr/archive/train_output_json_video_padded", overwrite=True)
