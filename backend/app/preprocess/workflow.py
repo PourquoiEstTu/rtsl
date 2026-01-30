@@ -240,7 +240,7 @@ def normalize_features_interpolation(input_dir:str, output_dir:str, target_lengt
         return
     
     for file in sorted(os.scandir(input_dir), key=lambda e: e.name):
-        if file.name == "ordered_labels.npy":
+        if "ordered_labels" in file.name:
             continue
         if file.is_file() and file.name.endswith(".npy"):
             out_path = os.path.join(output_dir, file.name)
