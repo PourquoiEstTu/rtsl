@@ -7,29 +7,43 @@ import numpy as np
 import json
 import os
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
+from sys import exit
 
 # Dataset
 # dataset class that contains the videos and their labels
 # samples: list of (video_tensor_path, label)
 # glosses: list of classes
+# json_path is the json file listing all the glosses and their 
+#   corresponding videos
 class ASLVideoTensorDataset(Dataset):
-    def __init__(self, tensor_dir, json_path, split="train", max_classes=None):
+    def __init__(self, tensor_dir, json_path, split="train", max_classes=None, samples_path = "", glosses_path=""):
         self.samples = []
         self.glosses = []
+        if samples_path == "" or glosses_path == "" :
+            self.build_class_mapping(self, tensor_dir, json_path, split, max_classes):
+        else : 
+            with open(samples_path, 'r') as f:
+                self.samples = json.load(f)
+            with open(glosses_path, 'r') as g:
+                self.glosses = json.load(g)
 
+    def build_class_mapping(self, tensor_dir, json_path, split="train", max_classes=None):
         with open(json_path, "r") as f:
             data = json.load(f)
 
-        # build class mapping
+        # get glosses and filter them down if desired
         all_glosses = sorted([entry["gloss"] for entry in data])
         if max_classes is not None:
             self.glosses = all_glosses[:max_classes]  # only keep the first max_classes glosses
         else:
             self.glosses = all_glosses
+        with open(f"{tensor_dir}/glosses.json", 'w') as g :
+            json.dump(self.glosses, g, indent=2)
 
         self.class_to_idx = {g: i for i, g in enumerate(self.glosses)}
 
         # add instances only for selected glosses
+        counter = 0
         for entry in data:
             gloss = entry["gloss"]
             if gloss not in self.class_to_idx:
@@ -42,10 +56,13 @@ class ASLVideoTensorDataset(Dataset):
                     continue
 
                 video_id = inst["video_id"]
-                path = os.path.join(tensor_dir, f"{video_id}.pt")
+                path = os.path.join(tensor_dir, f"{video_id}.npy")
 
                 if os.path.exists(path):
                     self.samples.append((path, label))
+        with open(f"{tensor_dir}/samples.json", 'w') as f :
+            json.dump(self.samples, f, indent=2)
+        # print(self.samples)
 
     def __len__(self):
         return len(self.samples)
@@ -54,6 +71,9 @@ class ASLVideoTensorDataset(Dataset):
         path, label = self.samples[idx]
         video = torch.load(path)  # (T, 3, 224, 224)
         return video, label
+test = ASLVideoTensorDataset()
+test.build_class_mapping("/u50/quyumr/archive/test_output_json_video_padded", "/u50/quyumr/archive/WLASL_v0.3.json", split="test", max_classes=None)
+exit()
 
 
 # using this padding function for now because when i created the tensors for resnet i forgot about having to normalize the frame length

@@ -274,8 +274,6 @@ def normalize_sequence_length(input_dir: str, output_dir: str, max_frame_amount:
     if max_frame_amount <= 0 :
         max_frame_amount = get_max_video_frame_amount(input_dir)
     # else : max_frame_amount is already set
-    
-    # max_length = 151
 
     for file in os.scandir(input_dir) :
         if file.is_file() and file.name.endswith(".npy"):
@@ -290,8 +288,8 @@ def normalize_sequence_length(input_dir: str, output_dir: str, max_frame_amount:
 
             # width and height should ALWAYS be the same
             n_frames, width, height, channels = features.shape
-            if n_frames < max_length :
-                pad_len = max_length - n_frames
+            if n_frames < max_frame_amount :
+                pad_len = max_frame_amount - n_frames
                 single_pad_frame = np.zeros((width,height,1), dtype=np.uint16)
                 pad_frames = []
                 for i in range(pad_len) :
@@ -302,23 +300,23 @@ def normalize_sequence_length(input_dir: str, output_dir: str, max_frame_amount:
                 padded = np.vstack([
                     features, pad_frames
                 ])
-            elif n_frames > max_length:
+            elif n_frames > max_frame_amount:
                 # safety guard, should never enter this branch if data cleaning was done correctly
                 raise ValueError(
                     f"[NormalizationError] Video '{file.name}' has {n_frames} frames, "
-                    f"which exceeds the expected maximum of {max_length}. "
+                    f"which exceeds the expected maximum of {max_frame_amount}. "
                     "This indicates that the dataset contains inconsistent feature lengths. "
-                    "Recheck your cleaning or max_length computation step."
+                    "Recheck your cleaning or max_frame_amount computation step."
                 )
             else:
                 padded = features
             np.save(out_path, padded)
-            print(f"Saved normalized features: {out_path}")
+            print(f"Saved padded features: {out_path}")
         
 # normalize_sequence_length(TRAIN_OUTPUT_DIR_CLEANED, TRAIN_OUTPUT_DIR_NORMALIZED, True)
 # normalize_sequence_length(VALIDATION_OUTPUT_DIR_CLEANED, VALIDATION_OUTPUT_DIR_NORMALIZED, True)
 # normalize_sequence_length(TEST_OUTPUT_DIR_CLEANED, TEST_OUTPUT_DIR_NORMALIZED, True)
-normalize_sequence_length("/u50/quyumr/archive/test_output_json_video", "/u50/quyumr/archive/test_output_json_video_padded", max_frame_amount=176, overwrite=True)
+normalize_sequence_length("/u50/quyumr/archive/validation_output_json_video", "/u50/quyumr/archive/validation_output_json_video_padded", max_frame_amount=176, overwrite=True)
 
 def force_equal_dims_features_labels(input_dir: str, label_file: str, json_path: str = JSON_PATH, overwrite: bool = False) :
     """Make sure that X and y have the same dimensions. This function
