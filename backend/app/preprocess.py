@@ -247,13 +247,7 @@ def get_labels_sklearn(features_dir:str, json_path: str=JSON_PATH, overwrite_pre
     np.save(npy_path, np.array(labels))
 # get_labels_sklearn(VALIDATION_OUTPUT_DIR_CLEANED, JSON_PATH, True)
 
-def normalize_sequence_length(input_dir: str, output_dir, overwrite=False):
-    """Normalize all feature files to have the same number of frames.
-       Pads or truncates all .npy feature arrays in input_dir so they all have
-    the same number of frames (rows). Uses the max length found across videos.
-       input_dir: directory with features generated from gen_videos_features()
-       output_dir: directory where processed files are saved"""
-
+def get_max_video_frame_amount(input_dir: str):
     files_checked_counter = 0
     max_length = 0
     for file in os.scandir(input_dir) :
@@ -267,6 +261,21 @@ def normalize_sequence_length(input_dir: str, output_dir, overwrite=False):
             if files_checked_counter % 100 == 0 :
                 print(f"Maximum Number of frames after {files_checked_counter} files checked: {max_length}")
     print(f"[normalize_sequence_length] Max frame length found: {max_length}")
+    return max_length
+# get_max_video_frame_amount("/u50/quyumr/archive/test_output_json_video")
+
+def normalize_sequence_length(input_dir: str, output_dir: str, max_frame_amount: int = -1, overwrite=False):
+    """Normalize all feature files to have the same number of frames.
+       Pads or truncates all .npy feature arrays in input_dir so they all have
+    the same number of frames (rows). Uses the max length found across videos.
+       input_dir: directory with features generated from gen_videos_features()
+       output_dir: directory where processed files are saved"""
+
+    if max_frame_amount <= 0 :
+        max_frame_amount = get_max_video_frame_amount(input_dir)
+    # else : max_frame_amount is already set
+    
+    # max_length = 151
 
     for file in os.scandir(input_dir) :
         if file.is_file() and file.name.endswith(".npy"):
@@ -279,13 +288,19 @@ def normalize_sequence_length(input_dir: str, output_dir, overwrite=False):
                 print(f"[WARNING] Skipping {file.name}: empty or invalid feature array (shape={features.shape}),(size={features.size})")
                 continue
 
-            n_frames, n_features = features.shape
+            # width and height should ALWAYS be the same
+            n_frames, width, height, channels = features.shape
             if n_frames < max_length :
-                # pad with zeros
                 pad_len = max_length - n_frames
+                single_pad_frame = np.zeros((width,height,1), dtype=np.uint16)
+                pad_frames = []
+                for i in range(pad_len) :
+                    pad_frames.append(single_pad_frame)
+                pad_frames = np.array(pad_frames)
+                # print(pad_frames.shape)
+                # return
                 padded = np.vstack([
-                    features,
-                    np.zeros((pad_len, n_features), dtype=np.float32)
+                    features, pad_frames
                 ])
             elif n_frames > max_length:
                 # safety guard, should never enter this branch if data cleaning was done correctly
@@ -303,7 +318,7 @@ def normalize_sequence_length(input_dir: str, output_dir, overwrite=False):
 # normalize_sequence_length(TRAIN_OUTPUT_DIR_CLEANED, TRAIN_OUTPUT_DIR_NORMALIZED, True)
 # normalize_sequence_length(VALIDATION_OUTPUT_DIR_CLEANED, VALIDATION_OUTPUT_DIR_NORMALIZED, True)
 # normalize_sequence_length(TEST_OUTPUT_DIR_CLEANED, TEST_OUTPUT_DIR_NORMALIZED, True)
-normalize_sequence_length("/u50/quyumr/archive/test_output_json_video", "/u50/quyumr/archive/test_output_json_video_padded", overwrite=True)
+normalize_sequence_length("/u50/quyumr/archive/test_output_json_video", "/u50/quyumr/archive/test_output_json_video_padded", max_frame_amount=176, overwrite=True)
 
 def force_equal_dims_features_labels(input_dir: str, label_file: str, json_path: str = JSON_PATH, overwrite: bool = False) :
     """Make sure that X and y have the same dimensions. This function
