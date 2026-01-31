@@ -16,16 +16,18 @@ from sys import exit
 # json_path is the json file listing all the glosses and their 
 #   corresponding videos
 class ASLVideoTensorDataset(Dataset):
-    def __init__(self, tensor_dir, json_path, split="train", max_classes=None, samples_path = "", glosses_path=""):
+    def __init__(self, tensor_dir="", json_path="", split="train", max_classes=None, samples_path="", glosses_path=""):
         self.samples = []
         self.glosses = []
         if samples_path == "" or glosses_path == "" :
-            self.build_class_mapping(self, tensor_dir, json_path, split, max_classes):
+            print("No file given for samples and/or glosses... Creating")
+            self.build_class_mapping(tensor_dir, json_path, split, max_classes)
         else : 
             with open(samples_path, 'r') as f:
                 self.samples = json.load(f)
             with open(glosses_path, 'r') as g:
                 self.glosses = json.load(g)
+            print("Samples and glosses files found... Initialized")
 
     def build_class_mapping(self, tensor_dir, json_path, split="train", max_classes=None):
         with open(json_path, "r") as f:
@@ -39,11 +41,11 @@ class ASLVideoTensorDataset(Dataset):
             self.glosses = all_glosses
         with open(f"{tensor_dir}/glosses.json", 'w') as g :
             json.dump(self.glosses, g, indent=2)
+        print("Glosses created")
 
         self.class_to_idx = {g: i for i, g in enumerate(self.glosses)}
 
         # add instances only for selected glosses
-        counter = 0
         for entry in data:
             gloss = entry["gloss"]
             if gloss not in self.class_to_idx:
@@ -62,7 +64,7 @@ class ASLVideoTensorDataset(Dataset):
                     self.samples.append((path, label))
         with open(f"{tensor_dir}/samples.json", 'w') as f :
             json.dump(self.samples, f, indent=2)
-        # print(self.samples)
+        print("samples created")
 
     def __len__(self):
         return len(self.samples)
@@ -71,9 +73,10 @@ class ASLVideoTensorDataset(Dataset):
         path, label = self.samples[idx]
         video = torch.load(path)  # (T, 3, 224, 224)
         return video, label
-test = ASLVideoTensorDataset()
-test.build_class_mapping("/u50/quyumr/archive/test_output_json_video_padded", "/u50/quyumr/archive/WLASL_v0.3.json", split="test", max_classes=None)
-exit()
+# test = ASLVideoTensorDataset("/u50/quyumr/archive/test_output_json_video_padded", "/u50/quyumr/archive/WLASL_v0.3.json", split="test", max_classes=None)
+# test = ASLVideoTensorDataset(samples_path="/u50/quyumr/archive/test_output_json_video_padded/samples.json", glosses_path="/u50/quyumr/archive/test_output_json_video_padded/glosses.json")
+# test.build_class_mapping()
+# exit()
 
 
 # using this padding function for now because when i created the tensors for resnet i forgot about having to normalize the frame length
@@ -200,32 +203,32 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, scheduler
 
 
 # Main
-def main():
-    num_epochs = 100
-    learning_rate = 0.001
-    batch_size = 8  # smaller because videos are big
+# def main():
+#     num_epochs = 100
+#     learning_rate = 0.001
+#     batch_size = 8  # smaller because videos are big
+# 
+#     _dir = '/u50/chandd9/capstone/face_pose'
+#     train_data_dir = f'{_dir}/train_output_resnet'
+#     val_data_dir = f'{_dir}/val_output_resnet'
+#     json_path = f'{_dir}/WLASL_v0.3.json'
+# 
+#     train_dataset = ASLVideoTensorDataset(train_data_dir, json_path, split="train", max_classes=100)
+#     val_dataset   = ASLVideoTensorDataset(val_data_dir, json_path, split="val", max_classes=100)
+# 
+#     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+#     val_loader   = DataLoader(val_dataset, batch_size=batch_size)
+# 
+#     num_classes = len(train_dataset.glosses)
+#     print(f"Num classes: {num_classes}")
+# 
+#     model = ResNetGRU(num_classes)
+#     criterion = nn.CrossEntropyLoss()
+#     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+#     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
+# 
+#     train_model(model, train_loader, val_loader, criterion, optimizer, scheduler, num_epochs)
 
-    _dir = '/u50/chandd9/capstone/face_pose'
-    train_data_dir = f'{_dir}/train_output_resnet'
-    val_data_dir = f'{_dir}/val_output_resnet'
-    json_path = f'{_dir}/WLASL_v0.3.json'
 
-    train_dataset = ASLVideoTensorDataset(train_data_dir, json_path, split="train", max_classes=100)
-    val_dataset   = ASLVideoTensorDataset(val_data_dir, json_path, split="val", max_classes=100)
-
-    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-    val_loader   = DataLoader(val_dataset, batch_size=batch_size)
-
-    num_classes = len(train_dataset.glosses)
-    print(f"Num classes: {num_classes}")
-
-    model = ResNetGRU(num_classes)
-    criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=learning_rate)
-    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
-
-    train_model(model, train_loader, val_loader, criterion, optimizer, scheduler, num_epochs)
-
-
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
