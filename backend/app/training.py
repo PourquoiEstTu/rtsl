@@ -16,18 +16,26 @@ from sys import exit
 # json_path is the json file listing all the glosses and their 
 #   corresponding videos
 class ASLVideoTensorDataset(Dataset):
-    def __init__(self, tensor_dir="", json_path="", split="train", max_classes=None, samples_path="", glosses_path=""):
+    def __init__(self, tensor_dir="", json_path="", split="train", max_classes=None):
+        # samples, glosses, and idx -> class and class -> dicts are  assumed to 
+        #   be files in the tensor_dir
         self.samples = []
         self.glosses = []
-        if samples_path == "" or glosses_path == "" :
-            print("No file given for samples and/or glosses... Creating")
-            self.build_class_mapping(tensor_dir, json_path, split, max_classes)
-        else : 
-            with open(samples_path, 'r') as f:
+        self.class_to_idx = {}
+        self.idx_to_class = {}
+        if os.path.exists(f"{tensor_dir}/samples.json") and os.path.exists(f"{tensor_dir}/glosses.json") and os.path.exists(f"{tensor_dir}/idx_to_class.json") and os.path.exists(f"{tensor_dir}/class_to_idx.json"):
+            with open(f"{tensor_dir}/samples.json", 'r') as f:
                 self.samples = json.load(f)
-            with open(glosses_path, 'r') as g:
+            with open(f"{tensor_dir}/glosses.json", 'r') as g:
                 self.glosses = json.load(g)
-            print("Samples and glosses files found... Initialized")
+            with open(f"{tensor_dir}/idx_to_class.json", 'r') as h:
+                self.idx_to_class = json.load(h)
+            with open(f"{tensor_dir}/class_to_idx.json", 'r') as i:
+                self.class_to_idx = json.load(i)
+            print("Samples, glosses, and dictionary files found... Initialized")
+        else : 
+            print("No json files found... Creating")
+            self.build_class_mapping(tensor_dir, json_path, split, max_classes)
 
     def build_class_mapping(self, tensor_dir, json_path, split="train", max_classes=None):
         with open(json_path, "r") as f:
@@ -44,6 +52,14 @@ class ASLVideoTensorDataset(Dataset):
         print("Glosses created")
 
         self.class_to_idx = {g: i for i, g in enumerate(self.glosses)}
+        with open(f"{tensor_dir}/class_to_idx.json", 'w') as f :
+            json.dump(self.class_to_idx, f, indent=2)
+        print("{class: idx} dictionary created")
+
+        self.idx_to_class = {i: g for i, g in enumerate(self.glosses)}
+        with open(f"{tensor_dir}/idx_to_class.json", 'w') as f :
+            json.dump(self.idx_to_class, f, indent=2)
+        print("{idx: class} dictionary created")
 
         # add instances only for selected glosses
         for entry in data:
