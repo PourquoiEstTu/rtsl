@@ -262,7 +262,7 @@ def get_max_video_frame_amount(input_dir: str):
                 print(f"Maximum Number of frames after {files_checked_counter} files checked: {max_length}")
     print(f"[normalize_sequence_length] Max frame length found: {max_length}")
     return max_length
-print(get_max_video_frame_amount("/u50/quyumr/archive/train_output_json_video"))
+# get_max_video_frame_amount("/u50/quyumr/archive/test_output_json_video")
 
 def normalize_sequence_length(input_dir: str, output_dir: str, max_frame_amount: int = -1, overwrite=False):
     """Normalize all feature files to have the same number of frames.
@@ -286,7 +286,6 @@ def normalize_sequence_length(input_dir: str, output_dir: str, max_frame_amount:
                 print(f"[WARNING] Skipping {file.name}: empty or invalid feature array (shape={features.shape}),(size={features.size})")
                 continue
 
-            fail_counter = 0
             # width and height should ALWAYS be the same
             n_frames, width, height, channels = features.shape
             if n_frames < max_frame_amount :
@@ -317,7 +316,7 @@ def normalize_sequence_length(input_dir: str, output_dir: str, max_frame_amount:
 # normalize_sequence_length(TRAIN_OUTPUT_DIR_CLEANED, TRAIN_OUTPUT_DIR_NORMALIZED, True)
 # normalize_sequence_length(VALIDATION_OUTPUT_DIR_CLEANED, VALIDATION_OUTPUT_DIR_NORMALIZED, True)
 # normalize_sequence_length(TEST_OUTPUT_DIR_CLEANED, TEST_OUTPUT_DIR_NORMALIZED, True)
-# normalize_sequence_length("/u50/quyumr/archive/train_output_json_video", "/u50/quyumr/archive/train_output_json_video_padded", max_frame_amount=176, overwrite=True)
+normalize_sequence_length("/u50/quyumr/archive/validation_output_json_video", "/u50/quyumr/archive/validation_output_json_video_padded", max_frame_amount=176, overwrite=True)
 
 def force_equal_dims_features_labels(input_dir: str, label_file: str, json_path: str = JSON_PATH, overwrite: bool = False) :
     """Make sure that X and y have the same dimensions. This function
