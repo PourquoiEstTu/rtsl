@@ -524,23 +524,23 @@ def convert_keypoints_dir_to_video(input_dir: str, output_dir: str, overwrite_fi
                 continue
             # npy_path = os.path.join(output_dir, f"{file.name.strip('.json')}.npy")
             # np.save(npy_path, video)
-            # size = 300, 300
-            # duration = 2
-            # fps = 25
-            # out = cv2.VideoWriter(f"{output_dir}/{file.name.strip('.json')}.avi", cv2.VideoWriter_fourcc(*'ffv1'), fps, (300, 300), False)
-            # for frame in video :
+            size = 300, 300
+            duration = 2
+            fps = 25
+            out = cv2.VideoWriter(f"{output_dir}/{file.name.strip('.json')}.avi", cv2.VideoWriter_fourcc(*'ffv1'), fps, (300, 300), False)
+            for frame in video :
                 # data = np.random.randint(0, 256, size, dtype='uint8')
                 # print(frame.dtype, frame.min(), frame.max())
                 # need to normalize the data because its float16 and cv2.VideoWriter takes uint8 (from what i found online)
-                # frame_norm = cv2.normalize(
-                #     frame,
-                #     None,
-                #     alpha=0,
-                #     beta=255,
-                #     norm_type=cv2.NORM_MINMAX
-                # )
-                # frame_u8 = frame_norm.astype(np.uint8)
-                # out.write(frame_u8)
+                frame_norm = cv2.normalize(
+                    frame,
+                    None,
+                    alpha=0,
+                    beta=255,
+                    norm_type=cv2.NORM_MINMAX
+                )
+                frame_u8 = frame_norm.astype(np.uint8)
+                out.write(frame_u8)
                 # out.write(frame.astype(np.uint8))
                 # while 1 :
                 #     cv2.imshow('', frame)
@@ -549,7 +549,7 @@ def convert_keypoints_dir_to_video(input_dir: str, output_dir: str, overwrite_fi
                 #         break
                 #     elif k==-1:  # normally -1 returned,so don't print it
                 #         continue
-            # out.release()
+            out.release()
             # for frame in video :
             #     cv2.imshow('', frame)
             #     k = cv2.waitKey(100)
