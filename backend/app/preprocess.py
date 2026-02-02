@@ -316,7 +316,7 @@ def normalize_sequence_length(input_dir: str, output_dir: str, max_frame_amount:
 # normalize_sequence_length(TRAIN_OUTPUT_DIR_CLEANED, TRAIN_OUTPUT_DIR_NORMALIZED, True)
 # normalize_sequence_length(VALIDATION_OUTPUT_DIR_CLEANED, VALIDATION_OUTPUT_DIR_NORMALIZED, True)
 # normalize_sequence_length(TEST_OUTPUT_DIR_CLEANED, TEST_OUTPUT_DIR_NORMALIZED, True)
-normalize_sequence_length("/u50/quyumr/archive/validation_output_json_video", "/u50/quyumr/archive/validation_output_json_video_padded", max_frame_amount=176, overwrite=True)
+# normalize_sequence_length("/u50/quyumr/archive/validation_output_json_video", "/u50/quyumr/archive/validation_output_json_video_padded", max_frame_amount=176, overwrite=True)
 
 def force_equal_dims_features_labels(input_dir: str, label_file: str, json_path: str = JSON_PATH, overwrite: bool = False) :
     """Make sure that X and y have the same dimensions. This function
@@ -374,12 +374,12 @@ def hand_keypoint_to_img(keypoint_file: str, img_size: int = 300) :
     with open(keypoint_file, 'r') as f :
         data = json.load(f)
     # keypoints are all between 0 and 1, so we un-normalize them
-    hand_keypoints = ( np.array(data["hands"][:-1]) * img_size ).astype(np.int16)
+    hand_keypoints = ( np.array(data["hands"][:-1]) * img_size ).astype(np.uint32)
+    face_keypoints = ( np.array(data["face"][:-1]) * img_size  ).astype(np.uint32)
+    pose_keypoints = ( np.array(data["pose"][:-1]) * img_size  ).astype(np.uint32)
     # for frame in data["face"] :
     #     print(len(frame))
     # return
-    face_keypoints = ( np.array(data["face"][:-1]) * img_size ).astype(np.uint16)
-    pose_keypoints = ( np.array(data["pose"][:-1]) * img_size ).astype(np.uint16)
     
     keypoints_per_frame_hand = hand_keypoints.shape[1]
     keypoints_per_frame_face = face_keypoints.shape[1]
@@ -495,7 +495,7 @@ def hand_keypoint_to_img(keypoint_file: str, img_size: int = 300) :
 #     process.wait()
 
 # currently always overwrites old files; make it not overwrite them
-def convert_keypoints_dir_to_video(input_dir: str, output_dir: str, overwrite_file: bool = False) :
+def convert_keypoints_dir_to_video(input_dir: str, output_dir: str, overwrite_file: bool = False, exit_on_fail: bool = False) :
     if not os.path.exists(input_dir) :
         raise Exception("Input directory does not exist.")
     if not os.path.exists(output_dir) :
@@ -514,20 +514,23 @@ def convert_keypoints_dir_to_video(input_dir: str, output_dir: str, overwrite_fi
             # print(file.name)
             try :
                 video = hand_keypoint_to_img(f"{input_dir}/{file.name}", 300)
-                save_path = os.path.join(output_dir, file.name.strip(".json"))
-                np.save(save_path, video)
-                print(f"Video {file.name} saved to {output_dir}")
+                # save_path = os.path.join(output_dir, file.name.strip(".json"))
+                # np.save(save_path, video)
+                # print(f"Video {file.name} saved to {output_dir}")
                 # print(save_path)
             except :
                 fail_count += 1
-                print(f"Saving {file.name} failed")
+                if exit_on_fail :
+                    raise Exception(f"Failed to convert {file.name} into frames")
+                # print(f"Saving {file.name} failed")
+                print(f"Failed to convert {file.name} into frames")
                 continue
-            # npy_path = os.path.join(output_dir, f"{file.name.strip('.json')}.npy")
+            npy_path = os.path.join(output_dir, f"{file.name.strip('.json')}.npy")
             # np.save(npy_path, video)
             size = 300, 300
             duration = 2
             fps = 25
-            out = cv2.VideoWriter(f"{output_dir}/{file.name.strip('.json')}.avi", cv2.VideoWriter_fourcc(*'ffv1'), fps, (300, 300), False)
+            out = cv2.VideoWriter(f"{output_dir}/{file.name.strip('.json')}.avi", cv2.VideoWriter_fourcc(*'ffv1'), fps, size, False)
             for frame in video :
                 # data = np.random.randint(0, 256, size, dtype='uint8')
                 # print(frame.dtype, frame.min(), frame.max())
@@ -550,6 +553,7 @@ def convert_keypoints_dir_to_video(input_dir: str, output_dir: str, overwrite_fi
                 #     elif k==-1:  # normally -1 returned,so don't print it
                 #         continue
             out.release()
+            print(f"{file.name.strip('.json')}.avi saved to {output_dir}")
             # for frame in video :
             #     cv2.imshow('', frame)
             #     k = cv2.waitKey(100)
@@ -576,7 +580,7 @@ def convert_keypoints_dir_to_video(input_dir: str, output_dir: str, overwrite_fi
             # vidwrite(f"{output_dir}/{file.name.strip('.json')}.avi", video)
             # print(f"{file.name.strip('.json')}.mp4 saved to {output_dir}")
     print(f"{fail_count} number of files failed to save")
-# convert_keypoints_dir_to_video("/u50/quyumr/archive/validation_output_json", "/u50/quyumr/archive/validation_output_json_video", True)
+convert_keypoints_dir_to_video("/u50/quyumr/archive/test_output_json", "/u50/quyumr/archive/validation_output_json_video_avi", True, False)
 # 174 training files and 33 test files failed to save
 # print(hand_keypoint_to_img(f"{TRAIN_OUTPUT_DIR}/00335.json"))
 
