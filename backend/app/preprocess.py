@@ -511,6 +511,9 @@ def convert_keypoints_dir_to_video(input_dir: str, output_dir: str, overwrite_fi
             if "ordered_labels" in file.name :
                 print(f"{file.name} encountered... Skipping.")
                 continue
+            if not overwrite_file :
+                print(f"{file.name.strip('.json')}.avi already exists in {output_dir}... skipping")
+                continue
             # print(file.name)
             try :
                 video = hand_keypoint_to_img(f"{input_dir}/{file.name}", 300)
@@ -579,8 +582,8 @@ def convert_keypoints_dir_to_video(input_dir: str, output_dir: str, overwrite_fi
             # process.wait()
             # vidwrite(f"{output_dir}/{file.name.strip('.json')}.avi", video)
             # print(f"{file.name.strip('.json')}.mp4 saved to {output_dir}")
-    print(f"{fail_count} number of files failed to save")
-convert_keypoints_dir_to_video("/u50/quyumr/archive/test_output_json", "/u50/quyumr/archive/validation_output_json_video_avi", True, False)
+    print(f"{fail_count} of files failed to save")
+convert_keypoints_dir_to_video("/u50/quyumr/archive/train_output_json", "/u50/quyumr/archive/train_output_json_video_avi", True, False)
 # 174 training files and 33 test files failed to save
 # print(hand_keypoint_to_img(f"{TRAIN_OUTPUT_DIR}/00335.json"))
 
