@@ -30,6 +30,7 @@ from torchvision.transforms import (
     Resize,
 )
 
+DIR = "/u50/quyumr/archive"
 TRAIN_DIR = "/u50/quyumr/archive/train_output_json_video_avi"
 TEST_DIR = "/u50/quyumr/archive/test_output_json_video_avi"
 VALIDATION_DIR = "/u50/quyumr/archive/validation_output_json_video_avi"
@@ -37,34 +38,43 @@ JSON_PATH = "/u50/quyumr/archive/WLASL_v0.3.json"
 
 # 
 
-def generate_class_integer_mappings(mappings_exist: bool = False, json_path: str = JSON_PATH) :
+def generate_class_integer_mappings(directory: str, mappings_exist: bool = False, json_path: str = JSON_PATH, max_classes = None) :
     """
     Generate integer -> class and class -> integer mapping and load them.
     If mappings already exist, they should not be re-generated
+    directory: is the output directory if mappings exist; is the input 
+        directory when mappings do exist
     """
-    if not mappings_exist :
-        train = ASLVideoTensorDataset(TRAIN_DIR, json_path, split="train", max_classes=None)
-        test = ASLVideoTensorDataset(TEST_DIR, json_path, split="test", max_classes=None)
-        validation = ASLVideoTensorDataset(VALIDATION_DIR, json_path, split="val", max_classes=None)
+    if mappings_exist :
+        with open(f"{directory}/idx_to_class.json", 'r') as f:
+            idx_to_class = json.load(f)
+        with open(f"{directory}/class_to_idx.json", 'r') as f:
+            class_to_idx = json.load(f)
+    else :
+        with open(json_path, "r") as f:
+            data = json.load(f)
 
-    with open(f"{TRAIN_DIR}/idx_to_class.json", 'r') as f:
-        train_idx_to_class = json.load(f)
-    with open(f"{TRAIN_DIR}/class_to_idx.json", 'r') as f:
-        train_class_to_idx = json.load(f)
+        # get glosses and filter them down if desired
+        all_glosses = sorted([entry["gloss"] for entry in data])
+        if max_classes is not None:
+            glosses = all_glosses[:max_classes]  # only keep the first max_classes glosses
+        else:
+            glosses = all_glosses
 
-    with open(f"{TEST_DIR}/idx_to_class.json", 'r') as f:
-        test_idx_to_class = json.load(f)
-    with open(f"{TEST_DIR}/class_to_idx.json", 'r') as f:
-        test_class_to_idx = json.load(f)
+        class_to_idx = {g: i for i, g in enumerate(glosses)}
+        with open(f"{directory}/class_to_idx.json", 'w') as f :
+            json.dump(class_to_idx, f, indent=2)
+        print("{class: idx} dictionary created")
 
-    with open(f"{VALIDATION_DIR}/idx_to_class.json", 'r') as f:
-        validation_idx_to_class = json.load(f)
-    with open(f"{VALIDATION_DIR}/class_to_idx.json", 'r') as f:
-        validation_class_to_idx = json.load(f)
-    return train_idx_to_class, train_class_to_idx, test_idx_to_class, test_class_to_idx, validation_idx_to_class, validation_class_to_idx
+        idx_to_class = {i: g for i, g in enumerate(glosses)}
+        with open(f"{directory}/idx_to_class.json", 'w') as f :
+            json.dump(idx_to_class, f, indent=2)
+        print("{idx: class} dictionary created")
 
-train_idx_to_class, train_class_to_idx, test_idx_to_class, test_class_to_idx, validation_idx_to_class, validation_class_to_idx = generate_class_integer_mappings(mappings_exist=True, json_path=JSON_PATH)
-# exit()
+    return idx_to_class, class_to_idx
+
+idx_to_class, class_to_idx = generate_class_integer_mappings(DIR, mappings_exist=True, json_path=JSON_PATH)
+exit()
 
 # model init
 model_ckpt = "MCG-NJU/videomae-base"
