@@ -27,7 +27,7 @@ build/
 # OS
 .DS_Store
 
-# ML outputs
+#ML outputs 
 backend/translation/outputs/
 backend/translation/logs/
 backend/translation/cache/
@@ -36,23 +36,3 @@ backend/translation/cache/
 *.safetensors
 *.bin
 *.pt
-backend/translation/outputs/
-backend/translation/logs/
-
-
-# Hugging Face cache
-cache/
-**/cache/
-.cache/
-**/.cache/
-**/huggingface/
-
-
-# TensorBoard
-events.out.tfevents.*
-
-# PyTorch
-*.pt
-*.pth
-*.bin
-*.safetensors

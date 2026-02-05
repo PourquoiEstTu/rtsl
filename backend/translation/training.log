@@ -1,0 +1,205 @@
+2026-01-19 13:39:44,475 - __main__ - INFO - Random seed set to 42
+2026-01-19 13:39:44,609 - __main__ - INFO - Using device: cuda
+2026-01-19 13:39:44,653 - __main__ - INFO - GPU: NVIDIA GeForce RTX 4090
+2026-01-19 13:39:44,653 - __main__ - INFO - GPU Memory: 23.52 GB
+2026-01-19 13:39:44,653 - __main__ - INFO - Loading tokenizer: t5-small
+2026-01-19 13:44:42,041 - __main__ - INFO - Random seed set to 42
+2026-01-19 13:44:42,167 - __main__ - INFO - Using device: cuda
+2026-01-19 13:44:42,185 - __main__ - INFO - GPU: NVIDIA GeForce RTX 4090
+2026-01-19 13:44:42,186 - __main__ - INFO - GPU Memory: 23.52 GB
+2026-01-19 13:44:42,186 - __main__ - INFO - Loading tokenizer: t5-small
+2026-01-19 13:44:43,183 - __main__ - INFO - Tokenizer loaded!
+2026-01-19 13:44:43,183 - __main__ - INFO - Loading and preprocessing datasets...
+2026-01-19 13:44:43,183 - __main__ - ERROR - Failed to load datasets: 'TrainingConfig' object has no attribute 'use_aslg'
+Traceback (most recent call last):
+  File "/nfs/u50/nguyeh83/rtsl/backend/translation/train.py", line 68, in main
+    datasets = get_dataset(tokenizer, config)
+  File "/nfs/u50/nguyeh83/rtsl/backend/translation/data/dataset.py", line 218, in get_dataset
+    use_aslg=config.training.use_aslg,
+AttributeError: 'TrainingConfig' object has no attribute 'use_aslg'
+2026-01-19 13:51:17,532 - __main__ - INFO - Random seed set to 42
+2026-01-19 13:51:17,657 - __main__ - INFO - Using device: cuda
+2026-01-19 13:51:17,676 - __main__ - INFO - GPU: NVIDIA GeForce RTX 4090
+2026-01-19 13:51:17,676 - __main__ - INFO - GPU Memory: 23.52 GB
+2026-01-19 13:51:17,677 - __main__ - INFO - Loading tokenizer: t5-small
+2026-01-19 13:51:19,035 - __main__ - INFO - Tokenizer loaded!
+2026-01-19 13:51:19,035 - __main__ - INFO - Loading and preprocessing datasets...
+2026-01-19 13:51:19,035 - data.dataset - INFO - Loading 2M-Flores-ASL dataset...
+2026-01-19 15:03:48,497 - data.dataset - INFO - Flores loaded: train=949, val=50, test=1016
+2026-01-19 15:03:48,497 - data.dataset - INFO - Tokenizing datasets...
+2026-01-19 15:03:48,556 - __main__ - ERROR - Failed to load datasets: name 'datasets' is not defined
+Traceback (most recent call last):
+  File "/nfs/u50/nguyeh83/rtsl/backend/translation/train.py", line 68, in main
+    datasets = get_dataset(tokenizer, config)
+  File "/nfs/u50/nguyeh83/rtsl/backend/translation/data/dataset.py", line 229, in get_dataset
+    return handler.prepare()
+  File "/nfs/u50/nguyeh83/rtsl/backend/translation/data/dataset.py", line 181, in prepare
+    tokenized = datasets.map(
+  File "/nfs/u50/nguyeh83/rtsl/backend/translation/venv/lib64/python3.9/site-packages/datasets/dataset_dict.py", line 953, in map
+    dataset_dict[split] = dataset.map(
+  File "/nfs/u50/nguyeh83/rtsl/backend/translation/venv/lib64/python3.9/site-packages/datasets/arrow_dataset.py", line 562, in wrapper
+    out: Union["Dataset", "DatasetDict"] = func(self, *args, **kwargs)
+  File "/nfs/u50/nguyeh83/rtsl/backend/translation/venv/lib64/python3.9/site-packages/datasets/arrow_dataset.py", line 3343, in map
+    for rank, done, content in Dataset._map_single(**unprocessed_kwargs):
+  File "/nfs/u50/nguyeh83/rtsl/backend/translation/venv/lib64/python3.9/site-packages/datasets/arrow_dataset.py", line 3699, in _map_single
+    for i, batch in iter_outputs(shard_iterable):
+  File "/nfs/u50/nguyeh83/rtsl/backend/translation/venv/lib64/python3.9/site-packages/datasets/arrow_dataset.py", line 3649, in iter_outputs
+    yield i, apply_function(example, i, offset=offset)
+  File "/nfs/u50/nguyeh83/rtsl/backend/translation/venv/lib64/python3.9/site-packages/datasets/arrow_dataset.py", line 3572, in apply_function
+    processed_inputs = function(*fn_args, *additional_args, **fn_kwargs)
+  File "/nfs/u50/nguyeh83/rtsl/backend/translation/data/dataset.py", line 122, in preprocess
+    sample = datasets['train'][0]
+NameError: name 'datasets' is not defined
+2026-01-19 15:08:04,694 - __main__ - INFO - Random seed set to 42
+2026-01-19 15:08:04,835 - __main__ - INFO - Using device: cuda
+2026-01-19 15:08:04,853 - __main__ - INFO - GPU: NVIDIA GeForce RTX 4090
+2026-01-19 15:08:04,853 - __main__ - INFO - GPU Memory: 23.52 GB
+2026-01-19 15:08:04,853 - __main__ - INFO - Loading tokenizer: t5-small
+2026-01-19 15:08:05,382 - __main__ - INFO - Tokenizer loaded!
+2026-01-19 15:08:05,382 - __main__ - INFO - Loading and preprocessing datasets...
+2026-01-19 15:08:05,382 - data.dataset - INFO - Loading 2M-Flores-ASL dataset...
+2026-01-19 15:08:06,766 - data.dataset - INFO - Flores loaded: train=949, val=50, test=1016
+2026-01-19 15:08:06,766 - data.dataset - INFO - Tokenizing datasets...
+2026-01-19 15:08:06,779 - __main__ - ERROR - Failed to load datasets: name 'datasets' is not defined
+Traceback (most recent call last):
+  File "/nfs/u50/nguyeh83/rtsl/backend/translation/train.py", line 68, in main
+    datasets = get_dataset(tokenizer, config)
+  File "/nfs/u50/nguyeh83/rtsl/backend/translation/data/dataset.py", line 229, in get_dataset
+    return handler.prepare()
+  File "/nfs/u50/nguyeh83/rtsl/backend/translation/data/dataset.py", line 181, in prepare
+    tokenized = datasets.map(
+  File "/nfs/u50/nguyeh83/rtsl/backend/translation/venv/lib64/python3.9/site-packages/datasets/dataset_dict.py", line 953, in map
+    dataset_dict[split] = dataset.map(
+  File "/nfs/u50/nguyeh83/rtsl/backend/translation/venv/lib64/python3.9/site-packages/datasets/arrow_dataset.py", line 562, in wrapper
+    out: Union["Dataset", "DatasetDict"] = func(self, *args, **kwargs)
+  File "/nfs/u50/nguyeh83/rtsl/backend/translation/venv/lib64/python3.9/site-packages/datasets/arrow_dataset.py", line 3343, in map
+    for rank, done, content in Dataset._map_single(**unprocessed_kwargs):
+  File "/nfs/u50/nguyeh83/rtsl/backend/translation/venv/lib64/python3.9/site-packages/datasets/arrow_dataset.py", line 3699, in _map_single
+    for i, batch in iter_outputs(shard_iterable):
+  File "/nfs/u50/nguyeh83/rtsl/backend/translation/venv/lib64/python3.9/site-packages/datasets/arrow_dataset.py", line 3649, in iter_outputs
+    yield i, apply_function(example, i, offset=offset)
+  File "/nfs/u50/nguyeh83/rtsl/backend/translation/venv/lib64/python3.9/site-packages/datasets/arrow_dataset.py", line 3572, in apply_function
+    processed_inputs = function(*fn_args, *additional_args, **fn_kwargs)
+  File "/nfs/u50/nguyeh83/rtsl/backend/translation/data/dataset.py", line 122, in preprocess
+    sample = datasets['train'][0]
+NameError: name 'datasets' is not defined
+2026-01-19 15:13:37,861 - __main__ - INFO - Random seed set to 42
+2026-01-19 15:13:37,985 - __main__ - INFO - Using device: cuda
+2026-01-19 15:13:38,003 - __main__ - INFO - GPU: NVIDIA GeForce RTX 4090
+2026-01-19 15:13:38,003 - __main__ - INFO - GPU Memory: 23.52 GB
+2026-01-19 15:13:38,003 - __main__ - INFO - Loading tokenizer: t5-small
+2026-01-19 15:13:38,343 - __main__ - INFO - Tokenizer loaded!
+2026-01-19 15:13:38,343 - __main__ - INFO - Loading and preprocessing datasets...
+2026-01-19 15:13:38,343 - data.dataset - INFO - Loading 2M-Flores-ASL dataset...
+2026-01-19 15:13:39,406 - data.dataset - INFO - Flores loaded: train=949, val=50, test=1016
+2026-01-19 15:13:39,406 - data.dataset - INFO - Tokenizing datasets...
+2026-01-19 15:13:40,692 - data.dataset - INFO - Tokenization complete!
+2026-01-19 15:13:40,693 - __main__ - INFO - 
+Dataset Statistics:
+2026-01-19 15:13:40,693 - __main__ - INFO -   Train samples: 949
+2026-01-19 15:13:40,694 - __main__ - INFO -   Validation samples: 50
+2026-01-19 15:13:40,694 - __main__ - INFO -   Test samples: 1016
+2026-01-19 15:13:40,694 - models.transformer - INFO - Loading model: t5-small
+2026-01-19 15:13:42,883 - models.transformer - INFO - Model loaded successfully!
+2026-01-19 15:13:42,883 - models.transformer - INFO -   Total parameters: 60,506,624
+2026-01-19 15:13:42,883 - models.transformer - INFO -   Trainable parameters: 60,506,624
+2026-01-19 15:13:42,883 - models.transformer - INFO -   Model size: ~230.8 MB
+2026-01-19 15:13:42,884 - __main__ - INFO - 
+Model Information:
+2026-01-19 15:13:42,884 - __main__ - INFO -   Architecture: t5-small
+2026-01-19 15:13:42,884 - __main__ - INFO -   Total parameters: 60,506,624
+2026-01-19 15:13:42,884 - __main__ - INFO -   Trainable parameters: 60,506,624
+2026-01-19 15:13:42,884 - __main__ - INFO -   Model size: 230.8 MB
+2026-01-19 15:14:56,516 - __main__ - INFO - Random seed set to 42
+2026-01-19 15:14:56,641 - __main__ - INFO - Using device: cuda
+2026-01-19 15:14:56,660 - __main__ - INFO - GPU: NVIDIA GeForce RTX 4090
+2026-01-19 15:14:56,660 - __main__ - INFO - GPU Memory: 23.52 GB
+2026-01-19 15:14:56,661 - __main__ - INFO - Loading tokenizer: t5-small
+2026-01-19 15:14:57,002 - __main__ - INFO - Tokenizer loaded!
+2026-01-19 15:14:57,002 - __main__ - INFO - Loading and preprocessing datasets...
+2026-01-19 15:14:57,002 - data.dataset - INFO - Loading 2M-Flores-ASL dataset...
+2026-01-19 15:14:57,986 - data.dataset - INFO - Flores loaded: train=949, val=50, test=1016
+2026-01-19 15:14:57,986 - data.dataset - INFO - Tokenizing datasets...
+2026-01-19 15:14:58,031 - data.dataset - INFO - Tokenization complete!
+2026-01-19 15:14:58,032 - __main__ - INFO - 
+Dataset Statistics:
+2026-01-19 15:14:58,033 - __main__ - INFO -   Train samples: 949
+2026-01-19 15:14:58,033 - __main__ - INFO -   Validation samples: 50
+2026-01-19 15:14:58,033 - __main__ - INFO -   Test samples: 1016
+2026-01-19 15:14:58,033 - models.transformer - INFO - Loading model: t5-small
+2026-01-19 15:14:58,218 - models.transformer - INFO - Model loaded successfully!
+2026-01-19 15:14:58,218 - models.transformer - INFO -   Total parameters: 60,506,624
+2026-01-19 15:14:58,219 - models.transformer - INFO -   Trainable parameters: 60,506,624
+2026-01-19 15:14:58,219 - models.transformer - INFO -   Model size: ~230.8 MB
+2026-01-19 15:14:58,219 - __main__ - INFO - 
+Model Information:
+2026-01-19 15:14:58,219 - __main__ - INFO -   Architecture: t5-small
+2026-01-19 15:14:58,219 - __main__ - INFO -   Total parameters: 60,506,624
+2026-01-19 15:14:58,219 - __main__ - INFO -   Trainable parameters: 60,506,624
+2026-01-19 15:14:58,219 - __main__ - INFO -   Model size: 230.8 MB
+2026-01-19 15:14:58,624 - __main__ - INFO - 
+Initializing trainer...
+2026-01-19 15:25:54,285 - __main__ - INFO - Random seed set to 42
+2026-01-19 15:25:54,418 - __main__ - INFO - Using device: cuda
+2026-01-19 15:25:57,325 - __main__ - INFO - GPU: NVIDIA GeForce RTX 4090
+2026-01-19 15:25:57,325 - __main__ - INFO - GPU Memory: 23.52 GB
+2026-01-19 15:25:57,325 - __main__ - INFO - Loading tokenizer: t5-small
+2026-01-19 15:25:58,473 - __main__ - INFO - Tokenizer loaded!
+2026-01-19 15:25:58,473 - __main__ - INFO - Loading and preprocessing datasets...
+2026-01-19 15:25:58,473 - data.dataset - INFO - Loading 2M-Flores-ASL dataset...
+2026-01-19 15:26:04,165 - data.dataset - INFO - Flores loaded: train=949, val=50, test=1016
+2026-01-19 15:26:04,165 - data.dataset - INFO - Tokenizing datasets...
+2026-01-19 15:26:04,547 - data.dataset - INFO - Tokenization complete!
+2026-01-19 15:26:06,786 - __main__ - INFO - 
+Dataset Statistics:
+2026-01-19 15:26:06,786 - __main__ - INFO -   Train samples: 949
+2026-01-19 15:26:06,786 - __main__ - INFO -   Validation samples: 50
+2026-01-19 15:26:06,786 - __main__ - INFO -   Test samples: 1016
+2026-01-19 15:26:06,787 - models.transformer - INFO - Loading model: t5-small
+2026-01-19 15:26:07,600 - models.transformer - INFO - Model loaded successfully!
+2026-01-19 15:26:07,600 - models.transformer - INFO -   Total parameters: 60,506,624
+2026-01-19 15:26:07,600 - models.transformer - INFO -   Trainable parameters: 60,506,624
+2026-01-19 15:26:07,659 - models.transformer - INFO -   Model size: ~230.8 MB
+2026-01-19 15:26:07,659 - __main__ - INFO - 
+Model Information:
+2026-01-19 15:26:07,662 - __main__ - INFO -   Architecture: t5-small
+2026-01-19 15:26:07,662 - __main__ - INFO -   Total parameters: 60,506,624
+2026-01-19 15:26:07,662 - __main__ - INFO -   Trainable parameters: 60,506,624
+2026-01-19 15:26:07,662 - __main__ - INFO -   Model size: 230.8 MB
+2026-01-19 15:26:07,812 - __main__ - INFO - 
+Initializing trainer...
+2026-01-19 15:26:52,705 - __main__ - INFO - 
+============================================================
+2026-01-19 15:26:52,705 - __main__ - INFO - Starting training...
+2026-01-19 15:26:52,705 - __main__ - INFO - ============================================================
+
+2026-01-19 15:30:49,274 - __main__ - INFO - 
+Saving final model...
+2026-01-19 15:30:49,941 - __main__ - INFO - 
+Training metrics:
+2026-01-19 15:30:49,941 - __main__ - INFO -   train_runtime: 236.4574
+2026-01-19 15:30:49,942 - __main__ - INFO -   train_samples_per_second: 40.134
+2026-01-19 15:30:49,942 - __main__ - INFO -   train_steps_per_second: 1.269
+2026-01-19 15:30:49,942 - __main__ - INFO -   total_flos: 260411371683840.0
+2026-01-19 15:30:49,942 - __main__ - INFO -   train_loss: 3.212168426513672
+2026-01-19 15:30:49,942 - __main__ - INFO -   epoch: 10.0
+2026-01-19 15:30:49,942 - __main__ - INFO - 
+============================================================
+2026-01-19 15:30:49,942 - __main__ - INFO - Evaluating on test set...
+2026-01-19 15:30:49,942 - __main__ - INFO - ============================================================
+2026-01-19 15:30:51,609 - __main__ - INFO - 
+Test metrics:
+2026-01-19 15:30:51,609 - __main__ - INFO -   test_loss: 3.216247320175171
+2026-01-19 15:30:51,610 - __main__ - INFO -   test_runtime: 1.6498
+2026-01-19 15:30:51,610 - __main__ - INFO -   test_samples_per_second: 615.841
+2026-01-19 15:30:51,610 - __main__ - INFO -   test_steps_per_second: 38.793
+2026-01-19 15:30:51,610 - __main__ - INFO -   epoch: 10.0
+2026-01-19 15:30:51,610 - __main__ - INFO - 
+============================================================
+2026-01-19 15:30:51,610 - __main__ - INFO - Training completed successfully!
+2026-01-19 15:30:51,610 - __main__ - INFO - Model saved to: ./outputs
+2026-01-19 15:30:51,610 - __main__ - INFO - Logs saved to: ./logs
+2026-01-19 15:30:51,610 - __main__ - INFO - ============================================================
+
+2026-01-19 15:30:51,610 - __main__ - INFO - To view training progress:
+2026-01-19 15:30:51,610 - __main__ - INFO -   tensorboard --logdir ./logs
