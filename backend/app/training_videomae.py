@@ -11,8 +11,11 @@ from sys import exit
 from training import ASLVideoTensorDataset
 
 from transformers import VideoMAEImageProcessor, VideoMAEForVideoClassification, TrainingArguments, Trainer
-# import pytorchvideo.data
+
+from transformers import TrainingArguments, Trainer
+import pytorchvideo
 from pytorchvideo.data import LabeledVideoDataset
+import evaluate
 
 from pytorchvideo.transforms import (
     ApplyTransformToKey,
@@ -74,15 +77,29 @@ def generate_class_integer_mappings(directory: str, mappings_exist: bool = False
     return idx_to_class, class_to_idx
 
 idx_to_class, class_to_idx = generate_class_integer_mappings(DIR, mappings_exist=True, json_path=JSON_PATH)
-exit()
+# print(idx_to_class)
+# exit()
+
+def collate_fn(examples):
+    # permute to (num_frames, num_channels, height, width)
+    pixel_values = torch.stack(
+        [example["video"].permute(1, 0, 2, 3) for example in examples]
+    )
+    labels = torch.tensor([example["label"] for example in examples])
+    return {"pixel_values": pixel_values, "labels": labels}
+
+metric = evaluate.load("accuracy")
+def compute_metrics(eval_pred):
+    predictions = np.argmax(eval_pred.predictions, axis=1)
+    return metric.compute(predictions=predictions, references=eval_pred.label_ids)
 
 # model init
 model_ckpt = "MCG-NJU/videomae-base"
 image_processor = VideoMAEImageProcessor.from_pretrained(model_ckpt)
 model = VideoMAEForVideoClassification.from_pretrained(
     model_ckpt,
-    label2id=label2id,
-    id2label=id2label,
+    label2id=class_to_idx,
+    id2label=idx_to_class,
     ignore_mismatched_sizes=True,
 )
 
@@ -111,9 +128,41 @@ train_transform = Compose(
     ]
 )
 
-test_dataset = LabeledVideoDataset(
-    data_path="/u50/quyumr/archive/test_output_json_video_avi/",
+test_dataset = pytorchvideo.data.LabeledVideoDataset(
+    labeled_video_paths="/u50/quyumr/archive/test_output_json_video_avi/",
     clip_sampler=pytorchvideo.data.make_clip_sampler("random", clip_duration),
     decode_audio=False,
     transform=train_transform,
 )
+
+model_name = model_ckpt.split("/")[-1]
+new_model_name = f"{model_name}-finetuned-on-test"
+num_epochs = 4
+batch_size = 10
+
+args = TrainingArguments(
+    new_model_name,
+    remove_unused_columns=False,
+    eval_strategy="epoch",
+    save_strategy="epoch",
+    learning_rate=5e-5,
+    per_device_train_batch_size=batch_size,
+    per_device_eval_batch_size=batch_size,
+    warmup_steps=1,
+    logging_steps=10,
+    load_best_model_at_end=True,
+    metric_for_best_model="accuracy",
+    push_to_hub=False,
+    max_steps=(test_dataset.num_videos // batch_size) * num_epochs,
+)
+
+trainer = Trainer(
+    model,
+    args,
+    train_dataset=test_dataset,
+    eval_dataset=test_dataset,
+    processing_class=image_processor,
+    compute_metrics=compute_metrics,
+    data_collator=collate_fn,
+)
+train_results = trainer.train()
