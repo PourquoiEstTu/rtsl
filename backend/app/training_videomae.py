@@ -8,8 +8,9 @@ import json
 import os
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 from sys import exit
-from training import ASLVideoTensorDataset
-
+import shutil
+# from training import ASLVideoTensorDataset
+# 
 from transformers import VideoMAEImageProcessor, VideoMAEForVideoClassification, TrainingArguments, Trainer
 
 from transformers import TrainingArguments, Trainer
@@ -39,7 +40,7 @@ TEST_DIR = "/u50/quyumr/archive/test_output_json_video_avi"
 VALIDATION_DIR = "/u50/quyumr/archive/validation_output_json_video_avi"
 JSON_PATH = "/u50/quyumr/archive/WLASL_v0.3.json"
 
-# 
+ 
 
 def generate_class_integer_mappings(directory: str, mappings_exist: bool = False, json_path: str = JSON_PATH, max_classes = None) :
     """
@@ -80,6 +81,63 @@ idx_to_class, class_to_idx = generate_class_integer_mappings(DIR, mappings_exist
 # print(idx_to_class)
 # exit()
 
+def ucf_file_hierarchy_conversion(directory: str, train_dir: str, test_dir: str, val_dir: str, json_path: str = JSON_PATH) :
+    """
+        Turns the training, test, and val videos into the UCF101 dataset's.
+        The hierarchy looks like this:
+        train/
+           class1/
+               video_1.mp4
+               video_2.mp4
+               ...
+           class2/
+               video_1.mp4
+               video_2.mp4
+               ...
+           ...
+        val/
+           class1/
+               video_1.mp4
+               video_2.mp4
+               ...
+           ...
+        test/
+           class1/
+               video_1.mp4
+               video_2.mp4
+               ...
+        directory: A path to a directory that has the training, test, and val
+          videos in separate directories as specified in the remaining 
+          function parameters
+    """
+    if not os.path.exists(json_path) :
+        raise IOError(f"JSON file does not exist at {json_path}")
+    if not os.path.exists(f"{directory}/ucf_hierarchy") :
+        os.makedirs(f"{directory}/ucf_hierarchy")
+        os.makedirs(f"{directory}/ucf_hierarchy/train")
+        os.makedirs(f"{directory}/ucf_hierarchy/test")
+        os.makedirs(f"{directory}/ucf_hierarchy/val")
+    with open(json_path, 'r') as f :
+        data = json.load(f)
+    for entry in data : 
+        print(f"Moving videos for gloss [{entry['gloss']}]")
+        current_train_gloss_dir = f"{directory}/ucf_hierarchy/train/{entry['gloss']}"
+        current_test_gloss_dir = f"{directory}/ucf_hierarchy/test/{entry['gloss']}"
+        current_val_gloss_dir = f"{directory}/ucf_hierarchy/val/{entry['gloss']}"
+        os.makedirs(current_train_gloss_dir, exist_ok=True)
+        os.makedirs(current_test_gloss_dir,  exist_ok=True)
+        os.makedirs(current_val_gloss_dir,   exist_ok=True)
+        for instance in entry["instances"] :
+            if instance["split"] == "train" and os.path.exists(f"{TRAIN_DIR}/{instance['video_id']}.avi") :
+                shutil.copy2(f"{train_dir}/{instance['video_id']}.avi", current_train_gloss_dir)
+            if instance["split"] == "test" and os.path.exists(f"{TEST_DIR}/{instance['video_id']}.avi"):
+                shutil.copy2(f"{test_dir}/{instance['video_id']}.avi", current_test_gloss_dir)
+            if instance["split"] == "val" and os.path.exists(f"{VALIDATION_DIR}/{instance['video_id']}.avi") :
+                shutil.copy2(f"{val_dir}/{instance['video_id']}.avi", current_val_gloss_dir)
+            
+# ucf_file_hierarchy_conversion(DIR, TRAIN_DIR, TEST_DIR, VALIDATION_DIR)
+# exit()
+
 def collate_fn(examples):
     # permute to (num_frames, num_channels, height, width)
     pixel_values = torch.stack(
@@ -94,6 +152,7 @@ def compute_metrics(eval_pred):
     return metric.compute(predictions=predictions, references=eval_pred.label_ids)
 
 # model init
+print("===================================================")
 model_ckpt = "MCG-NJU/videomae-base"
 image_processor = VideoMAEImageProcessor.from_pretrained(model_ckpt)
 model = VideoMAEForVideoClassification.from_pretrained(
@@ -111,6 +170,8 @@ else:
     height = image_processor.size["height"]
     width = image_processor.size["width"]
 resize_to = (height, width)
+
+print("===================================================\n")
 
 num_frames_to_sample = model.config.num_frames
 sample_rate = 4
@@ -134,35 +195,36 @@ test_dataset = pytorchvideo.data.LabeledVideoDataset(
     decode_audio=False,
     transform=train_transform,
 )
+# print(test_dataset.__next__())
 
 model_name = model_ckpt.split("/")[-1]
 new_model_name = f"{model_name}-finetuned-on-test"
 num_epochs = 4
 batch_size = 10
 
-args = TrainingArguments(
-    new_model_name,
-    remove_unused_columns=False,
-    eval_strategy="epoch",
-    save_strategy="epoch",
-    learning_rate=5e-5,
-    per_device_train_batch_size=batch_size,
-    per_device_eval_batch_size=batch_size,
-    warmup_steps=1,
-    logging_steps=10,
-    load_best_model_at_end=True,
-    metric_for_best_model="accuracy",
-    push_to_hub=False,
-    max_steps=(test_dataset.num_videos // batch_size) * num_epochs,
-)
-
-trainer = Trainer(
-    model,
-    args,
-    train_dataset=test_dataset,
-    eval_dataset=test_dataset,
-    processing_class=image_processor,
-    compute_metrics=compute_metrics,
-    data_collator=collate_fn,
-)
-train_results = trainer.train()
+# args = TrainingArguments(
+#     new_model_name,
+#     remove_unused_columns=False,
+#     eval_strategy="epoch",
+#     save_strategy="epoch",
+#     learning_rate=5e-5,
+#     per_device_train_batch_size=batch_size,
+#     per_device_eval_batch_size=batch_size,
+#     warmup_steps=1,
+#     logging_steps=10,
+#     load_best_model_at_end=True,
+#     metric_for_best_model="accuracy",
+#     push_to_hub=False,
+#     max_steps=(test_dataset.num_videos // batch_size) * num_epochs,
+# )
+# 
+# trainer = Trainer(
+#     model,
+#     args,
+#     train_dataset=test_dataset,
+#     eval_dataset=test_dataset,
+#     processing_class=image_processor,
+#     compute_metrics=compute_metrics,
+#     data_collator=collate_fn,
+# )
+# train_results = trainer.train()
