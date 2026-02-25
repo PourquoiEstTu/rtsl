@@ -56,3 +56,6 @@ events.out.tfevents.*
 *.pth
 *.bin
 *.safetensors
+
+# Logs
+landmarks.json
