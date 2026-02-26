@@ -3,6 +3,7 @@ from tgcn_model import GCN_muti_att
 from configs import Config
 import json
 import onnxruntime as ort
+import os
 # from transformers import AutoModel, AutoModelForSequenceClassification, PreTrainedModel
 
 PRETRAINED_MODEL = 0
@@ -47,6 +48,13 @@ def generate_class_integer_mappings(directory: str, mappings_exist: bool, json_p
 
 # idx_to_class, class_to_idx = generate_class_integer_mappings("/home/pourquoi/repos/rtsl/backend/app/", mappings_exist=True, json_path="/home/pourquoi/repos/rtsl/backend/app/all.json")
 
+# temp implementation
+MODEL_LOAD_INFO = {
+    "loaded": False,
+    "error": None,
+    "details": None
+}
+
 def _setup_model():
     """Load the ONNX model for inference."""
     
@@ -56,7 +64,7 @@ def _setup_model():
         return
     
     # Get model path - ASL100 (active)
-    backend_dir = os.path.dirname(__file__)
+    backend_dir = "../"
     onnx_path = os.path.join(backend_dir, 'models', 'asl100.onnx')
     # ASL2000 model path (commented out)
     # onnx_path = os.path.join(backend_dir, 'models', 'asl2000.onnx')
