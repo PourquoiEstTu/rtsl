@@ -1,0 +1,150 @@
+.about-wrapper {
+    min-height: 100vh;
+    width: 100%;
+    /* background: linear-gradient(to bottom,#EAF7FF,#D3ECFF,#A6D0F1); */
+    background: linear-gradient(to bottom, #E9F6FF, #B5DAF5, #A6D0F1, #FFFFFF);
+    /* background: radial-gradient(circle at top, #E9F6FF, #A6D0F1, #FFFFFF); */
+    /* background: linear-gradient(
+      100deg,
+      #e9f6ff,
+      #b5daff,
+      #8dc8ff,
+      #6bb9ff,
+      #A6D0F1,
+      #a6e1ff,
+      #ffffff
+    ); */
+    /* background: radial-gradient(circle at 20% 20%, #8dc8ff, 0%, transparent 60%),
+                radial-gradient(circle at 80% 30%, #b5daff 0%, transparent 60%),
+                radial-gradient(circle at 40% 80%, #A6D0F1 0%, transparent 60%),
+                linear-gradient(120deg, #dff3ff, #ffffff); */
+  
+    background-size: 200% 200%;
+    /* animation: auroraFlow 3s ease-in-out infinite alternate; */
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Header */
+  .about-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .about-box { 
+    background: white; 
+    width: 80%; 
+    max-width: 800px; 
+    min-height: 80vh; 
+    padding: 2rem 3rem; 
+    border-radius: 12px; 
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: flex-start; 
+    align-items: flex-start; 
+  }
+
+.about-text { 
+  font-size: 1.1rem; 
+  line-height: 1.6; 
+  color: #334155; 
+}
+  
+  .about-logo {
+    height: 180px;
+    width: auto;
+    margin: 0 auto;
+  }
+  
+  .about-title {
+    font-size: 48px;
+    font-weight: 700;
+    color: #1f2d3d;
+    margin: 0 auto;
+  
+  }
+  
+  .about-subtitle {
+    font-size: 18px;
+    color: #475569;
+    margin-top: 8px;
+  }
+  
+  
+  /* Mobile first: adjust cards to fit all 3 on one screen */
+  @media (max-width: 600px) {
+  
+    .about-wrapper {
+      padding-top: 20px;
+    }
+  
+    .about-logo {
+      height: 120px; /* smaller logo */
+    }
+  
+    .about-title {
+      font-size: 32px; /* smaller title */
+    }
+  
+    .about-subtitle {
+      font-size: 14px;
+    }
+  
+    
+  }
+  @media (max-width: 600px) {
+  
+    .about-wrapper {
+      padding: 24px 10px;
+    }
+  
+    .about-logo {
+      height: 80px;      /* Smaller logo */
+    }
+  
+    .about-title {
+      font-size: 30px;
+    }
+  
+    .about-subtitle {
+      font-size: 12px;
+    }
+  }
+  
+  @keyframes gradientShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  @keyframes breathe {
+    0%   { background-size: 100% 100%; }
+    50%  { background-size: 105% 105%; }
+    100% { background-size: 100% 100%; }
+  }
+  
+  @keyframes gradientWave {
+    0%   { background-position: 0% 50%; }
+    25%  { background-position: 50% 70%; }
+    50%  { background-position: 100% 50%; }
+    75%  { background-position: 50% 30%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  @keyframes auroraFlow {
+    0% {
+      background-position: 0% 0%;
+      filter: hue-rotate(0deg);
+    }
+    50% {
+      background-position: 100% 50%;
+      filter: hue-rotate(15deg);
+    }
+    100% {
+      background-position: 0% 100%;
+      filter: hue-rotate(-15deg);
+    }
+  }
