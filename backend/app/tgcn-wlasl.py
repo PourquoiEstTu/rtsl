@@ -48,7 +48,7 @@ def generate_class_integer_mappings(directory: str, mappings_exist: bool, json_p
 
     return idx_to_class, class_to_idx
 
-# idx_to_class, class_to_idx = generate_class_integer_mappings("/home/pourquoi/repos/rtsl/backend/app/", mappings_exist=True, json_path="/home/pourquoi/repos/rtsl/backend/app/all.json")
+idx_to_class, class_to_idx = generate_class_integer_mappings("/u50/chandd9/capstone/rtsl/backend/data_splits/100", mappings_exist=True, json_path="/u50/chandd9/capstone/rtsl/backend/data_splits/data.json")
 
 
 def _preprocess_keypoints(frames_data):
@@ -217,6 +217,18 @@ def test_run():
     extractor = PoseExtractor()
     frames_data = extractor.extract_from_video("/u50/chandd9/downloads/videos/00336.mp4")
     input_tensor = _preprocess_keypoints(frames_data)
+    print(f"Test run input shape: {input_tensor.shape}, dtype: {input_tensor.dtype}")
+
+    inputs = {PRETRAINED_MODEL.get_inputs()[0].name: input_tensor}
+    outputs = PRETRAINED_MODEL.run(None, inputs)
+
+    logits = outputs[0]
+    pred_idx = int(np.argmax(logits))
+    # c = float(np.max(logits))
+
+    word = idx_to_class[str(pred_idx)]
+    print("Prediction:", word)
+
     return 
 
 test_run()
