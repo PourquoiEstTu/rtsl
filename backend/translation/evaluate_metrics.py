@@ -21,7 +21,7 @@ ROUGE
 import logging
 import torch
 import evaluate
-from transformers import T5Tokenizer, T5ForConditionalGeneration
+from transformers import BartTokenizer, BartForConditionalGeneration
 
 from data.dataset import get_dataset
 from utils.config import Config
@@ -47,16 +47,17 @@ def generate_predictions(model, tokenizer, dataset, device):
                 attention_mask=attention_mask,
                 max_length=128,
                 num_beams=4,
-                early_stopping=True
+                early_stopping=True,
             )
 
         pred = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
+        # Decode reference (remove -100 padding)
         label_ids = [x for x in example["labels"] if x != -100]
         ref = tokenizer.decode(label_ids, skip_special_tokens=True)
 
         predictions.append(pred)
-        references.append([ref])  # BLEU expects list of references
+        references.append(ref)
 
     return predictions, references
 
@@ -65,9 +66,9 @@ def main():
     config = Config()
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
-    logger.info("Loading tokenizer and model...")
-    tokenizer = T5Tokenizer.from_pretrained(config.training.output_dir)
-    model = T5ForConditionalGeneration.from_pretrained(config.training.output_dir)
+    logger.info("Loading Glossa-BART tokenizer and model...")
+    tokenizer = BartTokenizer.from_pretrained("rrrr66254/Glossa-BART")
+    model = BartForConditionalGeneration.from_pretrained("rrrr66254/Glossa-BART")
 
     logger.info("Loading test dataset...")
     datasets = get_dataset(tokenizer, config)
@@ -76,34 +77,25 @@ def main():
     logger.info("Running inference on test set...")
     preds, refs = generate_predictions(model, tokenizer, test_dataset, device)
 
-    # Load metrics
     bleu = evaluate.load("bleu")
     rouge = evaluate.load("rouge")
-    # meteor = evaluate.load("meteor")
 
-    # BLEU expects tokenized references
     bleu_score = bleu.compute(
-        predictions=[p.split() for p in preds],
-        references=[[r.split()] for r in refs]
+        predictions=preds,
+        references=[[r] for r in refs],
     )
 
     rouge_score = rouge.compute(
         predictions=preds,
-        references=refs
+        references=refs,
     )
 
-    # meteor_score = meteor.compute(
-    #     predictions=preds,
-    #     references=refs
-    # )
-
-    logger.info("\n================ Evaluation Results ================")
-    logger.info(f"BLEU:   {bleu_score['bleu']:.4f}")
-    logger.info(f"ROUGE-1 F1: {rouge_score['rouge1'].mid.fmeasure:.4f}")
-    logger.info(f"ROUGE-2 F1: {rouge_score['rouge2'].mid.fmeasure:.4f}")
-    logger.info(f"ROUGE-L F1: {rouge_score['rougeL'].mid.fmeasure:.4f}")
-    # logger.info(f"METEOR: {meteor_score['meteor']:.4f}")
-    logger.info("===================================================")
+    logger.info("\n================ Evaluation Results (Glossa-BART) ================")
+    logger.info(f"BLEU:          {bleu_score['bleu']:.4f}")
+    logger.info(f"ROUGE-1 (F1):  {rouge_score['rouge1']:.4f}")
+    logger.info(f"ROUGE-2 (F1):  {rouge_score['rouge2']:.4f}")
+    logger.info(f"ROUGE-L (F1):  {rouge_score['rougeL']:.4f}")
+    logger.info("==================================================================")
 
 
 if __name__ == "__main__":
