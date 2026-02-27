@@ -37,8 +37,8 @@ def convert_to_onnx(model_name='asl100'):
     """
     
     # Paths - ASL100 (active)
-    checkpoint_path = f"{ROOT}/splits/1000/pytorch_model.bin"
-    config_path = f"{ROOT}/splits/1000/asl1000.ini"
+    checkpoint_path = f"{ROOT}/splits/300/pytorch_model300.bin"
+    config_path = f"{ROOT}/splits/300/asl300.ini"
     
     # Output path - ASL100
     output_dir = ROOT

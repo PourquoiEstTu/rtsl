@@ -67,9 +67,9 @@ def generate_class_integer_mappings(directory: str, mappings_exist: bool, json_p
 
     return idx_to_class, class_to_idx
 
-idx_to_class, class_to_idx = generate_class_integer_mappings("/u50/quyumr/rtsl/backend/app/splits/2000", mappings_exist=False, json_path="/u50/quyumr/rtsl/backend/app/splits/asl2000.json")
+idx_to_class, class_to_idx = generate_class_integer_mappings("/u50/quyumr/rtsl/backend/app/splits/300", mappings_exist=False, json_path="/u50/quyumr/rtsl/backend/app/splits/asl300.json")
 # print(idx_to_class[1845])
-# exit()
+exit()
 
 def _preprocess_keypoints(frames_data):
     """
