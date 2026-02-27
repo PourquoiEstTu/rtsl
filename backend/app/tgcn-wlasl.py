@@ -7,9 +7,23 @@ import os
 # from transformers import AutoModel, AutoModelForSequenceClassification, PreTrainedModel
 import numpy as np
 from pose_extractor import PoseExtractor
+import joblib
 
 PRETRAINED_MODEL = 0
-NUM_SAMPLES = 0
+NUM_SAMPLES = 50
+
+# Default values (will be overridden by model/config)
+NUM_NODES = 55  # Fixed: 13 body + 21 left hand + 21 right hand
+NUM_CLASSES = 100  # ASL100
+# NUM_CLASSES = 2000  # ASL2000 (commented out)
+
+# Body keypoints to exclude (matching training)
+BODY_POSE_EXCLUDE = {9, 10, 11, 22, 23, 24, 12, 13, 14, 19, 20, 21}
+
+# Frame capture settings
+DEFAULT_FPS = 10  # Frames per second for capture
+MAX_FRAMES = 200  # Maximum frames to process
+TARGET_FRAME_SIZE = 256  # Target size for normalization
 
 def generate_class_integer_mappings(directory: str, mappings_exist: bool, json_path: str, max_classes = None) :
     """
@@ -48,7 +62,7 @@ def generate_class_integer_mappings(directory: str, mappings_exist: bool, json_p
 
     return idx_to_class, class_to_idx
 
-idx_to_class, class_to_idx = generate_class_integer_mappings("/u50/chandd9/capstone/rtsl/backend/data_splits/100", mappings_exist=True, json_path="/u50/chandd9/capstone/rtsl/backend/data_splits/data.json")
+idx_to_class, class_to_idx = generate_class_integer_mappings("/u50/chandd9/capstone/rtsl/backend/data_splits/100", mappings_exist=True, json_path="/u50/chandd9/capstone/rtsl/backend/data_splits/100/data.json")
 
 
 def _preprocess_keypoints(frames_data):
@@ -210,25 +224,42 @@ def _setup_model():
     return pretrained_model, NUM_SAMPLES
 PRETRAINED_MODEL, NUM_SAMPLES = _setup_model()
 
-NUM_NODES = 55
-
 # dhruv test run of pose extractor and setupmodel
 def test_run():
     extractor = PoseExtractor()
-    frames_data = extractor.extract_from_video("/u50/chandd9/downloads/videos/00336.mp4")
-    input_tensor = _preprocess_keypoints(frames_data)
-    print(f"Test run input shape: {input_tensor.shape}, dtype: {input_tensor.dtype}")
+    frames_data = extractor.extract_from_video("/u50/chandd9/capstone/videos/05628.mp4")
+    print(frames_data[0].keys())  # should show 'people' key
 
-    inputs = {PRETRAINED_MODEL.get_inputs()[0].name: input_tensor}
-    outputs = PRETRAINED_MODEL.run(None, inputs)
+    if frames_data:
+        first_frame = frames_data[0]
+        people = first_frame.get('people', [])
+        if people:
+            p = people[0]
+            body_count = len(p.get('pose_keypoints_2d', [])) // 3
+            left_count = len(p.get('hand_left_keypoints_2d', [])) // 3
+            right_count = len(p.get('hand_right_keypoints_2d', [])) // 3
+            print(f"[VIDEO] First frame keypoints: body={body_count}, left_hand={left_count}, right_hand={right_count}")
 
-    logits = outputs[0]
-    pred_idx = int(np.argmax(logits))
-    # c = float(np.max(logits))
+    input_data = _preprocess_keypoints(frames_data)
+    print(f"Test run input shape: {input_data.shape}, dtype: {input_data.dtype}")
 
-    word = idx_to_class[str(pred_idx)]
-    print("Prediction:", word)
+    input_name = PRETRAINED_MODEL.get_inputs()[0].name
+    output_name = PRETRAINED_MODEL.get_outputs()[0].name
+        
+    logits = PRETRAINED_MODEL.run([output_name], {input_name: input_data})[0]
 
+    # Apply softmax
+    exp_logits = np.exp(logits - np.max(logits, axis=1, keepdims=True))
+    probs = exp_logits / np.sum(exp_logits, axis=1, keepdims=True)
+        
+    # Get top prediction
+    predicted_idx = int(np.argmax(probs, axis=1)[0])
+    confidence = float(probs[0, predicted_idx])
+
+    print(f"Predicted class index: {predicted_idx}, confidence: {confidence:.4f}")
+    predicted_label = idx_to_class.get(str(predicted_idx), "Unknown")
+    print(f"Predicted label: {predicted_label}")
+    
     return 
 
 test_run()
