@@ -240,7 +240,8 @@ class PoseExtractor:
                 "pose_keypoints_3d": [],
                 "face_keypoints_3d": [],
                 "hand_left_keypoints_3d": [],
-                "hand_right_keypoints_3d": []
+                "hand_right_keypoints_3d": [],
+                "multi_hand_landmarks": hand_results.multi_hand_landmarks
             }]
         }
 

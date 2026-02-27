@@ -10,7 +10,7 @@ from configs import Config
 from pose_extractor import PoseExtractor
 
 DIR = "/Users/gauravsharma/Documents/capstone"
-NUM_CLASSES = 1500
+NUM_CLASSES = 100
 INPUT_SIZE = 55
 WINDOW_SIZE = 50
 
@@ -41,7 +41,7 @@ def get_model():
     return model
 
 def get_labels():
-    labels_path = f"{DIR}/rtsl/backend/data_splits/{NUM_CLASSES}/idx_to_class.json"
+    labels_path = f"{DIR}/rtsl/backend/data_splits/{NUM_CLASSES}/class_to_idx.json"
     with open(labels_path, 'r') as f:
         labels = [w for w in json.load(f)]
     return labels
@@ -50,21 +50,21 @@ def predict(model, labels, seq):
     logits = model(seq)
     probabilities = torch.softmax(logits, dim=1)
     idx = torch.argmax(probabilities, dim=1).item()
+    print(f"idx: {idx}")
     return labels[idx]
-
 
 def main():
     model = get_model()
     labels = get_labels()
-    
+
     pose_extractor = PoseExtractor()
     mp_hands = mp.solutions.hands
     mp_drawing = mp.solutions.drawing_utils
     mp_styles = mp.solutions.drawing_styles
 
     cap = cv2.VideoCapture(0)
-    buffer = []
-    
+    processed = []
+
     while True:
         ret, frame = cap.read()
         if not ret:
@@ -72,38 +72,100 @@ def main():
         
         # flip camera
         frame = cv2.flip(frame, 1)
-        result = pose_extractor.extract_keypoints(frame)
-        
-        landmarks = []
-        buffer.append(landmarks)
-        
-        if result.multi_hand_landmarks:
-            for handLms in result.multi_hand_landmarks:
+        result = pose_extractor.extract_keypoints(frame)["people"][0]    
+    
+        key = cv2.waitKey(1) & 0xFF
+        if key == ord('q'):
+            break
+    
+        # landmarks = []
+                
+        if result["multi_hand_landmarks"]:
+            for handLms in result["multi_hand_landmarks"]:
                 mp_drawing.draw_landmarks(
                     frame, handLms, mp_hands.HAND_CONNECTIONS,
                     mp_styles.get_default_hand_landmarks_style(),
                     mp_styles.get_default_hand_connections_style()
                 )
-                h, w, _ = frame.shape
-                for lm in handLms.landmark:
-                    landmarks.extend([lm.x, lm.y, lm.z])
-                   
-        #TODO: doublecheck how long landmarks usually is 
-        # pad if needed
-        if len(landmarks) < INPUT_SIZE:
-            landmarks += [0.0] * (INPUT_SIZE - len(landmarks))
-        elif len(landmarks) > INPUT_SIZE:
-            landmarks = landmarks[:INPUT_SIZE]
-
-        landmarks = np.array(landmarks)
+                # h, w, _ = frame.shape
+                # for lm in handLms.landmark:
+                #     landmarks.extend([lm.x, lm.y, lm.z])
+        # print(len(landmarks)) # 0, 63 or 126
         
-        # Only predict if **hands are present**
-        if np.sum(landmarks) != 0 and len(buffer) >= WINDOW_SIZE:
-            seq = np.stack(np.stack(buffer[-WINDOW_SIZE:]))
-            current_pred = predict(model, labels, seq)
-        elif np.sum(landmarks) == 0:
-            current_pred = ""  # no hands detected
+        body = result["pose_keypoints_2d"]
+        left = result["hand_left_keypoints_2d"]
+        right = result["hand_right_keypoints_2d"]
+        
+        # Combine: body (25) + left hand (21) + right hand (21) = 67 total landmarks
+        combined = list(body) + list(left) + list(right)
+        num_landmarks = len(combined) // 3 if len(combined) >= 3 else 0
+        x_list = []
+        y_list = []
+        
+        for j in range(num_landmarks):
+            # Skip excluded body keypoints (indices 0-24 are body)
+            if j < 25 and j in {9, 10, 11, 22, 23, 24, 12, 13, 14, 19, 20, 21}:
+                continue
             
-        print(current_pred)
+            xi = combined[j*3 + 0] if j*3 + 0 < len(combined) else 0.0
+            yi = combined[j*3 + 1] if j*3 + 1 < len(combined) else 0.0
+            
+            # Normalize to [-1, 1] range: 2 * ((x / 256) - 0.5)
+            x_norm = 2.0 * ((float(xi) / 256.0) - 0.5)
+            y_norm = 2.0 * ((float(yi) / 256.0) - 0.5)
+            
+            x_list.append(x_norm)
+            y_list.append(y_norm)
+        
+        # Should have exactly 55 keypoints: 13 body + 21 left + 21 right
+        expected_keypoints = 55
+        if len(x_list) != expected_keypoints:
+            print(f"[WARNING]: Expected {expected_keypoints} keypoints, got {len(x_list)}")
+            # Pad or truncate to 55
+            while len(x_list) < expected_keypoints:
+                x_list.append(0.0)
+                y_list.append(0.0)
+            x_list = x_list[:expected_keypoints]
+            y_list = y_list[:expected_keypoints]
+        
+        xy_frame = np.stack([np.array(x_list), np.array(y_list)], axis=1).astype(np.float32)
+        
+        if (len(processed) > (WINDOW_SIZE - 1)):
+            processed = processed[1:WINDOW_SIZE]
+        processed.append(xy_frame)
+        
+        # Pad to exactly NUM_SAMPLES frames
+        if len(processed) < WINDOW_SIZE:
+            # Pad with last frame
+            last_frame = processed[-1] if processed else np.zeros((INPUT_SIZE, 2), dtype=np.float32)
+            num_padding = WINDOW_SIZE - len(processed)
+            for _ in range(num_padding):
+                processed.append(last_frame.copy())
+            print(f"[PREPROCESS] Padded {num_padding} frames to reach {WINDOW_SIZE}")
+        
+        # Reshape to model input format: (1, num_nodes, feature_len)
+        # feature_len = num_samples * 2 (x,y coordinates across time)
+        # Each node has: [x_t0, y_t0, x_t1, y_t1, ..., x_t49, y_t49]
+        feature_len = WINDOW_SIZE * 2
+        input_data = np.zeros((1, INPUT_SIZE, feature_len), dtype=np.float32)
+
+        for node_idx in range(INPUT_SIZE):
+            for t in range(WINDOW_SIZE):
+                frame_xy = processed[t]  # Shape: (55, 2)
+                x_val = frame_xy[node_idx, 0]
+                y_val = frame_xy[node_idx, 1]
+                input_data[0, node_idx, t*2 + 0] = x_val
+                input_data[0, node_idx, t*2 + 1] = y_val
+        
+        # only print if hands in frame     
+        if np.sum(left) + np.sum(right) != 0:
+            current_pred = predict(model, labels, torch.from_numpy(input_data))
+            print(current_pred)
         
         cv2.imshow("Live Prediction", frame)
+        
+    cap.release()
+    cv2.destroyAllWindows()
+
+if __name__ == "__main__":
+    main()
