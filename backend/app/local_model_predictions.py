@@ -10,9 +10,10 @@ from configs import Config
 from pose_extractor import PoseExtractor
 
 DIR = "/Users/gauravsharma/Documents/capstone"
-NUM_CLASSES = 100
+NUM_CLASSES = 300
 INPUT_SIZE = 55
 WINDOW_SIZE = 50
+MOVEMENT_THRESHOLD = 1.2
 
 if NUM_CLASSES not in [100, 300, 1000, 2000]:
     print("ERROR - INVALID NUM_CLASSES")
@@ -50,9 +51,33 @@ def predict(model, labels, seq):
     logits = model(seq)
     probabilities = torch.softmax(logits, dim=1)
     idx = torch.argmax(probabilities, dim=1).item()
-    print(f"idx: {idx}")
+    confidence = float(probabilities[0, idx])
+    print(f"idx: {idx}, confidence: {confidence}")
     return labels[idx]
 
+def movement_score(landmarks_frames,hand_weight=3):
+    hand_indices = list(range(13))  # adjust based on your hand landmark indices
+    diffs = []
+    for i in range(len(landmarks_frames) - 1):
+        diff = np.linalg.norm(landmarks_frames[i+1] - landmarks_frames[i], axis=1)  # shape (num_landmarks,)
+
+        # Apply 2x weight to hand landmarks
+        weighted_diff = diff.copy()
+        weighted_diff[hand_indices] *= hand_weight
+
+        total_diff = np.sum(weighted_diff)
+        diffs.append(total_diff)
+
+    avg_movement = np.mean(diffs)
+    return avg_movement   
+
+def update_ema(old_ema, new_score, alpha=0.3):
+    if old_ema:
+        return alpha * new_score + (1 - alpha) * old_ema
+    else:
+        return new_score
+        
+    
 def main():
     model = get_model()
     labels = get_labels()
@@ -64,7 +89,9 @@ def main():
 
     cap = cv2.VideoCapture(0)
     processed = []
-
+    ema_score = None
+    counter = 0
+    
     while True:
         ret, frame = cap.read()
         if not ret:
@@ -103,7 +130,7 @@ def main():
         y_list = []
         
         for j in range(num_landmarks):
-            # Skip excluded body keypoints (indices 0-24 are body)
+            # Skip excluded body keypoints (indices 0-24 are body) 67 - 12 = 55
             if j < 25 and j in {9, 10, 11, 22, 23, 24, 12, 13, 14, 19, 20, 21}:
                 continue
             
@@ -143,24 +170,29 @@ def main():
                 processed.append(last_frame.copy())
             print(f"[PREPROCESS] Padded {num_padding} frames to reach {WINDOW_SIZE}")
         
-        # Reshape to model input format: (1, num_nodes, feature_len)
-        # feature_len = num_samples * 2 (x,y coordinates across time)
-        # Each node has: [x_t0, y_t0, x_t1, y_t1, ..., x_t49, y_t49]
-        feature_len = WINDOW_SIZE * 2
-        input_data = np.zeros((1, INPUT_SIZE, feature_len), dtype=np.float32)
+        #at this point, processed is 50 frames x 55 features x 2 coordinates
+        ema_score = update_ema(ema_score, movement_score(processed[-5:]))
+        if ema_score > MOVEMENT_THRESHOLD:
+            print(f"-- MOVEMENT THRESHOLD PASSED -- {counter}")
+            counter+=1 
+            # Reshape to model input format: (1, num_nodes, feature_len)
+            # feature_len = num_samples * 2 (x,y coordinates across time)
+            # Each node has: [x_t0, y_t0, x_t1, y_t1, ..., x_t49, y_t49]
+            feature_len = WINDOW_SIZE * 2
+            input_data = np.zeros((1, INPUT_SIZE, feature_len), dtype=np.float32)
 
-        for node_idx in range(INPUT_SIZE):
-            for t in range(WINDOW_SIZE):
-                frame_xy = processed[t]  # Shape: (55, 2)
-                x_val = frame_xy[node_idx, 0]
-                y_val = frame_xy[node_idx, 1]
-                input_data[0, node_idx, t*2 + 0] = x_val
-                input_data[0, node_idx, t*2 + 1] = y_val
-        
-        # only print if hands in frame     
-        if np.sum(left) + np.sum(right) != 0:
-            current_pred = predict(model, labels, torch.from_numpy(input_data))
-            print(current_pred)
+            for node_idx in range(INPUT_SIZE):
+                for t in range(WINDOW_SIZE):
+                    frame_xy = processed[t]  # Shape: (55, 2)
+                    x_val = frame_xy[node_idx, 0]
+                    y_val = frame_xy[node_idx, 1]
+                    input_data[0, node_idx, t*2 + 0] = x_val
+                    input_data[0, node_idx, t*2 + 1] = y_val
+                
+            # only print if hands in frame     
+            if np.sum(left) + np.sum(right) != 0:
+                current_pred = predict(model, labels, torch.from_numpy(input_data))
+                print(current_pred)
         
         cv2.imshow("Live Prediction", frame)
         
