@@ -7,9 +7,11 @@ import os
 # from transformers import AutoModel, AutoModelForSequenceClassification, PreTrainedModel
 import numpy as np
 from pose_extractor import PoseExtractor
+from sys import exit
 
 PRETRAINED_MODEL = 0
 NUM_SAMPLES = 0
+ROOT = "/u50/quyumr/rtsl/backend/app"
 
 def generate_class_integer_mappings(directory: str, mappings_exist: bool, json_path: str, max_classes = None) :
     """
@@ -48,7 +50,15 @@ def generate_class_integer_mappings(directory: str, mappings_exist: bool, json_p
 
     return idx_to_class, class_to_idx
 
-idx_to_class, class_to_idx = generate_class_integer_mappings("/u50/chandd9/capstone/rtsl/backend/data_splits/100", mappings_exist=True, json_path="/u50/chandd9/capstone/rtsl/backend/data_splits/data.json")
+idx_to_class, class_to_idx = generate_class_integer_mappings("/u50/quyumr/rtsl/backend/app/splits/2000", mappings_exist=False, json_path="/u50/quyumr/rtsl/backend/app/splits/asl2000.json")
+# print(idx_to_class[1845])
+# exit()
+
+# Load weights
+# checkpoint = torch.load(checkpoint_path, map_location='cpu', weights_only=False)
+# state_dict = checkpoint.get('state_dict', checkpoint)
+# model.load_state_dict(state_dict, strict=False)
+# model.eval()
 
 
 def _preprocess_keypoints(frames_data):
@@ -165,20 +175,13 @@ MODEL_LOAD_INFO = {
     "details": None
 }
 
-def _setup_model():
+def _setup_model(onnx_path):
     """Load the ONNX model for inference."""
     
     if ort is None:
         print('ONNX Runtime not available')
         MODEL_LOAD_INFO['error'] = 'ONNX Runtime not installed'
         return
-    
-    # Get model path - ASL100 (active)
-    backend_dir = "../"
-    onnx_path = os.path.join(backend_dir, 'models', 'asl100.onnx')
-    # ASL2000 model path (commented out)
-    # onnx_path = os.path.join(backend_dir, 'models', 'asl2000.onnx')
-    
     if not os.path.exists(onnx_path):
         print(f'ONNX model not found at {onnx_path}')
         MODEL_LOAD_INFO['error'] = f'ONNX model not found. Please run convert_to_onnx.py first.'
@@ -208,14 +211,14 @@ def _setup_model():
         MODEL_LOAD_INFO['error'] = str(e)
         pretrained_model = None
     return pretrained_model, NUM_SAMPLES
-PRETRAINED_MODEL, NUM_SAMPLES = _setup_model()
+PRETRAINED_MODEL, NUM_SAMPLES = _setup_model(f"{ROOT}/splits/1000/asl1000.onnx")
 
 NUM_NODES = 55
 
 # dhruv test run of pose extractor and setupmodel
 def test_run():
     extractor = PoseExtractor()
-    frames_data = extractor.extract_from_video("/u50/chandd9/downloads/videos/00336.mp4")
+    frames_data = extractor.extract_from_video("/u50/quyumr/archive/videos/00639.mp4")
     input_tensor = _preprocess_keypoints(frames_data)
     print(f"Test run input shape: {input_tensor.shape}, dtype: {input_tensor.dtype}")
 
@@ -226,7 +229,9 @@ def test_run():
     pred_idx = int(np.argmax(logits))
     # c = float(np.max(logits))
 
-    word = idx_to_class[str(pred_idx)]
+    # print(pred_idx)
+    # print(idx_to_class[1845])
+    word = idx_to_class[pred_idx]
     print("Prediction:", word)
 
     return 
@@ -237,7 +242,7 @@ test_run()
 # checkpoint_path = "/home/pourquoi/repos/rtsl/backend/app/checkpoints/asl1000/pytorch_model.bin"
 # config_path =     "/home/pourquoi/repos/rtsl/backend/app/checkpoints/asl1000/config.ini"
 # config = Config(config_path)
-#
+# 
 # # initialize model
 # model = GCN_muti_att(
 #     input_feature=config.num_samples * 2,  # 50 * 2 = 100
@@ -246,7 +251,7 @@ test_run()
 #     p_dropout=config.drop_p,               # 0.3
 #     num_stage=config.num_stages            # 24
 # )
-#
+# 
 # # Load weights
 # checkpoint = torch.load(checkpoint_path, map_location='cpu', )
 # state_dict = checkpoint.get('state_dict', checkpoint)
