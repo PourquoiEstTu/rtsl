@@ -14,6 +14,7 @@ NUM_CLASSES = 300
 INPUT_SIZE = 55
 WINDOW_SIZE = 50
 MOVEMENT_THRESHOLD = 1.2
+PAUSE_THRESHOLD = 20 # number of frames
 
 if NUM_CLASSES not in [100, 300, 1000, 2000]:
     print("ERROR - INVALID NUM_CLASSES")
@@ -52,7 +53,7 @@ def predict(model, labels, seq):
     probabilities = torch.softmax(logits, dim=1)
     idx = torch.argmax(probabilities, dim=1).item()
     confidence = float(probabilities[0, idx])
-    print(f"idx: {idx}, confidence: {confidence}")
+    # print(f"idx: {idx}, confidence: {confidence}")
     return labels[idx]
 
 def movement_score(landmarks_frames,hand_weight=3):
@@ -61,7 +62,7 @@ def movement_score(landmarks_frames,hand_weight=3):
     for i in range(len(landmarks_frames) - 1):
         diff = np.linalg.norm(landmarks_frames[i+1] - landmarks_frames[i], axis=1)  # shape (num_landmarks,)
 
-        # Apply 2x weight to hand landmarks
+        # Apply 2x weight to hand landmarks TODO: maybe only put weight on the hands?
         weighted_diff = diff.copy()
         weighted_diff[hand_indices] *= hand_weight
 
@@ -77,7 +78,17 @@ def update_ema(old_ema, new_score, alpha=0.3):
     else:
         return new_score
         
-    
+def add_to_sequence(gloss_arr, last_pred, word):
+    global counter 
+        
+    if (last_pred == word):
+        counter += 1
+    else:
+        counter = 1
+        
+    if (counter > 3 and gloss_arr[-1] != word):            
+        gloss_arr.append(word)
+        
 def main():
     model = get_model()
     labels = get_labels()
@@ -90,7 +101,11 @@ def main():
     cap = cv2.VideoCapture(0)
     processed = []
     ema_score = None
-    counter = 0
+    counter = 0 #can delete this later
+    
+    pause_counter = 0
+    last_pred = None
+    gloss_sequence = [""]
     
     while True:
         ret, frame = cap.read()
@@ -173,6 +188,7 @@ def main():
         #at this point, processed is 50 frames x 55 features x 2 coordinates
         ema_score = update_ema(ema_score, movement_score(processed[-5:]))
         if ema_score > MOVEMENT_THRESHOLD:
+            pause_counter = 0
             print(f"-- MOVEMENT THRESHOLD PASSED -- {counter}")
             counter+=1 
             # Reshape to model input format: (1, num_nodes, feature_len)
@@ -192,9 +208,19 @@ def main():
             # only print if hands in frame     
             if np.sum(left) + np.sum(right) != 0:
                 current_pred = predict(model, labels, torch.from_numpy(input_data))
-                print(current_pred)
+                # print(current_pred)
+                add_to_sequence(gloss_sequence, last_pred, current_pred)
+                last_pred = current_pred
+        else:
+            pause_counter += 1
+            if (pause_counter == PAUSE_THRESHOLD):
+                add_to_sequence(gloss_sequence, last_pred, ".")
+                last_pred = "."
+                pause_counter = 0
+                #TODO call gloss to sentence stuff
         
         cv2.imshow("Live Prediction", frame)
+        print(gloss_sequence)
         
     cap.release()
     cv2.destroyAllWindows()
