@@ -1,7 +1,7 @@
 // Home.spec.ts
 import { mount } from "@vue/test-utils";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import Home from "./Home.vue";
+import Home from "../Home.vue";
 
 // Unit Tests
 // Checking amount of bottons

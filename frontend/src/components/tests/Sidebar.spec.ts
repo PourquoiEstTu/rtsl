@@ -1,6 +1,6 @@
 import { mount } from "@vue/test-utils";
 import { type Router, createRouter, createMemoryHistory } from "vue-router";
-import Sidebar from "./Sidebar.vue";
+import Sidebar from "../Sidebar.vue";
 import { describe, it, expect, beforeEach, vi } from "vitest";
 
 const Home = { template: "<div>Home Page</div>" };

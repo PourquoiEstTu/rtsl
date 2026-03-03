@@ -1,6 +1,6 @@
 import { mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
-import Camera from "./Camera.vue";
+import Camera from "../Camera.vue";
 
 describe("CameraPage", () => {
   it("renders layout correctly", () => {

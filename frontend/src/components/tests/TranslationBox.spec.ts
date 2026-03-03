@@ -1,7 +1,7 @@
 // TranslationBox.spec.ts
 import { mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
-import TranslationBox from "./TranslationBox.vue";
+import TranslationBox from "../TranslationBox.vue";
 
 // Used for checking to see how text appears
 
