@@ -1,12 +1,4 @@
 .sidebar {
-  display: none; /* hidden */ /* lg:flex */
-}
-@media (min-width: 1024px) {
-  .sidebar {
-    display: flex;
-  }
-}
-.sidebar {
   width: 13rem; /* w-52 */
   background-color: rgba(147, 194, 233, 0.9); /* bg-[#93c2e9]/90 */
   flex-direction: column; /* flex-col */

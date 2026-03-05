@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, onUnmounted, ref } from "vue";
 import Button from "@/volt/Button.vue";
 import TranslationBox from "@/components/TranslationBox.vue";
 import {
@@ -12,6 +12,24 @@ import logo from "@/assets/logo_without_text-removebg-preview.png";
 import "@/screens/style/camera.css";
 import Sidebar from "@/components/Sidebar.vue";
 import ChatHistoryButton from "@/components/ChatHistoryButton.vue";
+import PhoneSidebarButton from "@/components/PhoneSidebarButton.vue";
+
+// Track screen width
+const screenWidth = ref(window.innerWidth);
+
+// Update on resize
+function updateWidth() {
+  screenWidth.value = window.innerWidth;
+}
+
+onMounted(() => {
+  window.addEventListener("resize", updateWidth);
+});
+onUnmounted(() => {
+  window.removeEventListener("resize", updateWidth);
+});
+// Define what counts as desktop/laptop
+const isDesktop = computed(() => screenWidth.value >= 1024);
 
 let handLandmarker: HandLandmarker | null = null;
 let animationFrameId: number | null = null;
@@ -197,7 +215,7 @@ function drawLandmarks(
 
 <template>
   <div class="bg-[#e0f2ff]">
-    <aside class="sidebar">
+    <aside v-if="isDesktop" class="sidebar">
       <div>
         <span class="sidebar-title">Translator</span>
         <Sidebar />
@@ -210,11 +228,12 @@ function drawLandmarks(
     </aside>
     <main>
       <div class="outer-container">
-        <div class="camera-panel lg:rounded-t-4xl">
+        <div class="camera-panel">
           <video ref="videoEl" autoplay playsinline />
           <canvas ref="canvasEl" class="absolute w-full object-cover h-full" />
           <div class="background-gradient"></div>
           <ChatHistoryButton />
+          <PhoneSidebarButton v-if="!isDesktop" />
 
           <div class="button-container">
             <Button class="button rounded-full!" @click="translation = genExampleTranslation.next().value as string">
