@@ -11,6 +11,7 @@ import { useWebSocket } from "@vueuse/core";
 import logo from "@/assets/logo_without_text-removebg-preview.png";
 import "@/screens/style/camera.css";
 import Sidebar from "@/components/Sidebar.vue";
+import ChatHistoryButton from "@/components/ChatHistoryButton.vue";
 
 let handLandmarker: HandLandmarker | null = null;
 let animationFrameId: number | null = null;
@@ -19,8 +20,30 @@ let stream: MediaStream | null = null;
 const videoEl = ref<HTMLVideoElement | null>(null);
 const canvasEl = ref<HTMLCanvasElement | null>(null);
 
-// Todo: replace with string returned from backend
-const testTranslation = ref<string | null>(null)
+// Todo: assign string returned from backend to this var
+const translation = ref<string>("Waiting for sign input...");
+// These are temparary for demo
+const exmapleTranslations = [
+  'Idk brochacho ✌️😭',
+  'Test 1',
+  'Test 2',
+  'Test 3',
+  'Test 4',
+  'Test 5',
+  'Test 6',
+  'Test 7',
+  'Lol 6 7',
+];
+
+function* exampleTranslation() {
+  while (true) {
+    for (const translation of exmapleTranslations) {
+      yield translation;
+    }
+  }
+}
+
+const genExampleTranslation = exampleTranslation();
 
 // Todo for this coding sess:
 // * "convo history" button to show all translations from this session
@@ -173,7 +196,7 @@ function drawLandmarks(
 
 
 <template>
-  <div class="camera-wrapper">
+  <div class="bg-[#e0f2ff]">
     <aside class="sidebar">
       <div>
         <span class="sidebar-title">Translator</span>
@@ -187,19 +210,19 @@ function drawLandmarks(
     </aside>
     <main>
       <div class="outer-container">
-        <div class="camera-panel">
+        <div class="camera-panel lg:rounded-t-4xl">
           <video ref="videoEl" autoplay playsinline />
           <canvas ref="canvasEl" class="absolute w-full object-cover h-full" />
           <div class="background-gradient"></div>
+          <ChatHistoryButton />
 
           <div class="button-container">
-            <Button class="button">
+            <Button class="button rounded-full!" @click="translation = genExampleTranslation.next().value as string">
               <i class="play-icon pi pi-play"></i>
             </Button>
           </div>
         </div>
-        <TranslationBox class="translation-box" />
-        <TranslationBox :translation="testTranslation" @close-translation-box="testTranslation = null" />
+        <TranslationBox class="translation-box" :translation="translation" />
       </div>
     </main>
   </div>

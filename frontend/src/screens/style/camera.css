@@ -1,12 +1,3 @@
-.camera-wrapper {
-  min-height: 100vh;
-  width: 100%;
-  background: #e0f2ff;
-  /* background: linear-gradient(to bottom, #e9f6ff, #b5daf5, #a6d0f1, #ffffff); */
-  background-size: 200% 200%;
-  display: flex;
-}
-
 .sidebar {
   display: none; /* hidden */ /* lg:flex */
 }
@@ -62,23 +53,21 @@ main {
   display: flex; /* flex */
   align-items: center; /* items-center */
   justify-content: center; /* justify-center */
-  padding: 1.5rem; /* p-6 */
   margin-left: 220px;
+  background: #e0f2ff !important;
 }
 
 .outer-container {
   position: relative; /* relative */
   width: 100%; /* w-full */
-  max-width: 64rem; /* max-w-5xl */
-  height: 90vh; /* h-[80vh] */
-  background-color: rgba(255, 255, 255, 0.2); /* bg-white/20 */
+  height: 100vh; /* h-[80vh] */
   backdrop-filter: blur(12px); /* backdrop-blur-md */
-  border-radius: 2.5rem; /* rounded-[2.5rem] */
   border: 1px solid rgba(255, 255, 255, 0.3); /* border-white/30 */
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1); /* shadow-[...] */
   overflow: hidden; /* overflow-hidden */
   display: flex; /* flex */
   flex-direction: column;
+  background: #e0f2ff !important;
 }
 
 .camera-panel {
@@ -87,20 +76,12 @@ main {
   display: flex; /* flex */
   align-items: center; /* items-center */
   justify-content: center; /* justify-center */
-  border-top-left-radius: 2.5rem;
-  border-top-right-radius: 2.5rem;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
   overflow: hidden; /* overflow-hidden */
 }
 
 .translation-box {
   flex: 0.5;
   width: 100%; /* ensure full width */
-  border-bottom-left-radius: 2.5rem;
-  border-bottom-right-radius: 2.5rem;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
 }
 
 .camera-panel video {
@@ -135,22 +116,20 @@ main {
 }
 
 .button {
-  border-radius: 9999px; /* rounded-full */
   padding: 0; /* p-0 */
   margin: 0; /* m-0 */
   aspect-ratio: 1 / 1; /* aspect-square */
   width: 3.5rem; /* w-14 */
   border: 2px solid rgba(255, 255, 255, 0.8); /* border-white/80 */
   background-color: rgba(255, 255, 255, 0.1); /* bg-white/10 */
-  backdrop-filter: blur(12px); /* backdrop-blur-md */
   display: flex; /* flex */
   align-items: center; /* items-center */
   justify-content: center; /* justify-center */
   transition: all 200ms; /* transition-all duration-200 */
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); /* shadow-[...] */
 }
 .button:hover {
   background-color: rgba(255, 255, 255, 0.2); /* hover:bg-white/20 */
+  cursor: pointer;
 }
 .button:active {
   transform: scale(0.95); /* active:scale-95 */
