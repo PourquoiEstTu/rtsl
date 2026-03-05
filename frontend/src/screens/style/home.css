@@ -2,7 +2,7 @@
   min-height: 100vh;
   width: 100%;
   /* background: linear-gradient(to bottom,#EAF7FF,#D3ECFF,#A6D0F1); */
-  background: linear-gradient(to bottom, #E9F6FF, #B5DAF5, #A6D0F1, #FFFFFF);
+  background: linear-gradient(to bottom, #e9f6ff, #b5daf5, #a6d0f1, #ffffff);
   /* background: radial-gradient(circle at top, #E9F6FF, #A6D0F1, #FFFFFF); */
   /* background: linear-gradient(
     100deg,
@@ -24,13 +24,14 @@
   padding: 40px 20px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
 }
 
 /* Header */
 .home-header {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 }
 
 .home-logo {
@@ -44,13 +45,12 @@
   font-weight: 700;
   color: #1f2d3d;
   margin: 0 auto;
-
 }
 
 .home-subtitle {
   font-size: 18px;
   color: #475569;
-  margin-top: 8px;
+  margin-top: 0px;
 }
 
 /* Card Row */
@@ -70,18 +70,17 @@
   background: white;
   border-radius: 22px;
   padding: 25px 20px;
+  justify-content: center;
   text-align: center;
-  box-shadow:
-    0 4px 18px rgba(66, 133, 244, 0.12),
-    0 12px 36px rgba(66, 133, 244, 0.10);
+  box-shadow: 0 4px 18px rgba(66, 133, 244, 0.12),
+    0 12px 36px rgba(66, 133, 244, 0.1);
   cursor: pointer;
   transition: 0.18s ease;
 }
 
 .home-card:hover {
   transform: translateY(-4px);
-  box-shadow: 
-    0 6px 22px rgba(66, 133, 244, 0.14),
+  box-shadow: 0 6px 22px rgba(66, 133, 244, 0.14),
     0 18px 44px rgba(66, 133, 244, 0.12);
 }
 
@@ -94,18 +93,17 @@
 .home-card-title {
   font-size: 20px;
   font-weight: 600;
-  color: #1E3A8A;
+  color: #1e3a8a;
 }
 
 .home-card-desc {
   font-size: 14px;
-  color: #1E3A8A;
+  color: #1e3a8a;
   margin-top: 6px;
 }
 
 /* Mobile first: adjust cards to fit all 3 on one screen */
 @media (max-width: 600px) {
-
   .home-wrapper {
     padding-top: 20px;
   }
@@ -127,33 +125,33 @@
   }
 
   .home-card {
-    width: 85%;
-    height: 180px;        /* smaller card height */
-    padding: 16px;        /* reduce padding */
-    border-radius: 18px;  /* slightly smaller radius */
+    width: 60%; /* full-width cards */
+    aspect-ratio: 1 / 1;
+    height: 120px; /* smaller card height */
+    padding: 16px; /* reduce padding */
+    border-radius: 18px; /* slightly smaller radius */
   }
 
   .home-icon {
-    font-size: 40px;  /* smaller icon */
+    font-size: 40px; /* smaller icon */
     margin-bottom: 8px;
   }
 
   .home-card-title {
-    font-size: 16px;   /* smaller title */
+    font-size: 16px; /* smaller title */
   }
 
   .home-card-desc {
-    font-size: 12px;   /* smaller text */
+    font-size: 12px; /* smaller text */
   }
 }
 @media (max-width: 600px) {
-
   .home-wrapper {
     padding: 24px 10px;
   }
 
   .home-logo {
-    height: 80px;      /* Smaller logo */
+    height: 80px; /* Smaller logo */
   }
 
   .home-title {
@@ -169,14 +167,14 @@
   }
 
   .home-card {
-    width: 90%;         /* full-width cards */
+    width: clamp(180px, 20vw, 240px);
     height: auto;
     padding: 18px 18px;
     border-radius: 18px;
   }
 
   .home-icon {
-    font-size: 40px;    /* smaller icon */
+    font-size: 40px; /* smaller icon */
   }
 
   .home-card-title {
@@ -189,23 +187,45 @@
 }
 
 @keyframes gradientShift {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @keyframes breathe {
-  0%   { background-size: 100% 100%; }
-  50%  { background-size: 105% 105%; }
-  100% { background-size: 100% 100%; }
+  0% {
+    background-size: 100% 100%;
+  }
+  50% {
+    background-size: 105% 105%;
+  }
+  100% {
+    background-size: 100% 100%;
+  }
 }
 
 @keyframes gradientWave {
-  0%   { background-position: 0% 50%; }
-  25%  { background-position: 50% 70%; }
-  50%  { background-position: 100% 50%; }
-  75%  { background-position: 50% 30%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 50% 70%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  75% {
+    background-position: 50% 30%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @keyframes auroraFlow {

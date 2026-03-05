@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import Button from "@/volt/Button.vue";
-import logo from "@/assets/logo_without_text-removebg-preview.png";
 import TranslationBox from "@/components/TranslationBox.vue";
-import { FilesetResolver, HandLandmarker, type HandLandmarkerResult } from "@mediapipe/tasks-vision";
+import {
+  FilesetResolver,
+  HandLandmarker,
+  type HandLandmarkerResult,
+} from "@mediapipe/tasks-vision";
 import { useWebSocket } from "@vueuse/core";
+import logo from "@/assets/logo_without_text-removebg-preview.png";
+import "@/screens/style/camera.css";
 import Sidebar from "@/components/Sidebar.vue";
 
 let handLandmarker: HandLandmarker | null = null;
@@ -21,7 +26,9 @@ const testTranslation = ref<string | null>(null)
 // * "convo history" button to show all translations from this session
 
 // Todo: use env vars for server url
-const { status, data, send, open, close } = useWebSocket("http://127.0.0.1:8000/ws");
+const { status, data, send, open, close } = useWebSocket(
+  "http://127.0.0.1:8000/ws"
+);
 
 onBeforeUnmount(() => {
   // Close MediaPipe
@@ -87,7 +94,12 @@ onMounted(async () => {
         canvasCtx.clearRect(0, 0, canvasEl.value.width, canvasEl.value.height);
 
         if (results?.landmarks) {
-          drawLandmarks(canvasCtx, results, canvasEl.value.width, canvasEl.value.height);
+          drawLandmarks(
+            canvasCtx,
+            results,
+            canvasEl.value.width,
+            canvasEl.value.height
+          );
           // Send results via WebSocket once per frame
           send(JSON.stringify(results));
         }
@@ -122,7 +134,12 @@ async function initMediaPipe() {
   });
 }
 
-function drawLandmarks(ctx: CanvasRenderingContext2D, results: HandLandmarkerResult, W: number, H: number) {
+function drawLandmarks(
+  ctx: CanvasRenderingContext2D,
+  results: HandLandmarkerResult,
+  W: number,
+  H: number
+) {
   for (const landmarks of results.landmarks) {
     // Draw all 21 landmarks as circles
     for (const landmark of landmarks) {
@@ -156,44 +173,34 @@ function drawLandmarks(ctx: CanvasRenderingContext2D, results: HandLandmarkerRes
 
 
 <template>
-  <div class="flex h-dvh w-dvw overflow-hidden bg-[#E0F2FF]">
-    <main class="flex-1 flex items-center justify-between p-6 ml-[220px]">
-      <aside
-        class="h-full hidden lg:flex w-52 bg-[#93c2e9]/90 flex-col items-center justify-between text-white font-semibold tracking-wide shadow-[4px_0_15px_rgba(0,0,0,0.1)] backdrop-blur-md rounded-r-3xl">
-        <div>
-          <span class="text-[32px] font-bold text-[#1f2d3d] mx-auto block">
-            Translator
-          </span>
-          <Sidebar />
-        </div>
-
-        <div class="flex flex-col justify-center mb-[10px]">
-          <img :src="logo" alt="RTSL Logo" class="h-[100px] w-auto mx-auto" />
-          <h1 class="text-[32px] font-bold text-[#1f2d3d] mx-auto block">
-            RTSL
-          </h1>
-          <p class="text-[14px] text-slate-600 mt-0 text-center">
-            Real-Time Sign Language
-          </p>
-        </div>
-      </aside>
-      <div
-        class="relative w-full max-w-5xl h-full bg-white/20 backdrop-blur-md lg:rounded-[2.5rem] border border-white/30 shadow-[0_8px_40px_rgba(0,0,0,0.1)] overflow-hidden flex">
-        <div class="relative flex-1 flex items-center justify-center overflow-hidden">
-          <video ref="videoEl" class="absolute top-0 left-0 w-full h-full object-cover bg-[#0F172A]" autoplay
-            playsinline />
+  <div class="camera-wrapper">
+    <aside class="sidebar">
+      <div>
+        <span class="sidebar-title">Translator</span>
+        <Sidebar />
+      </div>
+      <div class="logo">
+        <img :src="logo" alt="RTSL Logo" class="camera-logo" />
+        <h1 class="sidebar-title">RTSL</h1>
+        <p class="sidebar-subtitle">Real-Time Sign Language</p>
+      </div>
+    </aside>
+    <main>
+      <div class="outer-container">
+        <div class="camera-panel">
+          <video ref="videoEl" autoplay playsinline />
           <canvas ref="canvasEl" class="absolute w-full object-cover h-full" />
-          <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+          <div class="background-gradient"></div>
 
-          <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center justify-center">
-            <Button @click="() => testTranslation = 'Idk brochacho ✌️😭'"
-              class="!rounded-full !p-0 !m-0 !aspect-square w-14 sm:w-16 md:w-20 border-2 border-white/80 bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/20 active:scale-95 transition-all duration-200 shadow-[0_0_15px_rgba(255,255,255,0.3)]">
-              <i class="pi pi-play text-white text-2xl sm:text-3xl md:text-4xl drop-shadow-lg"></i>
+          <div class="button-container">
+            <Button class="button">
+              <i class="play-icon pi pi-play"></i>
             </Button>
           </div>
         </div>
+        <TranslationBox class="translation-box" />
+        <TranslationBox :translation="testTranslation" @close-translation-box="testTranslation = null" />
       </div>
     </main>
-    <TranslationBox :translation="testTranslation" @close-translation-box="testTranslation = null" />
   </div>
 </template>
