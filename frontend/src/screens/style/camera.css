@@ -1,6 +1,6 @@
 .sidebar {
   width: 13rem; /* w-52 */
-  background-color: rgba(147, 194, 233, 0.9); /* bg-[#93c2e9]/90 */
+  background: linear-gradient(to bottom, #e9f6ff, #a6d0f1) !important;
   flex-direction: column; /* flex-col */
   align-items: center; /* items-center */
   justify-content: space-between; /* justify-center */
@@ -46,7 +46,6 @@ main {
   align-items: center; /* items-center */
   justify-content: center; /* justify-center */
   margin-left: 220px;
-  background: #e0f2ff !important;
 }
 
 .outer-container {
@@ -54,12 +53,10 @@ main {
   width: 100%; /* w-full */
   height: 100vh; /* h-[80vh] */
   backdrop-filter: blur(12px); /* backdrop-blur-md */
-  border: 1px solid rgba(255, 255, 255, 0.3); /* border-white/30 */
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1); /* shadow-[...] */
   overflow: hidden; /* overflow-hidden */
   display: flex; /* flex */
   flex-direction: column;
-  background: #e0f2ff !important;
 }
 
 .camera-panel {

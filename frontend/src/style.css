@@ -77,7 +77,7 @@ body {
 #app {
   width: 100dvw;
   height: 100dvh;
-  background: #e0f2ff;
+  background: linear-gradient(to bottom, #e9f6ff, #a6d0f1) !important;
 }
 
 @media (prefers-color-scheme: light) {

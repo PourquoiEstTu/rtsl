@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, onUnmounted, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, onUnmounted, ref, watch } from "vue";
 import Button from "@/volt/Button.vue";
 import TranslationBox from "@/components/TranslationBox.vue";
 import {
@@ -39,10 +39,11 @@ const videoEl = ref<HTMLVideoElement | null>(null);
 const canvasEl = ref<HTMLCanvasElement | null>(null);
 
 // Todo: assign string returned from backend to this var
-const translation = ref<string>("Waiting for sign input...");
+const lastTranslation = ref<string>("Waiting for sign input...");
 // These are temparary for demo
 const exmapleTranslations = [
   'Idk brochacho ✌️😭',
+  'Long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long sentence from a yapper',
   'Test 1',
   'Test 2',
   'Test 3',
@@ -52,6 +53,12 @@ const exmapleTranslations = [
   'Test 7',
   'Lol 6 7',
 ];
+
+const translationHistory = ref<string[]>([]);
+
+watch(lastTranslation, () => {
+  translationHistory.value.push(lastTranslation.value)
+})
 
 function* exampleTranslation() {
   while (true) {
@@ -214,7 +221,7 @@ function drawLandmarks(
 
 
 <template>
-  <div class="bg-[#e0f2ff]">
+  <div>
     <aside v-if="isDesktop" class="sidebar">
       <div>
         <span class="sidebar-title">Translator</span>
@@ -227,21 +234,20 @@ function drawLandmarks(
       </div>
     </aside>
     <main>
-      <div class="outer-container">
-        <div class="camera-panel">
+      <div class="outer-container lg:p-2!">
+        <div class="camera-panel lg:rounded-t-4xl">
           <video ref="videoEl" autoplay playsinline />
           <canvas ref="canvasEl" class="absolute w-full object-cover h-full" />
           <div class="background-gradient"></div>
-          <ChatHistoryButton />
+          <ChatHistoryButton :translations="translationHistory" />
           <PhoneSidebarButton v-if="!isDesktop" />
 
           <div class="button-container">
-            <Button class="button rounded-full!" @click="translation = genExampleTranslation.next().value as string">
-              <i class="play-icon pi pi-play"></i>
-            </Button>
+            <Button class="button border-5! rounded-full!"
+              @click="lastTranslation = genExampleTranslation.next().value as string" />
           </div>
         </div>
-        <TranslationBox class="translation-box" :translation="translation" />
+        <TranslationBox class="translation-box" :translation="lastTranslation" />
       </div>
     </main>
   </div>
