@@ -4,7 +4,10 @@ import os
 import json
 from sys import exit
 from pose_extractor import PoseExtractor
-from tgcn-wlasl import generate_class_integer_mapping, _setup_model, _preprocess_keypoints
+from tgcn_wlasl import generate_class_integer_mappings, _setup_model, _preprocess_keypoints
+# print("here")
+
+ROOT = "/u50/quyumr/rtsl/backend/app"
 
 def predict(model, labels, seq):
     logits = model(seq)
@@ -21,36 +24,51 @@ def predict(model, labels, seq):
 ##########################################################
 def get_metrics():
     extractor = PoseExtractor()
-    idx_to_class, class_to_idx = generate_class_integer_mappings("/u50/quyumr/rtsl/backend/app/splits/300", mappings_exist=False, json_path="/u50/quyumr/rtsl/backend/app/splits/asl300.json")
-    # someone pls upload the 100 and 2000 to github
-    # model_100 = _setup_model(f"{ROOT}/splits/100/asl100.onnx")
+    # idx_to_class, class_to_idx = generate_class_integer_mappings("/u50/quyumr/rtsl/backend/app/splits/300", mappings_exist=False, json_path="/u50/quyumr/rtsl/backend/app/splits/asl300.json")
+    model_100 = _setup_model(f"{ROOT}/splits/100/asl100.onnx")
     model_300 = _setup_model(f"{ROOT}/splits/300/asl300.onnx")
     model_1000 = _setup_model(f"{ROOT}/splits/1000/asl1000.onnx")
-    # model_2000 = _setup_model(f"{ROOT}/splits/2000/asl2000.onnx")
+    model_2000 = _setup_model(f"{ROOT}/splits/2000/asl2000.onnx")
+
+    with open(f"splits/2000/class_to_idx.json", 'r') as f:
+        class_to_idx = json.load(f)
+    with open(f"splits/2000/idx_to_class.json", 'r') as f:
+        idx_to_class = json.load(f) 
     with open(f"splits/asl2000.json", 'r') as f:
         data = json.load(f)
+
     for entry in data:
         # print(entry["gloss"])
         gloss = entry["gloss"] 
         for instance in entry["instances"]: 
             # print(instance["video_id"])
-            video_id = instance["video_id"])
-            # frames_data = extractor.extract_from_video("/u50/quyumr/archive/videos/00639.mp4")
-            frames_data = extractor.extract_from_video(f"/u50/chandd9/capstone/videos/{video_id}.mp4")
+            video_id = instance["video_id"]
+            try :
+                print("here")
+                frames_data = extractor.extract_from_video(f"/u50/quyumr/archive/videos/{video_id}.mp4")
+                # frames_data = extractor.extract_from_video(f"/u50/chandd9/capstone/videos/{video_id}.mp4")
+            except FileNotFoundError:
+                print(f"{video_id}.mp4 not found")
+                continue
+            except ValueError:
+                print(f"{video_id}.mp4 not found")
+                continue
+            except Exception as e: 
+                raise e
             input_tensor = _preprocess_keypoints(frames_data)
             print(f"Test run input shape: {input_tensor.shape}, dtype: {input_tensor.dtype}")
             # print(frames_data[0].keys())  # should show 'people' key
 
             # print(pred_idx)
-            word = idx_to_class[pred_idx]
-            print("Prediction:", word)
+            # word = idx_to_class[pred_idx]
+            # print("Prediction:", word)
+            # Get logits
             input_300 = model_300.get_inputs()[0].name
             output_300 = model_300.get_outputs()[0].name
+            logits_300 = model_300.run([output_300], {input_name: input_300})[0]
 
             input_1000 = model_1000.get_inputs()[0].name
             output_1000 = model_1000.get_outputs()[0].name
-                
-            logits_300 = model_300.run([output_300], {input_name: input_300})[0]
             logits_1000 = model_1000.run([output_1000], {input_name: input_1000})[0]
 
             # Apply softmax
