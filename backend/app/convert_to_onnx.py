@@ -5,7 +5,7 @@ Supports both ASL100 and ASL2000 models.
 """
 
 import os
-import sys
+from sys import exit
 import torch
 import configparser
 
@@ -28,22 +28,14 @@ def load_config(config_path):
     return num_samples, hidden_size, num_stages, drop_p
 
 
-def convert_to_onnx(model_name='asl100'):
+def convert_to_onnx(model_name, checkpoint_path, config_path, output_dir = ROOT):
     """
     Convert PyTorch checkpoint to ONNX format.
     
     Args:
         model_name: 'asl100' or 'asl2000' (default: 'asl100')
     """
-    
-    # Paths - ASL100 (active)
-    checkpoint_path = f"{ROOT}/splits/300/pytorch_model300.bin"
-    config_path = f"{ROOT}/splits/300/asl300.ini"
-    
-    # Output path - ASL100
-    output_dir = ROOT
-    # os.makedirs(output_dir, exist_ok=True)
-    onnx_path = os.path.join(output_dir, 'asl1000.onnx')
+    onnx_path = os.path.join(output_dir, f'{model_name}.onnx')
     
     print("=" * 60)
     print(f"PyTorch to ONNX Conversion - {model_name.upper()}")
@@ -63,10 +55,15 @@ def convert_to_onnx(model_name='asl100'):
     # Set number of classes based on model
     if model_name == 'asl100':
         num_class = 100  # ASL100 has 100 classes
-    # elif model_name == 'asl2000':
-    #     num_class = 2000  # ASL2000 has 2000 classes (commented out)
+    elif model_name == 'asl300':
+        num_class = 300  # ASL100 has 100 classes
+    elif model_name == 'asl1000':
+        num_class = 1000  # ASL100 has 100 classes
+    elif model_name == 'asl2000':
+        num_class = 2000  # ASL2000 has 2000 classes (commented out)
     else:
-        num_class = 100  # Default to ASL100
+        # num_class = 100  # Default to ASL100
+        raise Exception("Valid model not passed in. Valid strings are: ['asl100', 'asl300', 'asl1000', 'asl2000']")
     
     input_feature = num_samples * 2
     
@@ -180,17 +177,19 @@ def convert_to_onnx(model_name='asl100'):
 
 if __name__ == '__main__':
     # Convert ASL100 model (active)
-    success = convert_to_onnx('asl100')
-    # Convert ASL2000 model (commented out)
-    # success = convert_to_onnx('asl2000')
+    # 100 and 2000 class models' config and pytorch bin file don't exist because they 
+    #   were taken straight from the reference repo
+    # success = convert_to_onnx('asl100', f"{ROOT}/splits/100/pytorch_model100.bin", f"{ROOT}/splits/100/asl100.ini")
+    # success = convert_to_onnx('asl300', f"{ROOT}/splits/300/pytorch_model300.bin", f"{ROOT}/splits/300/asl300.ini")
+    success = convert_to_onnx('asl1000', f"{ROOT}/splits/1000/pytorch_model.bin", f"{ROOT}/splits/1000/asl1000.ini")
+    # success = convert_to_onnx('asl2000', f"{ROOT}/splits/2000/pytorch_model.bin", f"{ROOT}/splits/2000/asl2000.ini")
     if success:
         print("\n" + "=" * 60)
         print("Conversion completed successfully!")
         print("=" * 60)
-        sys.exit(0)
+        exit(0)
     else:
         print("\n" + "=" * 60)
         print("Conversion failed!")
         print("=" * 60)
-        sys.exit(1)
-
+        exit(1)
