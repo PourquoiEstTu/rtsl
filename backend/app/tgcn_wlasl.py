@@ -87,7 +87,8 @@ def _preprocess_keypoints(frames_data):
     
     # Reduced logging for speed - only log if processing many frames
     if len(frames_data) > 30:
-        print(f"[PREPROCESS] Processing {len(frames_data)} frames, target: {NUM_SAMPLES} frames")
+        # print(f"[PREPROCESS] Processing {len(frames_data)} frames, target: {NUM_SAMPLES} frames")
+        pass
     
     for frame_idx, frame_data in enumerate(frames_data):
         people = frame_data.get('people', [])
@@ -128,7 +129,7 @@ def _preprocess_keypoints(frames_data):
         # Should have exactly 55 keypoints: 13 body + 21 left + 21 right
         expected_keypoints = NUM_NODES
         if len(x_list) != expected_keypoints:
-            print(f"[WARNING] Frame {frame_idx}: Expected {expected_keypoints} keypoints, got {len(x_list)}")
+            # print(f"[WARNING] Frame {frame_idx}: Expected {expected_keypoints} keypoints, got {len(x_list)}")
             # Pad or truncate to 55
             while len(x_list) < expected_keypoints:
                 x_list.append(0.0)
@@ -140,7 +141,7 @@ def _preprocess_keypoints(frames_data):
         xy_frame = np.stack([np.array(x_list), np.array(y_list)], axis=1).astype(np.float32)
         processed.append(xy_frame)
     
-    print(f"[PREPROCESS] Extracted {len(processed)} frames with keypoints")
+    # print(f"[PREPROCESS] Extracted {len(processed)} frames with keypoints")
     
     # Pad or sample to exactly NUM_SAMPLES frames
     if len(processed) < NUM_SAMPLES:
@@ -149,13 +150,13 @@ def _preprocess_keypoints(frames_data):
         num_padding = NUM_SAMPLES - len(processed)
         for _ in range(num_padding):
             processed.append(last_frame.copy())
-        print(f"[PREPROCESS] Padded {num_padding} frames to reach {NUM_SAMPLES}")
+        # print(f"[PREPROCESS] Padded {num_padding} frames to reach {NUM_SAMPLES}")
     elif len(processed) > NUM_SAMPLES:
         # Uniformly sample NUM_SAMPLES frames
         original_count = len(processed)
         indices = np.linspace(0, len(processed) - 1, NUM_SAMPLES).astype(int)
         processed = [processed[i] for i in indices]
-        print(f"[PREPROCESS] Sampled {NUM_SAMPLES} frames from {original_count}")
+        # print(f"[PREPROCESS] Sampled {NUM_SAMPLES} frames from {original_count}")
     
     # Reshape to model input format: (1, num_nodes, feature_len)
     # feature_len = num_samples * 2 (x,y coordinates across time)
