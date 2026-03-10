@@ -271,6 +271,20 @@ def test_run():
 
 # test_run()
 
+def process_all_vids(video_dir, output_dir):
+    extractor = PoseExtractor()
+    for file in os.scandir(video_dir):
+        if file.is_file():
+            try:
+                frames_data = extractor.extract_from_video(f"{video_dir}/{file.name}")
+                keypoints = _preprocess_keypoints(frames_data)
+                torch.save(keypoints, f"{output_dir}/{file.name.strip('.mp4')}.pt")
+                print(f"Video {file.name} processed and saved.")
+            except Exception as e:
+                print(f"Preprocessing on video {file.name} failed... Skipping.")
+                continue
+process_all_vids("/u50/quyumr/archive/videos", "/u50/quyumr/archive/asl-live-tl-features") 
+
 
 # checkpoint_path = "/home/pourquoi/repos/rtsl/backend/app/checkpoints/asl1000/pytorch_model.bin"
 # config_path =     "/home/pourquoi/repos/rtsl/backend/app/checkpoints/asl1000/config.ini"
