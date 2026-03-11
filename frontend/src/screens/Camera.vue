@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, onUnmounted, ref, watch } from "vue";
 import Button from "@/volt/Button.vue";
 import TranslationBox from "@/components/TranslationBox.vue";
 import {
@@ -11,6 +11,25 @@ import { useWebSocket } from "@vueuse/core";
 import logo from "@/assets/logo_without_text-removebg-preview.png";
 import "@/screens/style/camera.css";
 import Sidebar from "@/components/Sidebar.vue";
+import ChatHistoryButton from "@/components/ChatHistoryButton.vue";
+import PhoneSidebarButton from "@/components/PhoneSidebarButton.vue";
+
+// Track screen width
+const screenWidth = ref(window.innerWidth);
+
+// Update on resize
+function updateWidth() {
+  screenWidth.value = window.innerWidth;
+}
+
+onMounted(() => {
+  window.addEventListener("resize", updateWidth);
+});
+onUnmounted(() => {
+  window.removeEventListener("resize", updateWidth);
+});
+// Define what counts as desktop/laptop
+const isDesktop = computed(() => screenWidth.value >= 1024);
 
 let handLandmarker: HandLandmarker | null = null;
 let animationFrameId: number | null = null;
@@ -19,7 +38,43 @@ let stream: MediaStream | null = null;
 const videoEl = ref<HTMLVideoElement | null>(null);
 const canvasEl = ref<HTMLCanvasElement | null>(null);
 
-const { status, data, send, open, close } = useWebSocket(
+// Todo: assign string returned from backend to this var
+const lastTranslation = ref<string>("Waiting for sign input...");
+// These are temparary for demo
+const exmapleTranslations = [
+  'Idk brochacho ✌️😭',
+  'Long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long sentence from a yapper',
+  'Test 1',
+  'Test 2',
+  'Test 3',
+  'Test 4',
+  'Test 5',
+  'Test 6',
+  'Test 7',
+  'Lol 6 7',
+];
+
+const translationHistory = ref<string[]>([]);
+
+watch(lastTranslation, () => {
+  translationHistory.value.push(lastTranslation.value)
+})
+
+function* exampleTranslation() {
+  while (true) {
+    for (const translation of exmapleTranslations) {
+      yield translation;
+    }
+  }
+}
+
+const genExampleTranslation = exampleTranslation();
+
+// Todo for this coding sess:
+// * "convo history" button to show all translations from this session
+
+// Todo: use env vars for server url
+const { send } = useWebSocket(
   "http://127.0.0.1:8000/ws"
 );
 
@@ -164,9 +219,10 @@ function drawLandmarks(
 }
 </script>
 
+
 <template>
-  <div class="camera-wrapper">
-    <aside class="sidebar">
+  <div>
+    <aside v-if="isDesktop" class="sidebar">
       <div>
         <span class="sidebar-title">Translator</span>
         <Sidebar />
@@ -178,19 +234,20 @@ function drawLandmarks(
       </div>
     </aside>
     <main>
-      <div class="outer-container">
-        <div class="camera-panel">
+      <div class="outer-container lg:p-2!">
+        <div class="camera-panel lg:rounded-t-4xl">
           <video ref="videoEl" autoplay playsinline />
           <canvas ref="canvasEl" class="absolute w-full object-cover h-full" />
           <div class="background-gradient"></div>
+          <ChatHistoryButton :translations="translationHistory" />
+          <PhoneSidebarButton v-if="!isDesktop" />
 
           <div class="button-container">
-            <Button class="button">
-              <i class="play-icon pi pi-play"></i>
-            </Button>
+            <Button class="button border-5! rounded-full!"
+              @click="lastTranslation = genExampleTranslation.next().value as string" />
           </div>
         </div>
-        <TranslationBox class="translation-box" />
+        <TranslationBox class="translation-box" :translation="lastTranslation" />
       </div>
     </main>
   </div>
