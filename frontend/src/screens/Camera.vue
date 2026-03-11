@@ -74,7 +74,7 @@ const genExampleTranslation = exampleTranslation();
 // * "convo history" button to show all translations from this session
 
 // Todo: use env vars for server url
-const { status, data, send, open, close } = useWebSocket(
+const { send } = useWebSocket(
   "http://127.0.0.1:8000/ws"
 );
 
