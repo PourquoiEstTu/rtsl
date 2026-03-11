@@ -13,6 +13,7 @@ from sign_dataset import Sign_Dataset
 from train_utils import train, validation
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+# os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
 
 def run(split_file, pose_data_root, configs, save_model_to=None):

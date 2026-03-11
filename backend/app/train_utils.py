@@ -160,6 +160,7 @@ def compute_top_n_accuracy(truths, preds, n):
         if ts[i] in best_n[i, :]:
             successes += 1
     return float(successes) / ts.shape[0]
+<<<<<<< HEAD
 
 def main():
     losses, scores, train_labels, train_preds = train(log_interval, model, train_loader, optimizer, epoch)
