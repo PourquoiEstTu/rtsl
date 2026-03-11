@@ -84,19 +84,19 @@ def validation(model, test_loader, epoch, save_to):
             device = next(model.parameters()).device
             X, y = X.to(device), y.to(device).view(-1, )
 
-            all_output = []
+            # all_output = []
 
-            stride = X.size()[2] // num_copies
+            # stride = X.size()[2] // num_copies
 
-            for i in range(num_copies):
-                X_slice = X[:, :, i * stride: (i+1) * stride]
-                output = model(X_slice)
-                all_output.append(output)
+            # for i in range(num_copies):
+            #     X_slice = X[:, :, i * stride: (i+1) * stride]
+            #     output = model(X_slice)
+            #     all_output.append(output)
 
-            all_output = torch.stack(all_output, dim=1)
-            output = torch.mean(all_output, dim=1)
+            # all_output = torch.stack(all_output, dim=1)
+            # output = torch.mean(all_output, dim=1)
 
-            # output = model(X)  # output has dim = (batch, number of classes)
+            output = model(X)  # output has dim = (batch, number of classes)
 
             # loss = F.cross_entropy(pool_out, y, reduction='sum')
             loss = compute_loss(output, y)
@@ -160,7 +160,6 @@ def compute_top_n_accuracy(truths, preds, n):
         if ts[i] in best_n[i, :]:
             successes += 1
     return float(successes) / ts.shape[0]
-<<<<<<< HEAD
 
 def main():
     losses, scores, train_labels, train_preds = train(log_interval, model, train_loader, optimizer, epoch)

@@ -42,7 +42,7 @@ def run(split_file, pose_data_root, configs, save_model_to=None):
                                                      enumerate(train_dataset.label_encoder.classes_)]))
 
 # REPLACING gpu WITH cpu: 
-    device = torch.device("cpu")
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     # setup the model
     model = GCN_muti_att(input_feature=num_samples*2, hidden_feature=num_samples*2,
                          num_class=len(train_dataset.label_encoder.classes_), p_dropout=drop_p, num_stage=num_stages).to(device)
@@ -90,37 +90,39 @@ def run(split_file, pose_data_root, configs, save_model_to=None):
         epoch_val_scores.append(val_score[0])
 
         # save all train test results
-        np.save('output/epoch_training_losses.npy', np.array(epoch_train_losses))
-        np.save('output/epoch_training_scores.npy', np.array(epoch_train_scores))
-        np.save('output/epoch_test_loss.npy', np.array(epoch_val_losses))
-        np.save('output/epoch_test_score.npy', np.array(epoch_val_scores))
+        np.save('outputs/epoch_training_losses.npy', np.array(epoch_train_losses))
+        np.save('outputs/epoch_training_scores.npy', np.array(epoch_train_scores))
+        np.save('outputs/epoch_test_loss.npy', np.array(epoch_val_losses))
+        np.save('outputs/epoch_test_score.npy', np.array(epoch_val_scores))
 
         if val_score[0] > best_test_acc:
             best_test_acc = val_score[0]
             best_epoch_num = epoch
 
-            torch.save(model.state_dict(), os.path.join('checkpoints', subset, 'gcn_epoch={}_val_acc={}.pth'.format(
+            torch.save(model.state_dict(), os.path.join('outputs', subset, 'gcn_epoch={}_val_acc={}.pth'.format(
                 best_epoch_num, best_test_acc)))
 
-    utils.plot_curves()
+    # why below error???
+
+    # utils.plot_curves()
 
     class_names = train_dataset.label_encoder.classes_
-    utils.plot_confusion_matrix(train_gts, train_preds, classes=class_names, normalize=False,
-                                save_to='output/train-conf-mat')
-    utils.plot_confusion_matrix(val_gts, val_preds, classes=class_names, normalize=False, save_to='output/val-conf-mat')
+    # utils.plot_confusion_matrix(train_gts, train_preds, classes=class_names, normalize=False,
+    #                             save_to='outputs/train-conf-mat')
+    # utils.plot_confusion_matrix(val_gts, val_preds, classes=class_names, normalize=False, save_to='outputs/val-conf-mat')
 
 
 if __name__ == "__main__":
-    root = 'C:/Jayasri/PFW/ADL-Project/TGCN-Training/' # My path of the project root directory
+    root = '/u50/chandd9/capstone/rtsl/backend/app/' # My path of the project root directory
 
     subset = 'asl100' # using asl100 subset first.
 
-    split_file = os.path.join(root, 'data/splits/{}.json'.format(subset))
-    pose_data_root = os.path.join(root, 'data/pose_per_individual_videos')
-    config_file = os.path.join(root, 'code/TGCN/configs/{}.ini'.format(subset))
+    split_file = os.path.join(root, 'splits/{}.json'.format(subset))
+    pose_data_root = "/u50/chandd9/downloads/tgcn_data"
+    config_file = os.path.join(root, 'config.ini')
     configs = Config(config_file)
 
-    logging.basicConfig(filename='output/{}.log'.format(os.path.basename(config_file)[:-4]), level=logging.DEBUG, filemode='w+')
+    logging.basicConfig(filename='outputs/{}.log'.format(os.path.basename(config_file)[:-4]), level=logging.DEBUG, filemode='w+')
 
     logging.info('Calling main.run()')
     run(split_file=split_file, configs=configs, pose_data_root=pose_data_root)

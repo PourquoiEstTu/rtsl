@@ -52,7 +52,7 @@ def read_pose_file(filepath):
 
     try:
         # ft = torch.load(os.path.join(save_to, frame_id + '_ft.pt'))
-        ft = torch.load(filepath)
+        ft = torch.load(filepath, weights_only=False)
         print("got here")
         exit(0)
 
@@ -62,6 +62,8 @@ def read_pose_file(filepath):
         return xy
 
     except FileNotFoundError:
+        print(f"File not found: {filepath}")
+        pass
         # print(filepath)
         # body_pose = content["pose_keypoints_2d"]
         # left_hand_pose = content["hand_left_keypoints_2d"]
@@ -182,50 +184,65 @@ class Sign_Dataset(Dataset):
                 self.data.append(instance_entry)
 
     def _load_poses(self, video_id, frame_start, frame_end, sample_strategy, num_samples):
-        """ Load frames of a video. Start and end indices are provided just to avoid listing and sorting the directory unnecessarily.
-         """
-        poses = []
-
-        if sample_strategy == 'rnd_start':
-            frames_to_sample = rand_start_sampling(frame_start, frame_end, num_samples)
-        elif sample_strategy == 'seq':
-            frames_to_sample = sequential_sampling(frame_start, frame_end, num_samples)
-        elif sample_strategy == 'k_copies':
-            frames_to_sample = k_copies_fixed_length_sequential_sampling(frame_start, frame_end, num_samples,
-                                                                         self.num_copies)
+        """ Load frames of a video. 
+        try to just load the entire pt file and return the tensor?
+        """
+        pt_path = os.path.join(self.pose_root, f"{video_id}.pt")
+        
+        data = torch.load(pt_path, weights_only=False)
+        
+        if isinstance(data, np.ndarray):
+            tensor = torch.from_numpy(data).squeeze(0)  # [55, num_samples*2]
         else:
-            raise NotImplementedError('Unimplemented sample strategy found: {}.'.format(sample_strategy))
+            tensor = data.squeeze(0)  # [55, num_samples*2]
+        
+        return tensor
 
-        for i in frames_to_sample:
-            pose_path = f"{self.pose_root}/{video_id}.pt"
-            # pose = cv2.imread(frame_path, cv2.COLOR_BGR2RGB)
-            pose = read_pose_file(pose_path)
+    # def _load_poses(self, video_id, frame_start, frame_end, sample_strategy, num_samples):
+    #     """ Load frames of a video. Start and end indices are provided just to avoid listing and sorting the directory unnecessarily.
+    #      """
+    #     poses = []
 
-            if pose is not None:
-                if self.img_transforms:
-                    pose = self.img_transforms(pose)
+    #     if sample_strategy == 'rnd_start':
+    #         frames_to_sample = rand_start_sampling(frame_start, frame_end, num_samples)
+    #     elif sample_strategy == 'seq':
+    #         frames_to_sample = sequential_sampling(frame_start, frame_end, num_samples)
+    #     elif sample_strategy == 'k_copies':
+    #         frames_to_sample = k_copies_fixed_length_sequential_sampling(frame_start, frame_end, num_samples,
+    #                                                                      self.num_copies)
+    #     else:
+    #         raise NotImplementedError('Unimplemented sample strategy found: {}.'.format(sample_strategy))
 
-                poses.append(pose)
-            else:
-                try:
-                    poses.append(poses[-1])
-                except IndexError:
-                    print(f"Index Error on {pose_path}")
+    #     for i in frames_to_sample:
+    #         pose_path = f"{self.pose_root}/{video_id}.pt"
+    #         # pose = cv2.imread(frame_path, cv2.COLOR_BGR2RGB)
+    #         pose = read_pose_file(pose_path)
 
-        pad = None
-        print(f"poses for {video_id}.pt: {poses}")
+    #         if pose is not None:
+    #             if self.img_transforms:
+    #                 pose = self.img_transforms(pose)
 
-        # if len(frames_to_sample) < num_samples:
-        if len(poses) < num_samples:
-            num_padding = num_samples - len(frames_to_sample)
-            last_pose = poses[-1]
-            pad = last_pose.repeat(1, num_padding)
+    #             poses.append(pose)
+    #         else:
+    #             try:
+    #                 poses.append(poses[-1])
+    #             except IndexError:
+    #                 print(f"Index Error on {pose_path}")
 
-        poses_across_time = torch.cat(poses, dim=1)
-        if pad is not None:
-            poses_across_time = torch.cat([poses_across_time, pad], dim=1)
+    #     pad = None
+    #     print(f"poses for {video_id}.pt: {poses}")
 
-        return poses_across_time
+    #     # if len(frames_to_sample) < num_samples:
+    #     if len(poses) < num_samples:
+    #         num_padding = num_samples - len(frames_to_sample)
+    #         last_pose = poses[-1]
+    #         pad = last_pose.repeat(1, num_padding)
+
+    #     poses_across_time = torch.cat(poses, dim=1)
+    #     if pad is not None:
+    #         poses_across_time = torch.cat([poses_across_time, pad], dim=1)
+
+    #     return poses_across_time
 
 
 def rand_start_sampling(frame_start, frame_end, num_samples):
@@ -299,10 +316,10 @@ def k_copies_fixed_length_sequential_sampling(frame_start, frame_end, num_sample
 
 
 if __name__ == '__main__':
-    root = '/u50/quyumr/rtsl/backend/app'
+    root = '/u50/chandd9/capstone/rtsl/backend/app'
     
     split_file = os.path.join(root, 'splits/asl100.json')
-    pose_data_root = f"/u50/quyumr/archive/asl-live-tl-features"
+    pose_data_root = f"/u50/chandd9/downloads/tgcn_data"
     
     num_samples = 64
     
