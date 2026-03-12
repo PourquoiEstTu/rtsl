@@ -75,7 +75,7 @@ const genExampleTranslation = exampleTranslation();
 
 // Todo: use env vars for server url
 const { send } = useWebSocket(
-  "http://127.0.0.1:8000/ws"
+  "wss://130.113.255.255/ws"
 );
 
 onBeforeUnmount(() => {
