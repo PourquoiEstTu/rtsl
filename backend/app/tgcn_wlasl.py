@@ -276,10 +276,10 @@ def process_all_vids(video_dir, output_dir):
     for file in os.scandir(video_dir):
         if file.is_file():
             try:
-                if not os.path.isfile(f"{output_dir}/{file.name.strip('.mp4')}.pt"):
+                if not os.path.isfile(f"{output_dir}/{file.name[:-4]}.pt"):
                     frames_data = extractor.extract_from_video(f"{video_dir}/{file.name}")
                     keypoints = _preprocess_keypoints(frames_data)
-                    torch.save(keypoints, f"{output_dir}/{file.name.strip('.mp4')}.pt")
+                    torch.save(keypoints, f"{output_dir}/{file.name[:-4]}.pt")
                     print(f"Video {file.name} processed and saved.")
                 else:
                     print(f"Video {file.name} has already been saved.")
