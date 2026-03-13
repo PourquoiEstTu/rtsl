@@ -1,0 +1,5834 @@
+[
+    {
+        "gloss": "APPLE",
+        "instances": [
+            {
+                "video_id": "15890366051589533-APPLE",
+                "split": "train"
+            },
+            {
+                "video_id": "654679171689897-APPLE",
+                "split": "train"
+            },
+            {
+                "video_id": "10506892472594931-APPLE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "IMPOSSIBLE",
+        "instances": [
+            {
+                "video_id": "35618482303951104-IMPOSSIBLE",
+                "split": "train"
+            },
+            {
+                "video_id": "5868753228914183-IMPOSSIBLE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "PARK",
+        "instances": [
+            {
+                "video_id": "6958143575951994-PARK",
+                "split": "train"
+            },
+            {
+                "video_id": "5662880671112962-PARK",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SOCCER",
+        "instances": [
+            {
+                "video_id": "8006032738002744-SOCCER 2",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "STINK",
+        "instances": [
+            {
+                "video_id": "37542279833186454-STINK",
+                "split": "train"
+            },
+            {
+                "video_id": "23750861250634614-STINK",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "ROSE",
+        "instances": [
+            {
+                "video_id": "9498964909837952-ROSE",
+                "split": "train"
+            },
+            {
+                "video_id": "15747884716509963-ROSE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "HUG",
+        "instances": [
+            {
+                "video_id": "9618808117704574-HUG",
+                "split": "train"
+            },
+            {
+                "video_id": "5460269220331138-HUG",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "TUBE",
+        "instances": [
+            {
+                "video_id": "15543213389651633-TUBE",
+                "split": "train"
+            },
+            {
+                "video_id": "10215603974987486-TUBE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "COUNT",
+        "instances": [
+            {
+                "video_id": "9162908944303221-COUNT",
+                "split": "train"
+            },
+            {
+                "video_id": "8675914629662917-COUNT",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "NICE",
+        "instances": [
+            {
+                "video_id": "14154575310664197-NICE",
+                "split": "train"
+            },
+            {
+                "video_id": "18199086230023087-NICE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "EASYTODO",
+        "instances": [
+            {
+                "video_id": "996512226187074-EASY TO_DO",
+                "split": "train"
+            },
+            {
+                "video_id": "6022620990262424-EASY TO_DO",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "INFLUENCE",
+        "instances": [
+            {
+                "video_id": "0033742275375785447-INFLUENCE",
+                "split": "train"
+            },
+            {
+                "video_id": "4713001664096925-INFLUENCE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "PEACOCK",
+        "instances": [
+            {
+                "video_id": "02808154918358552-PEACOCK",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "CIRCUSWHEEL",
+        "instances": [
+            {
+                "video_id": "8068093518563271-CIRCUSWHEEL",
+                "split": "train"
+            },
+            {
+                "video_id": "4499250795706189-CIRCUSWHEEL",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "NOSE",
+        "instances": [
+            {
+                "video_id": "6652814499755777-NOSE",
+                "split": "train"
+            },
+            {
+                "video_id": "27103930782829466-NOSE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "GYM",
+        "instances": [
+            {
+                "video_id": "23247991626849585-GYM",
+                "split": "train"
+            },
+            {
+                "video_id": "9121237989915896-GYM",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "WEAVE",
+        "instances": [
+            {
+                "video_id": "20880000068819649-WEAVE",
+                "split": "train"
+            },
+            {
+                "video_id": "6416278179941874-WEAVE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SMOOTH",
+        "instances": [
+            {
+                "video_id": "13621431540213602-SMOOTH",
+                "split": "train"
+            },
+            {
+                "video_id": "8801673159859185-SMOOTH",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "BACKPACK",
+        "instances": [
+            {
+                "video_id": "4520498201410337-BACKPACK",
+                "split": "train"
+            },
+            {
+                "video_id": "8875256912597131-BACKPACK",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "WE",
+        "instances": [
+            {
+                "video_id": "16994877911771145-WE",
+                "split": "train"
+            },
+            {
+                "video_id": "5346957049353451-WE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "DOWNHILL",
+        "instances": [
+            {
+                "video_id": "7090729284366466-DOWNHILL",
+                "split": "train"
+            },
+            {
+                "video_id": "3237841089626472-DOWNHILL",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "JUICE",
+        "instances": [
+            {
+                "video_id": "19003684436528423-JUICE 2",
+                "split": "train"
+            },
+            {
+                "video_id": "8673853297757075-JUICE 2",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SCOLD",
+        "instances": [
+            {
+                "video_id": "8221969382671432-SCOLD",
+                "split": "train"
+            },
+            {
+                "video_id": "7275461608600278-SCOLD",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "POWDER",
+        "instances": [
+            {
+                "video_id": "12338257144617781-POWDER",
+                "split": "train"
+            },
+            {
+                "video_id": "8342259238668124-POWDER",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SOCIAL",
+        "instances": [
+            {
+                "video_id": "7480838717347633-SOCIAL",
+                "split": "train"
+            },
+            {
+                "video_id": "2501721560408141-SOCIAL",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "PULLCONVINCE",
+        "instances": [
+            {
+                "video_id": "6523179384259175-PULL CONVINCE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "CAPTURE",
+        "instances": [
+            {
+                "video_id": "7448818785190525-CAPTURE",
+                "split": "train"
+            },
+            {
+                "video_id": "2746482938137922-CAPTURE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "PONDER",
+        "instances": [
+            {
+                "video_id": "02551571232229133-PONDER",
+                "split": "train"
+            },
+            {
+                "video_id": "7476109931780017-PONDER",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "JOKE",
+        "instances": [
+            {
+                "video_id": "8643853796183107-JOKE",
+                "split": "train"
+            },
+            {
+                "video_id": "33372376790577385-JOKE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SOCIETY",
+        "instances": [
+            {
+                "video_id": "8782764153522997-SOCIETY",
+                "split": "train"
+            },
+            {
+                "video_id": "8763478538813974-SOCIETY",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "WATERDROP",
+        "instances": [
+            {
+                "video_id": "7316392299762329-WATERDROP",
+                "split": "train"
+            },
+            {
+                "video_id": "6019042581182006-WATERDROP",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "ANYONE",
+        "instances": [
+            {
+                "video_id": "21344274764159632-ANYONE",
+                "split": "train"
+            },
+            {
+                "video_id": "931782741467386-ANYONE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "MAPLE",
+        "instances": [
+            {
+                "video_id": "2381384470099226-MAPLE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "CEMETERY",
+        "instances": [
+            {
+                "video_id": "44939873429204336-CEMETERY",
+                "split": "train"
+            },
+            {
+                "video_id": "5418273984027029-CEMETERY",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "FAIL",
+        "instances": [
+            {
+                "video_id": "48967843716521897-FAIL",
+                "split": "train"
+            },
+            {
+                "video_id": "3810108088744719-FAIL",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "KNIGHT",
+        "instances": [
+            {
+                "video_id": "5670505226343947-KNIGHT",
+                "split": "train"
+            },
+            {
+                "video_id": "62432102043786-KNIGHT",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "ALLOFSUDDEN",
+        "instances": [
+            {
+                "video_id": "6235541652821013-ALL OF_SUDDEN",
+                "split": "train"
+            },
+            {
+                "video_id": "3140572918045199-ALL OF_SUDDEN",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "TOTAL",
+        "instances": [
+            {
+                "video_id": "9037793072145501-TOTAL",
+                "split": "train"
+            },
+            {
+                "video_id": "26442801372084057-TOTAL",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "COOL",
+        "instances": [
+            {
+                "video_id": "9060451576078816-COOL 3",
+                "split": "train"
+            },
+            {
+                "video_id": "613903843341741-COOL 3",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "FASHION",
+        "instances": [
+            {
+                "video_id": "03909340585346133-FASHION",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "LONGAGO",
+        "instances": [
+            {
+                "video_id": "6831527585028447-LONG AGO",
+                "split": "train"
+            },
+            {
+                "video_id": "19185527558933835-LONG AGO",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "BECOME",
+        "instances": [
+            {
+                "video_id": "34318091362618364-BECOME",
+                "split": "train"
+            },
+            {
+                "video_id": "6459252267958286-BECOME",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "IMPROVE",
+        "instances": [
+            {
+                "video_id": "001428415918161674-IMPROVE",
+                "split": "train"
+            },
+            {
+                "video_id": "047964805851413495-IMPROVE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "UNCERTAIN",
+        "instances": [
+            {
+                "video_id": "5266228840785678-UNCERTAIN",
+                "split": "train"
+            },
+            {
+                "video_id": "5908448341148838-UNCERTAIN",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "GREET",
+        "instances": [
+            {
+                "video_id": "1676037390807208-GREET",
+                "split": "train"
+            },
+            {
+                "video_id": "9778046529233306-GREET",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "PROPOSE",
+        "instances": [
+            {
+                "video_id": "03369501517929252-PROPOSE",
+                "split": "train"
+            },
+            {
+                "video_id": "3909940550052129-PROPOSE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "TOSSOUT",
+        "instances": [
+            {
+                "video_id": "36286598060839914-TOSS OUT",
+                "split": "train"
+            },
+            {
+                "video_id": "19744460835584432-TOSS OUT",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SQUARE",
+        "instances": [
+            {
+                "video_id": "42981546208191546-SQUARE",
+                "split": "train"
+            },
+            {
+                "video_id": "5406966366518051-SQUARE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "EMPTY",
+        "instances": [
+            {
+                "video_id": "8517954107198269-EMPTY 2",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "PACK",
+        "instances": [
+            {
+                "video_id": "9228494689014171-PACK",
+                "split": "train"
+            },
+            {
+                "video_id": "8884945458417148-PACK",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "THANKYOU",
+        "instances": [
+            {
+                "video_id": "6508465822424006-THANK YOU",
+                "split": "train"
+            },
+            {
+                "video_id": "7535449770372906-THANK YOU",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "EACHOTHER",
+        "instances": [
+            {
+                "video_id": "721478559560571-EACH OTHER",
+                "split": "train"
+            },
+            {
+                "video_id": "6169165591640462-EACH OTHER",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "PRECIOUS",
+        "instances": [
+            {
+                "video_id": "23746553103054158-PRECIOUS",
+                "split": "train"
+            },
+            {
+                "video_id": "8331521549475343-PRECIOUS",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "WILLGO",
+        "instances": [
+            {
+                "video_id": "7054741400093962-WILL GO",
+                "split": "train"
+            },
+            {
+                "video_id": "4685262003433257-WILL GO",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "LAYDOWN",
+        "instances": [
+            {
+                "video_id": "6490408879992484-LAY DOWN",
+                "split": "train"
+            },
+            {
+                "video_id": "26779769878453363-LAY DOWN",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "PARANOID",
+        "instances": [
+            {
+                "video_id": "5880724478842327-PARANOID",
+                "split": "train"
+            },
+            {
+                "video_id": "9119750137106359-PARANOID",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "ALASKA",
+        "instances": [
+            {
+                "video_id": "7552681133614059-ALASKA",
+                "split": "train"
+            },
+            {
+                "video_id": "2063128811266226-ALASKA",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "EXPERIMENT",
+        "instances": [
+            {
+                "video_id": "6585783944135442-EXPERIMENT",
+                "split": "train"
+            },
+            {
+                "video_id": "39878139372685606-EXPERIMENT",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "EVERYNIGHT",
+        "instances": [
+            {
+                "video_id": "7721480534101262-EVERY NIGHT",
+                "split": "train"
+            },
+            {
+                "video_id": "030163845009707257-EVERY NIGHT",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "GETTOGETHER",
+        "instances": [
+            {
+                "video_id": "2911495969703426-GET TOGETHER",
+                "split": "train"
+            },
+            {
+                "video_id": "8019317290688388-GET TOGETHER",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "STORY",
+        "instances": [
+            {
+                "video_id": "7054386695414354-STORY 3",
+                "split": "train"
+            },
+            {
+                "video_id": "4883233656549113-STORY 3",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SQUEEZE",
+        "instances": [
+            {
+                "video_id": "07792809391288658-SQUEEZE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "REMOVE",
+        "instances": [
+            {
+                "video_id": "7958435331951532-REMOVE",
+                "split": "train"
+            },
+            {
+                "video_id": "09913910553280747-REMOVE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "KNOCKOFF",
+        "instances": [
+            {
+                "video_id": "0020443210100780096-KNOCK OFF",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "MOSQUITO",
+        "instances": [
+            {
+                "video_id": "44178831586926837-MOSQUITO",
+                "split": "train"
+            },
+            {
+                "video_id": "7735436577579549-MOSQUITO",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "BETWEEN",
+        "instances": [
+            {
+                "video_id": "9533248897839621-BETWEEN",
+                "split": "train"
+            },
+            {
+                "video_id": "23935932871880738-BETWEEN",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "TOY",
+        "instances": [
+            {
+                "video_id": "81146496428304-TOY 3",
+                "split": "train"
+            },
+            {
+                "video_id": "30802284724627316-TOY 3",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SPICY",
+        "instances": [
+            {
+                "video_id": "8058014641528197-SPICY",
+                "split": "train"
+            },
+            {
+                "video_id": "7742371822103638-SPICY",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "JEWELRY",
+        "instances": [
+            {
+                "video_id": "008279096911288919-JEWELRY",
+                "split": "train"
+            },
+            {
+                "video_id": "6555062872975101-JEWELRY",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "BULLSHIT",
+        "instances": [
+            {
+                "video_id": "6743634201232205-BULLSHIT",
+                "split": "train"
+            },
+            {
+                "video_id": "02362800594599035-BULLSHIT",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "ADVANTAGE",
+        "instances": [
+            {
+                "video_id": "31263202270120893-ADVANTAGE",
+                "split": "train"
+            },
+            {
+                "video_id": "4158330922555107-ADVANTAGE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "WHISPER",
+        "instances": [
+            {
+                "video_id": "4923163326429678-WHISPER",
+                "split": "train"
+            },
+            {
+                "video_id": "9326067198560057-WHISPER",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SIGNPAPER",
+        "instances": [
+            {
+                "video_id": "8212971647934255-SIGN PAPER",
+                "split": "train"
+            },
+            {
+                "video_id": "6468451269888666-SIGN PAPER",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "THERAPY",
+        "instances": [
+            {
+                "video_id": "4066959996902433-THERAPY",
+                "split": "train"
+            },
+            {
+                "video_id": "26831740738029275-THERAPY",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "DONTFEELLIKE",
+        "instances": [
+            {
+                "video_id": "3628340866937836-DONT FEEL_LIKE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "COMMUNITY",
+        "instances": [
+            {
+                "video_id": "6742655874522336-COMMUNITY",
+                "split": "train"
+            },
+            {
+                "video_id": "4709219515950245-COMMUNITY",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "CLIENT",
+        "instances": [
+            {
+                "video_id": "19749527870729988-CLIENT",
+                "split": "train"
+            },
+            {
+                "video_id": "3794908792089089-CLIENT",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "BREAKFAST",
+        "instances": [
+            {
+                "video_id": "7809503445047001-BREAKFAST",
+                "split": "train"
+            },
+            {
+                "video_id": "13959766874483237-BREAKFAST",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "TURN",
+        "instances": [
+            {
+                "video_id": "2002285518954443-TURN",
+                "split": "train"
+            },
+            {
+                "video_id": "5666202221838486-TURN",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "CORNER",
+        "instances": [
+            {
+                "video_id": "6796499805319471-CORNER",
+                "split": "train"
+            },
+            {
+                "video_id": "45348925603024304-CORNER",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "HATBRIM",
+        "instances": [
+            {
+                "video_id": "5290373884784241-HATBRIM",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "GOODYGOODYSHOEOPPOSITE",
+        "instances": [
+            {
+                "video_id": "5064877659011977-GOODY GOODY_SHOE_OPPOSITE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "CASTLE",
+        "instances": [
+            {
+                "video_id": "7069069415498499-CASTLE 2",
+                "split": "train"
+            },
+            {
+                "video_id": "23509015263340394-CASTLE 2",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "LEND",
+        "instances": [
+            {
+                "video_id": "5837296033724944-LEND",
+                "split": "train"
+            },
+            {
+                "video_id": "5224289762112848-LEND",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SOPHOMORE",
+        "instances": [
+            {
+                "video_id": "8684706324228275-SOPHOMORE",
+                "split": "train"
+            },
+            {
+                "video_id": "026708400894418727-SOPHOMORE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SUPERVISOR",
+        "instances": [
+            {
+                "video_id": "19379537971333316-SUPERVISOR",
+                "split": "train"
+            },
+            {
+                "video_id": "28041608305216026-SUPERVISOR",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SWEARIN",
+        "instances": [
+            {
+                "video_id": "24683104585018412-SWEAR IN",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "INSTITUTE",
+        "instances": [
+            {
+                "video_id": "35976901957453444-INSTITUTE",
+                "split": "train"
+            },
+            {
+                "video_id": "6928326961533751-INSTITUTE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "LICKENVELOPE",
+        "instances": [
+            {
+                "video_id": "031670126370264784-LICK ENVELOPE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "PERCEIVE",
+        "instances": [
+            {
+                "video_id": "4409418046134761-PERCEIVE",
+                "split": "train"
+            },
+            {
+                "video_id": "6619748121410192-PERCEIVE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "STUMBLE",
+        "instances": [
+            {
+                "video_id": "6069671516966564-STUMBLE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "CELEBRATE",
+        "instances": [
+            {
+                "video_id": "010850214999561736-CELEBRATE",
+                "split": "train"
+            },
+            {
+                "video_id": "5395352613912254-CELEBRATE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "TOSS",
+        "instances": [
+            {
+                "video_id": "13244724399416663-TOSS",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "WIDE",
+        "instances": [
+            {
+                "video_id": "038446216989295845-WIDE",
+                "split": "train"
+            },
+            {
+                "video_id": "11167211155706291-WIDE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "PEEL",
+        "instances": [
+            {
+                "video_id": "9076828716002219-PEEL 2",
+                "split": "train"
+            },
+            {
+                "video_id": "30070654019768583-PEEL 2",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "DOG",
+        "instances": [
+            {
+                "video_id": "49288220098651747-DOG",
+                "split": "train"
+            },
+            {
+                "video_id": "11432147423106453-DOG",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "FLOAT",
+        "instances": [
+            {
+                "video_id": "6750594223002664-FLOAT 3",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "THEORY",
+        "instances": [
+            {
+                "video_id": "31649691891683207-THEORY",
+                "split": "train"
+            },
+            {
+                "video_id": "6336093498495587-THEORY",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SHORTWORD",
+        "instances": [
+            {
+                "video_id": "6343693205934693-SHORT WORD",
+                "split": "train"
+            },
+            {
+                "video_id": "6956016227207786-SHORT WORD",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "LABEL",
+        "instances": [
+            {
+                "video_id": "27469263568791-LABEL",
+                "split": "train"
+            },
+            {
+                "video_id": "4168307048484854-LABEL",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "FIRED",
+        "instances": [
+            {
+                "video_id": "13187210101793911-FIRED",
+                "split": "train"
+            },
+            {
+                "video_id": "04939380671476301-FIRED",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "ADVERTISE",
+        "instances": [
+            {
+                "video_id": "8450645349294537-ADVERTISE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "DEMOTE",
+        "instances": [
+            {
+                "video_id": "45613794376693106-DEMOTE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "INHALE",
+        "instances": [
+            {
+                "video_id": "7568259630004095-INHALE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "ARTICLE",
+        "instances": [
+            {
+                "video_id": "5819018923811163-ARTICLE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "LEAVEALONE",
+        "instances": [
+            {
+                "video_id": "6738805591563901-LEAVE ALONE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "BOWLING",
+        "instances": [
+            {
+                "video_id": "9184146468779903-BOWLING 2",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "RIDE",
+        "instances": [
+            {
+                "video_id": "7381855460513327-RIDE 2",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "DARK",
+        "instances": [
+            {
+                "video_id": "0525121513125173-DARK",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "DEVOUR",
+        "instances": [
+            {
+                "video_id": "41738678001523555-DEVOUR",
+                "split": "train"
+            },
+            {
+                "video_id": "9054883446709237-DEVOUR",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "HATCH",
+        "instances": [
+            {
+                "video_id": "8143823054520445-HATCH 2",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "PILLOW",
+        "instances": [
+            {
+                "video_id": "784442858510149-PILLOW 2",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "CELLPHONE",
+        "instances": [
+            {
+                "video_id": "3665083076635902-CELLPHONE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "FLASHLIGHT",
+        "instances": [
+            {
+                "video_id": "08028498244023075-FLASHLIGHT 3",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "LIGHT",
+        "instances": [
+            {
+                "video_id": "569252532013591-LIGHT 2",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SHIRT",
+        "instances": [
+            {
+                "video_id": "8674978531375388-SHIRT 2",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "BUMPY",
+        "instances": [
+            {
+                "video_id": "9984110117309302-BUMPY",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SLIP",
+        "instances": [
+            {
+                "video_id": "3611339319587963-SLIP 2",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SNEEZE",
+        "instances": [
+            {
+                "video_id": "7913552139341871-SNEEZE 2",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "CLOCK",
+        "instances": [
+            {
+                "video_id": "5390411629840837-CLOCK 2",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "GLASS",
+        "instances": [
+            {
+                "video_id": "3635703251583551-GLASS 3",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "FRISK",
+        "instances": [
+            {
+                "video_id": "02417596973931868-FRISK",
+                "split": "train"
+            },
+            {
+                "video_id": "4928343509897051-FRISK",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SUMMON",
+        "instances": [
+            {
+                "video_id": "7800294564666657-SUMMON",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "BANANA",
+        "instances": [
+            {
+                "video_id": "22066071141437238-BANANA 2",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "CHERRY",
+        "instances": [
+            {
+                "video_id": "1455478001735404-CHERRY 2",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "ELEVATOR",
+        "instances": [
+            {
+                "video_id": "4458090401198842-ELEVATOR 3",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "STACK",
+        "instances": [
+            {
+                "video_id": "21072859884997563-STACK 2",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "ENVELOPE",
+        "instances": [
+            {
+                "video_id": "461256999845691-ENVELOPE 5",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "BURY",
+        "instances": [
+            {
+                "video_id": "36182318013198267-BURY 2",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "ARREST",
+        "instances": [
+            {
+                "video_id": "9072202582847813-ARREST 3",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "KNITTING",
+        "instances": [
+            {
+                "video_id": "3965534717514636-KNITTING 3",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SMILE",
+        "instances": [
+            {
+                "video_id": "11938517772299284-SMILE 2",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "STACK",
+        "instances": [
+            {
+                "video_id": "28165779316856177-STACK 3",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SCREWDRIVER",
+        "instances": [
+            {
+                "video_id": "3414971948885017-SCREWDRIVER 2",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "CLOUD",
+        "instances": [
+            {
+                "video_id": "7866479770462362-CLOUD 4",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "CARROT",
+        "instances": [
+            {
+                "video_id": "3719623393652336-CARROT 3",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "CRACKER",
+        "instances": [
+            {
+                "video_id": "736053532553147-CRACKER 2",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "VAMPIRE",
+        "instances": [
+            {
+                "video_id": "940072121680658-VAMPIRE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "POP",
+        "instances": [
+            {
+                "video_id": "6440471350161254-POP 4",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "CROSS",
+        "instances": [
+            {
+                "video_id": "07995519195035183-CROSS",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "RAZOR",
+        "instances": [
+            {
+                "video_id": "161397688937315-RAZOR 2",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "CHERRY",
+        "instances": [
+            {
+                "video_id": "5685505516650793-CHERRY",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "JACKET",
+        "instances": [
+            {
+                "video_id": "46721838510936897-JACKET",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "RABBIT",
+        "instances": [
+            {
+                "video_id": "638988979683649-RABBIT",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SNOW",
+        "instances": [
+            {
+                "video_id": "9665726169641298-SNOW 2",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "BENEFIT",
+        "instances": [
+            {
+                "video_id": "4777114214367413-BENEFIT",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "EYES",
+        "instances": [
+            {
+                "video_id": "7364724475858522-EYES",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "GUESS",
+        "instances": [
+            {
+                "video_id": "24946258334528815-GUESS",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "DEMAND",
+        "instances": [
+            {
+                "video_id": "2889534487412355-DEMAND",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "CHURCH",
+        "instances": [
+            {
+                "video_id": "5149945846466999-CHURCH",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "COMPUTERMOUSE",
+        "instances": [
+            {
+                "video_id": "3705689605906124-COMPUTER MOUSE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "NEED",
+        "instances": [
+            {
+                "video_id": "8848744369087989-NEED",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "PINEAPPLE",
+        "instances": [
+            {
+                "video_id": "6866053008104511-PINEAPPLE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "BONE",
+        "instances": [
+            {
+                "video_id": "5187624262174839-BONE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "CHILDREN",
+        "instances": [
+            {
+                "video_id": "7561528652261482-CHILDREN",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "FRUIT",
+        "instances": [
+            {
+                "video_id": "9249941273755868-FRUIT",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "ORDER",
+        "instances": [
+            {
+                "video_id": "7882860253360209-ORDER 2",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "PROBLEM",
+        "instances": [
+            {
+                "video_id": "17735124828998106-PROBLEM 1",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "WOOD",
+        "instances": [
+            {
+                "video_id": "24975725380114233-WOOD",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "DROP",
+        "instances": [
+            {
+                "video_id": "9141133089170674-DROP",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "GAME",
+        "instances": [
+            {
+                "video_id": "16759358676302494-GAME",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "FOREIGNER",
+        "instances": [
+            {
+                "video_id": "0955181553369353-FOREIGNER",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "APPOINTMENT",
+        "instances": [
+            {
+                "video_id": "6248518251977921-APPOINTMENT",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "NOW",
+        "instances": [
+            {
+                "video_id": "4614534315577101-NOW",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SCROLLDOWN",
+        "instances": [
+            {
+                "video_id": "9397014726055648-SCROLL DOWN",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "EGO",
+        "instances": [
+            {
+                "video_id": "6435134382056891-EGO",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "TELL",
+        "instances": [
+            {
+                "video_id": "051465824178710706-TELL",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SOUTH",
+        "instances": [
+            {
+                "video_id": "1780082548619053-SOUTH",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "GOSSIP",
+        "instances": [
+            {
+                "video_id": "6904994586261741-GOSSIP",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "YESTERDAY",
+        "instances": [
+            {
+                "video_id": "7815897175027569-YESTERDAY",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "BALANCE",
+        "instances": [
+            {
+                "video_id": "6225262610729481-BALANCE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "CALL",
+        "instances": [
+            {
+                "video_id": "09797934187757074-CALL",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "AGREEMENT",
+        "instances": [
+            {
+                "video_id": "8994479452363924-AGREEMENT",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "DIRTY",
+        "instances": [
+            {
+                "video_id": "6871058555020562-DIRTY",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "NO",
+        "instances": [
+            {
+                "video_id": "5082858473744953-NO",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "CANOE",
+        "instances": [
+            {
+                "video_id": "8861231668594451-CANOE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "TEST",
+        "instances": [
+            {
+                "video_id": "7596782937972923-TEST",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "TEETH",
+        "instances": [
+            {
+                "video_id": "8006343369425069-TEETH",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "KID",
+        "instances": [
+            {
+                "video_id": "5410039699158458-KID",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "GIRL",
+        "instances": [
+            {
+                "video_id": "33093247095464684-GIRL",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "BOAT",
+        "instances": [
+            {
+                "video_id": "10857326791414024-BOAT",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "EASY",
+        "instances": [
+            {
+                "video_id": "16884356585373195-EASY",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SCHOOL",
+        "instances": [
+            {
+                "video_id": "3380520143388104-SCHOOL",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "IDEA",
+        "instances": [
+            {
+                "video_id": "142382602529187-IDEA",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "THERMOMETER",
+        "instances": [
+            {
+                "video_id": "14947715658058014-THERMOMETER",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "LETKNOW",
+        "instances": [
+            {
+                "video_id": "23295455480851857-LET KNOW",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "PREACHER",
+        "instances": [
+            {
+                "video_id": "11867852244398991-PREACHER",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "MEET",
+        "instances": [
+            {
+                "video_id": "09480001149764816-MEET",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "ZIPPER",
+        "instances": [
+            {
+                "video_id": "5882028078956663-ZIPPER",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "MATCH",
+        "instances": [
+            {
+                "video_id": "5739657937248839-MATCH",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "FAUCET",
+        "instances": [
+            {
+                "video_id": "7886729880176198-FAUCET",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "FORFEIT",
+        "instances": [
+            {
+                "video_id": "727797349899711-FORFEIT",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "NEWSPAPER",
+        "instances": [
+            {
+                "video_id": "36626645710568106-NEWSPAPER",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "GOD",
+        "instances": [
+            {
+                "video_id": "6989402826625473-GOD",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "FULL",
+        "instances": [
+            {
+                "video_id": "3844148444722406-FULL",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "FRIEND",
+        "instances": [
+            {
+                "video_id": "3845231217942484-FRIEND",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "WIFE",
+        "instances": [
+            {
+                "video_id": "5307030948600251-WIFE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "CRAZY",
+        "instances": [
+            {
+                "video_id": "24974615015650947-CRAZY",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "DRAW",
+        "instances": [
+            {
+                "video_id": "5677482375653258-DRAW",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "CAR",
+        "instances": [
+            {
+                "video_id": "27759670594914465-CAR",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "FRANCE",
+        "instances": [
+            {
+                "video_id": "45594209879187875-FRANCE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "AMAZING",
+        "instances": [
+            {
+                "video_id": "182409169478295-AMAZING",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "BEAT",
+        "instances": [
+            {
+                "video_id": "061936510841636094-BEAT",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "TOOTHBRUSH",
+        "instances": [
+            {
+                "video_id": "3534400142419516-TOOTHBRUSH",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "EXCUSE",
+        "instances": [
+            {
+                "video_id": "8306237547328505-EXCUSE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "REVENGE",
+        "instances": [
+            {
+                "video_id": "16968758786823446-REVENGE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "DOWNSIZE",
+        "instances": [
+            {
+                "video_id": "6833661881907038-DOWNSIZE",
+                "split": "train"
+            },
+            {
+                "video_id": "23918615846797597-DOWNSIZE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "LESSON",
+        "instances": [
+            {
+                "video_id": "4465135859623439-LESSON",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SARCASTIC",
+        "instances": [
+            {
+                "video_id": "18037166509849722-SARCASTIC",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "YUCKY",
+        "instances": [
+            {
+                "video_id": "5342879318630827-YUCKY",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "PLUG",
+        "instances": [
+            {
+                "video_id": "45107006465931687-PLUG",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "NUT",
+        "instances": [
+            {
+                "video_id": "45360553116056135-NUT",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "AVOID",
+        "instances": [
+            {
+                "video_id": "20127670054735236-AVOID",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "FEDUP",
+        "instances": [
+            {
+                "video_id": "14857041755268563-FED UP",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "BYE",
+        "instances": [
+            {
+                "video_id": "9404479880375034-BYE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "END",
+        "instances": [
+            {
+                "video_id": "008334911275535983-END",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "GERMANY",
+        "instances": [
+            {
+                "video_id": "599008798019109-GERMANY",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "LETMESEE",
+        "instances": [
+            {
+                "video_id": "835941664310544-LET ME_SEE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "NIECE",
+        "instances": [
+            {
+                "video_id": "25349602618374245-NIECE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "BUT",
+        "instances": [
+            {
+                "video_id": "8335625687320589-BUT",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "BUDGET",
+        "instances": [
+            {
+                "video_id": "17556925442961546-BUDGET",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SEQUENCE",
+        "instances": [
+            {
+                "video_id": "0019458289228719838-SEQUENCE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "ROCKET",
+        "instances": [
+            {
+                "video_id": "42899833130683573-ROCKET 1",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "WASH",
+        "instances": [
+            {
+                "video_id": "45974359533467624-WASH 1",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SPONTANEOUS",
+        "instances": [
+            {
+                "video_id": "7360418673995492-SPONTANEOUS",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "FACE",
+        "instances": [
+            {
+                "video_id": "9246436366130377-FACE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "TICKET",
+        "instances": [
+            {
+                "video_id": "2863257536366659-TICKET",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "MOST",
+        "instances": [
+            {
+                "video_id": "5208380221303042-MOST",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "FREEDOM",
+        "instances": [
+            {
+                "video_id": "6207041749303615-FREEDOM",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "CUT",
+        "instances": [
+            {
+                "video_id": "6776054154751192-CUT 1",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "BUSY",
+        "instances": [
+            {
+                "video_id": "2111386793579384-BUSY",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "LOLLIPOP",
+        "instances": [
+            {
+                "video_id": "531241969487003-LOLLIPOP",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "DEPRESS",
+        "instances": [
+            {
+                "video_id": "7094121960088806-DEPRESS",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "FLOAT",
+        "instances": [
+            {
+                "video_id": "6371396620489889-FLOAT",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "PROOF",
+        "instances": [
+            {
+                "video_id": "26689261591142355-PROOF",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "DISRUPT",
+        "instances": [
+            {
+                "video_id": "7581793606805043-DISRUPT",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "CAMERAMAN",
+        "instances": [
+            {
+                "video_id": "22148353752737537-CAMERAMAN",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "DRIVE",
+        "instances": [
+            {
+                "video_id": "48605335562768315-DRIVE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "BEANS",
+        "instances": [
+            {
+                "video_id": "4599940680744705-BEANS",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "PIZZA",
+        "instances": [
+            {
+                "video_id": "1434349775005772-PIZZA 2",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SHARE",
+        "instances": [
+            {
+                "video_id": "4716209539695517-SHARE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SLAVE",
+        "instances": [
+            {
+                "video_id": "8750056311438137-SLAVE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "INTUITIVE",
+        "instances": [
+            {
+                "video_id": "9539744052316363-INTUITIVE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "ON",
+        "instances": [
+            {
+                "video_id": "15583842324081232-ON",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "TRUTH",
+        "instances": [
+            {
+                "video_id": "01575906812099359-TRUTH",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "VANILLA",
+        "instances": [
+            {
+                "video_id": "22151283011808554-VANILLA",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "COST",
+        "instances": [
+            {
+                "video_id": "9151460001087668-COST",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "ROOF",
+        "instances": [
+            {
+                "video_id": "5700407311251623-ROOF",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SNEAKADVENTURE",
+        "instances": [
+            {
+                "video_id": "05089872608413626-SNEAK ADVENTURE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "LOUSY",
+        "instances": [
+            {
+                "video_id": "3570222124406002-LOUSY",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "FUNNY",
+        "instances": [
+            {
+                "video_id": "8441043604725313-FUNNY",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SKIN",
+        "instances": [
+            {
+                "video_id": "752385671850688-SKIN",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "LOOKFORWARD",
+        "instances": [
+            {
+                "video_id": "8642316172083411-LOOK FORWARD",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SWIM",
+        "instances": [
+            {
+                "video_id": "4001283150525985-SWIM",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "GOAL",
+        "instances": [
+            {
+                "video_id": "3180685106985577-GOAL",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "OUTSIDE",
+        "instances": [
+            {
+                "video_id": "8911976032426165-OUTSIDE",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "ORANGETHROAT",
+        "instances": [
+            {
+                "video_id": "7599782059880507-ORANGE THROAT",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "ORANGEEYES",
+        "instances": [
+            {
+                "video_id": "29515855219404497-ORANGE EYES",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "ANSWER",
+        "instances": [
+            {
+                "video_id": "08105598822367299-ANSWER",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "DISCUSS",
+        "instances": [
+            {
+                "video_id": "20852329611395937-DISCUSS",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "ROBOT",
+        "instances": [
+            {
+                "video_id": "17128261239352982-ROBOT",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "MELT",
+        "instances": [
+            {
+                "video_id": "9337064031272435-MELT",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "SUCK",
+        "instances": [
+            {
+                "video_id": "6911483999978041-SUCK",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "ROUGH",
+        "instances": [
+            {
+                "video_id": "8115249297063862-ROUGH",
+                "split": "train"
+            }
+        ]
+    },
+    {
+        "gloss": "CHAMP",
+        "instances": [
+            {
+                "video_id": "8336197103293617-CHAMP",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "NOTMIND",
+        "instances": [
+            {
+                "video_id": "7974224982720846-NOT MIND",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SPECIAL",
+        "instances": [
+            {
+                "video_id": "6425246898229175-SPECIAL",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "HE",
+        "instances": [
+            {
+                "video_id": "6224825679560193-HE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "ABSOLUTELYNOTHING",
+        "instances": [
+            {
+                "video_id": "521104571152148-ABSOLUTELY NOTHING",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "DRESSUP",
+        "instances": [
+            {
+                "video_id": "08245235868484135-DRESS UP",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CUTREMOVEVID",
+        "instances": [
+            {
+                "video_id": "9524326885952397-CUT REMOVE VID",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CONTACTLENS",
+        "instances": [
+            {
+                "video_id": "023252806814615612-CONTACT LENS",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "AUNT",
+        "instances": [
+            {
+                "video_id": "5993159563247941-AUNT",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "OR",
+        "instances": [
+            {
+                "video_id": "8011142443473334-OR",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "ELEVATOR",
+        "instances": [
+            {
+                "video_id": "7321586591293114-ELEVATOR",
+                "split": "test"
+            },
+            {
+                "video_id": "9859158369118783-ELEVATOR",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "ROAST",
+        "instances": [
+            {
+                "video_id": "7037827801364853-ROAST",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CONSUME",
+        "instances": [
+            {
+                "video_id": "8710964919282969-CONSUME",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SWEATPANTS",
+        "instances": [
+            {
+                "video_id": "8410622759369191-SWEATPANTS",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "ABBREVIATE",
+        "instances": [
+            {
+                "video_id": "9778015109909495-ABBREVIATE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SAUCE",
+        "instances": [
+            {
+                "video_id": "45873824453256606-SAUCE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CLEAN",
+        "instances": [
+            {
+                "video_id": "6892099852370392-CLEAN",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "DONTLIKE",
+        "instances": [
+            {
+                "video_id": "8607061217854524-DONT LIKE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "ADD",
+        "instances": [
+            {
+                "video_id": "47800562772404587-ADD",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "GIVEUP",
+        "instances": [
+            {
+                "video_id": "4975884882218917-GIVE UP",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "DESTROY",
+        "instances": [
+            {
+                "video_id": "8549042133072944-DESTROY",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "TENDYOUR",
+        "instances": [
+            {
+                "video_id": "3718616056631494-TEND YOUR",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "WASHHANDS",
+        "instances": [
+            {
+                "video_id": "7701973939580902-WASH HANDS",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SUSPEND",
+        "instances": [
+            {
+                "video_id": "005939232047473597-SUSPEND",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "BRIGHT",
+        "instances": [
+            {
+                "video_id": "4680051208226632-BRIGHT",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "GOOSEBUMPS",
+        "instances": [
+            {
+                "video_id": "8809376768029682-GOOSEBUMPS",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "ABOVE",
+        "instances": [
+            {
+                "video_id": "8571485632178022-ABOVE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SPEND",
+        "instances": [
+            {
+                "video_id": "9025889423248843-SPEND",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "BARELY",
+        "instances": [
+            {
+                "video_id": "9772004004889832-BARELY",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "TEMPERBLOWUP",
+        "instances": [
+            {
+                "video_id": "44782081858437195-TEMPER BLOW UP",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "PLUS",
+        "instances": [
+            {
+                "video_id": "5063723158520219-PLUS",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "ALLDAY",
+        "instances": [
+            {
+                "video_id": "2634482844839341-ALL DAY",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "WHATFOR",
+        "instances": [
+            {
+                "video_id": "9684934734400592-WHAT FOR",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "DIFFERENTSITUATION",
+        "instances": [
+            {
+                "video_id": "6675272277821382-DIFFERENT SITUATION",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "LIVINGROOM",
+        "instances": [
+            {
+                "video_id": "8571851677379148-LIVING ROOM",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "FAIR",
+        "instances": [
+            {
+                "video_id": "8860282750593202-FAIR",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SAUSAGE",
+        "instances": [
+            {
+                "video_id": "7342015733212393-SAUSAGE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "STANDUP",
+        "instances": [
+            {
+                "video_id": "7821186719156978-STAND-UP",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "ALLGONE",
+        "instances": [
+            {
+                "video_id": "9717397360056315-ALL GONE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "GUILLOTINE",
+        "instances": [
+            {
+                "video_id": "7225683281193078-GUILLOTINE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "HANDSOME",
+        "instances": [
+            {
+                "video_id": "551709436913915-HANDSOME",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "PIZZA",
+        "instances": [
+            {
+                "video_id": "05216261504805786-PIZZA",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CHARGE",
+        "instances": [
+            {
+                "video_id": "6002519499849954-CHARGE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "TECHNOLOGY",
+        "instances": [
+            {
+                "video_id": "2980899568074442-TECHNOLOGY",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "HEARTBODY",
+        "instances": [
+            {
+                "video_id": "20146972673867425-HEARTBODY",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CHURN",
+        "instances": [
+            {
+                "video_id": "22536400773023613-CHURN",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "COOL",
+        "instances": [
+            {
+                "video_id": "8021592480565309-COOL",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "WINTER",
+        "instances": [
+            {
+                "video_id": "07292552086629267-WINTER",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "LONGWORD",
+        "instances": [
+            {
+                "video_id": "30926451717158265-LONG WORD",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SHAVE",
+        "instances": [
+            {
+                "video_id": "45913985094539034-SHAVE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "WRING",
+        "instances": [
+            {
+                "video_id": "7636955763773909-WRING",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SHOT",
+        "instances": [
+            {
+                "video_id": "7758439693732813-SHOT",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "TRANSFER",
+        "instances": [
+            {
+                "video_id": "4970823966591311-TRANSFER",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "LEATHER",
+        "instances": [
+            {
+                "video_id": "6461179044397616-LEATHER",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "DEPENDON",
+        "instances": [
+            {
+                "video_id": "6590321046797449-DEPEND ON",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SHELF",
+        "instances": [
+            {
+                "video_id": "21536599402610168-SHELF",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "HOCKEY",
+        "instances": [
+            {
+                "video_id": "06588894016559554-HOCKEY",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "HOTEL",
+        "instances": [
+            {
+                "video_id": "21842072478055718-HOTEL",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "RESEARCH",
+        "instances": [
+            {
+                "video_id": "3281127368953569-RESEARCH",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "LETTER",
+        "instances": [
+            {
+                "video_id": "583137390743006-LETTER 2",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "UPLOAD",
+        "instances": [
+            {
+                "video_id": "18105983323730124-UPLOAD",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "KNEEL",
+        "instances": [
+            {
+                "video_id": "43043685617693606-KNEEL",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "JIGSAWPUZZLE",
+        "instances": [
+            {
+                "video_id": "24857774776192887-JIGSAW PUZZLE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "EYEGLASSES",
+        "instances": [
+            {
+                "video_id": "6640336887874734-EYEGLASSES",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SHIRT",
+        "instances": [
+            {
+                "video_id": "4809884620634439-SHIRT",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "PAPER",
+        "instances": [
+            {
+                "video_id": "954948132382551-PAPER",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "POLICEMAN",
+        "instances": [
+            {
+                "video_id": "6796509348248554-POLICEMAN",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "WOLF",
+        "instances": [
+            {
+                "video_id": "7835066863212015-WOLF",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "PIE",
+        "instances": [
+            {
+                "video_id": "9185627449311058-PIE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "TURTLE",
+        "instances": [
+            {
+                "video_id": "9588976859568643-TURTLE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "STREET",
+        "instances": [
+            {
+                "video_id": "44555017753802995-STREET",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "WANDER",
+        "instances": [
+            {
+                "video_id": "5104047154181033-WANDER",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "READ",
+        "instances": [
+            {
+                "video_id": "44835657742775226-READ",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SURF",
+        "instances": [
+            {
+                "video_id": "25396041105839107-SURF",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "BIRD",
+        "instances": [
+            {
+                "video_id": "6230415830085574-BIRD",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "MICROWAVE",
+        "instances": [
+            {
+                "video_id": "06840796839295349-MICROWAVE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "PAINTBRUSH",
+        "instances": [
+            {
+                "video_id": "8050684044287095-PAINTBRUSH",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "EVALUATE",
+        "instances": [
+            {
+                "video_id": "9972993522717659-EVALUATE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "FISH",
+        "instances": [
+            {
+                "video_id": "6931839329699498-FISH",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "DRUM",
+        "instances": [
+            {
+                "video_id": "07588569202112305-DRUM",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SHOVEL",
+        "instances": [
+            {
+                "video_id": "23763920706013164-SHOVEL",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "GOAT",
+        "instances": [
+            {
+                "video_id": "5776572110938554-GOAT",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "TOBACCO",
+        "instances": [
+            {
+                "video_id": "6741932876163992-TOBACCO",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "BALLOON",
+        "instances": [
+            {
+                "video_id": "047303424732727084-BALLOON",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "NEUTRAL",
+        "instances": [
+            {
+                "video_id": "16390023624477035-NEUTRAL",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "RADIO",
+        "instances": [
+            {
+                "video_id": "18459978194968985-RADIO",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SHEEP",
+        "instances": [
+            {
+                "video_id": "8252596311527676-SHEEP",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "HISTORY",
+        "instances": [
+            {
+                "video_id": "525722762809893-HISTORY",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "NECKLACE",
+        "instances": [
+            {
+                "video_id": "7135886925281936-NECKLACE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "DESERT",
+        "instances": [
+            {
+                "video_id": "29260800582357627-DESERT",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SOCKS",
+        "instances": [
+            {
+                "video_id": "5120517652177681-SOCKS",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "MAGAZINE",
+        "instances": [
+            {
+                "video_id": "7988718281596965-MAGAZINE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "LION",
+        "instances": [
+            {
+                "video_id": "5334657167612822-LION",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "BED",
+        "instances": [
+            {
+                "video_id": "7504571212627438-BED",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "HEARINGAID",
+        "instances": [
+            {
+                "video_id": "977798305275027-HEARING AID",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SHY",
+        "instances": [
+            {
+                "video_id": "8192285843507832-SHY",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "NIGHT",
+        "instances": [
+            {
+                "video_id": "21366113819079557-NIGHT",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CASTLE",
+        "instances": [
+            {
+                "video_id": "16570823618121522-CASTLE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "MONKEY",
+        "instances": [
+            {
+                "video_id": "8080161141005977-MONKEY",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "PARACHUTE",
+        "instances": [
+            {
+                "video_id": "4208814042650002-PARACHUTE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "STARS",
+        "instances": [
+            {
+                "video_id": "019485447782909393-STARS",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "BOWTIE",
+        "instances": [
+            {
+                "video_id": "6132597016107686-BOWTIE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "LEMON",
+        "instances": [
+            {
+                "video_id": "36634584172789797-LEMON",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SANDALS",
+        "instances": [
+            {
+                "video_id": "0411558156050118-SANDALS",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "KITE",
+        "instances": [
+            {
+                "video_id": "17026391127091478-KITE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "DRAWER",
+        "instances": [
+            {
+                "video_id": "5079694929453946-DRAWER",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CHAIR",
+        "instances": [
+            {
+                "video_id": "8765936616476178-CHAIR",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "TRASH",
+        "instances": [
+            {
+                "video_id": "6396706340521292-TRASH",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "WAITER",
+        "instances": [
+            {
+                "video_id": "35440680518072143-WAITER",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "DEODORANT",
+        "instances": [
+            {
+                "video_id": "7145980984594986-DEODORANT",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "STUDENT",
+        "instances": [
+            {
+                "video_id": "14161156056091984-STUDENT",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "ROLLERSKATING",
+        "instances": [
+            {
+                "video_id": "909711525234904-ROLLERSKATING",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "PSYCHOLOGIST",
+        "instances": [
+            {
+                "video_id": "3952446170351065-PSYCHOLOGIST",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "RIVER",
+        "instances": [
+            {
+                "video_id": "8338554842463526-RIVER",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "DEER",
+        "instances": [
+            {
+                "video_id": "2219604794375818-DEER",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "PANTS",
+        "instances": [
+            {
+                "video_id": "1815842613339249-PANTS",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "LETTUCE",
+        "instances": [
+            {
+                "video_id": "9390647922237925-LETTUCE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SWING",
+        "instances": [
+            {
+                "video_id": "40996102498936104-SWING",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "GORILLA",
+        "instances": [
+            {
+                "video_id": "4234085170802624-GORILLA",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "POPCORN",
+        "instances": [
+            {
+                "video_id": "7160559315245134-POPCORN",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "BRIDESMAID",
+        "instances": [
+            {
+                "video_id": "4153897488883451-BRIDESMAID",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CAMPING",
+        "instances": [
+            {
+                "video_id": "960524620493431-CAMPING",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "PEACH",
+        "instances": [
+            {
+                "video_id": "15942809073776854-PEACH",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "ELECTRICIAN",
+        "instances": [
+            {
+                "video_id": "38889564341869876-ELECTRICIAN",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "HAIR",
+        "instances": [
+            {
+                "video_id": "9585910588093856-HAIR",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "HOMEWORK",
+        "instances": [
+            {
+                "video_id": "8074686924440861-HOMEWORK",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "BRA",
+        "instances": [
+            {
+                "video_id": "34552747209840096-BRA",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "FISHING",
+        "instances": [
+            {
+                "video_id": "5686028919824875-FISHING",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SALAD",
+        "instances": [
+            {
+                "video_id": "3956936040150383-SALAD",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "BLANKET",
+        "instances": [
+            {
+                "video_id": "771916647384465-BLANKET",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CUP",
+        "instances": [
+            {
+                "video_id": "35037062149367304-CUP",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CANDY",
+        "instances": [
+            {
+                "video_id": "9615511479905843-CANDY 1",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "DOLPHIN",
+        "instances": [
+            {
+                "video_id": "968010500936501-DOLPHIN",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "MOON",
+        "instances": [
+            {
+                "video_id": "13202304554950373-MOON",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "COUNSELOR",
+        "instances": [
+            {
+                "video_id": "9014974799027726-COUNSELOR",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "DORMITORY",
+        "instances": [
+            {
+                "video_id": "11541031583555061-DORMITORY",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SOAP",
+        "instances": [
+            {
+                "video_id": "6199878458922479-SOAP",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "PILLOW",
+        "instances": [
+            {
+                "video_id": "3773136650144955-PILLOW",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "BRUSH",
+        "instances": [
+            {
+                "video_id": "28278427212210167-BRUSH",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "HORSE",
+        "instances": [
+            {
+                "video_id": "5727026839535156-HORSE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "COFFEE",
+        "instances": [
+            {
+                "video_id": "14332727030886439-COFFEE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "ISLAND",
+        "instances": [
+            {
+                "video_id": "7887932198206773-ISLAND",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "MILK",
+        "instances": [
+            {
+                "video_id": "4180054400928148-MILK",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "DIAPER",
+        "instances": [
+            {
+                "video_id": "2734257436398633-DIAPER",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "DUMB",
+        "instances": [
+            {
+                "video_id": "6030399571649916-DUMB",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "MOP",
+        "instances": [
+            {
+                "video_id": "4805744415905513-MOP",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "HUMBLE",
+        "instances": [
+            {
+                "video_id": "363845251533651-HUMBLE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "ENGLISH",
+        "instances": [
+            {
+                "video_id": "692454336199364-ENGLISH",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "TIE",
+        "instances": [
+            {
+                "video_id": "27559553912451684-TIE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "DINOSAUR",
+        "instances": [
+            {
+                "video_id": "28960805716887217-DINOSAUR",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "TABLE",
+        "instances": [
+            {
+                "video_id": "8113529243943174-TABLE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "POTATO",
+        "instances": [
+            {
+                "video_id": "5967685399587914-POTATO",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "ANGEL",
+        "instances": [
+            {
+                "video_id": "10592483554377141-ANGEL",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "MONTH",
+        "instances": [
+            {
+                "video_id": "6615832749329904-MONTH",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CHEAT",
+        "instances": [
+            {
+                "video_id": "9806423316095749-CHEAT 1",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "COMPUTER",
+        "instances": [
+            {
+                "video_id": "8984122870078688-COMPUTER",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "DEVIL",
+        "instances": [
+            {
+                "video_id": "8562599642741817-DEVIL",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "DANCER",
+        "instances": [
+            {
+                "video_id": "1703737248609971-DANCER",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CEREAL",
+        "instances": [
+            {
+                "video_id": "17525686363330384-CEREAL",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "LANGUAGE",
+        "instances": [
+            {
+                "video_id": "3035648828488777-LANGUAGE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "INSULT",
+        "instances": [
+            {
+                "video_id": "6393400545747199-INSULT",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "NEPHEW",
+        "instances": [
+            {
+                "video_id": "05931984028494086-NEPHEW",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CAT",
+        "instances": [
+            {
+                "video_id": "6242163217455015-CAT",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SANDWICH",
+        "instances": [
+            {
+                "video_id": "7562095001049769-SANDWICH",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "ROOM",
+        "instances": [
+            {
+                "video_id": "44398695037707947-ROOM",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "BOOK",
+        "instances": [
+            {
+                "video_id": "8170605754700684-BOOK",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SCIENTIST",
+        "instances": [
+            {
+                "video_id": "7525664858866068-SCIENTIST",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SKIRT",
+        "instances": [
+            {
+                "video_id": "583302319036213-SKIRT",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "PROMISE",
+        "instances": [
+            {
+                "video_id": "7110642301269119-PROMISE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SPAGHETTI",
+        "instances": [
+            {
+                "video_id": "6768094855333888-SPAGHETTI",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "PLUNGER",
+        "instances": [
+            {
+                "video_id": "2728463012616862-PLUNGER",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "UMBRELLA",
+        "instances": [
+            {
+                "video_id": "3412518906815425-UMBRELLA",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "WINDMILL",
+        "instances": [
+            {
+                "video_id": "05044627692580317-WINDMILL",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "PEPPER",
+        "instances": [
+            {
+                "video_id": "3105963023752707-PEPPER",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SCISSORS",
+        "instances": [
+            {
+                "video_id": "9456021980286737-SCISSORS",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "BAG",
+        "instances": [
+            {
+                "video_id": "9316249371405894-BAG",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CHANCE",
+        "instances": [
+            {
+                "video_id": "2064968045717599-CHANCE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "RAZOR",
+        "instances": [
+            {
+                "video_id": "710631839546763-RAZOR",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CURTAIN",
+        "instances": [
+            {
+                "video_id": "4235952722427525-CURTAIN",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CLOUD",
+        "instances": [
+            {
+                "video_id": "5258592651500764-CLOUD",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "BUTTER",
+        "instances": [
+            {
+                "video_id": "21837840001800313-BUTTER",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SHORTS",
+        "instances": [
+            {
+                "video_id": "38740819262808057-SHORTS",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "GRASS",
+        "instances": [
+            {
+                "video_id": "9184586311725065-GRASS",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "BAKE",
+        "instances": [
+            {
+                "video_id": "5923422805605478-BAKE 1",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "FRENCHFRIES",
+        "instances": [
+            {
+                "video_id": "14340680963685082-FRENCHFRIES",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "ROCK",
+        "instances": [
+            {
+                "video_id": "2537312897428725-ROCK",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "STRAWBERRY",
+        "instances": [
+            {
+                "video_id": "223343928949288-STRAWBERRY",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "PRIDE",
+        "instances": [
+            {
+                "video_id": "23460008710103675-PRIDE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "ORANGE",
+        "instances": [
+            {
+                "video_id": "7759487393928293-ORANGE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SURGEON",
+        "instances": [
+            {
+                "video_id": "408341329674931-SURGEON",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "BOWLING",
+        "instances": [
+            {
+                "video_id": "8907170888386009-BOWLING",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "TEACHER",
+        "instances": [
+            {
+                "video_id": "7284254269444541-TEACHER",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "WHISTLE",
+        "instances": [
+            {
+                "video_id": "804266275679318-WHISTLE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "BREAD",
+        "instances": [
+            {
+                "video_id": "16365459087186118-BREAD",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "PLAYGROUND",
+        "instances": [
+            {
+                "video_id": "010966008639650138-PLAYGROUND",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "VERB",
+        "instances": [
+            {
+                "video_id": "0030554824479314124-VERB",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CARROT",
+        "instances": [
+            {
+                "video_id": "951065811881455-CARROT",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CAFETERIA",
+        "instances": [
+            {
+                "video_id": "6592355108916021-CAFETERIA",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CALENDAR",
+        "instances": [
+            {
+                "video_id": "05469657086044322-CALENDAR",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CLOWN",
+        "instances": [
+            {
+                "video_id": "5091115320274906-CLOWN",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "WITCH",
+        "instances": [
+            {
+                "video_id": "5057351025692005-WITCH",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "MECHANIC",
+        "instances": [
+            {
+                "video_id": "3248125439606664-MECHANIC",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "MOUNTAIN",
+        "instances": [
+            {
+                "video_id": "08450370836410559-MOUNTAIN",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "BIOLOGY",
+        "instances": [
+            {
+                "video_id": "1308286693733991-BIOLOGY",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "BASEBALL",
+        "instances": [
+            {
+                "video_id": "9525862219307428-BASEBALL",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "TENNIS",
+        "instances": [
+            {
+                "video_id": "7639796446484672-TENNIS",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "LIBRARY",
+        "instances": [
+            {
+                "video_id": "364080573976161-LIBRARY",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "ASIA",
+        "instances": [
+            {
+                "video_id": "01632285674238032-ASIA",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "LAZY",
+        "instances": [
+            {
+                "video_id": "2829812474025435-LAZY",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "ICECREAM",
+        "instances": [
+            {
+                "video_id": "4967148980955083-ICECREAM",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "GUITAR",
+        "instances": [
+            {
+                "video_id": "4108691568339855-GUITAR",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "FIREMAN",
+        "instances": [
+            {
+                "video_id": "36642644361014165-FIREMAN",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "GLOVE",
+        "instances": [
+            {
+                "video_id": "07961317623160724-GLOVE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "GARAGE",
+        "instances": [
+            {
+                "video_id": "6989304329949362-GARAGE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "HAT",
+        "instances": [
+            {
+                "video_id": "8586162072545187-HAT",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "AFRICA",
+        "instances": [
+            {
+                "video_id": "27777681903933904-AFRICA",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "ACTOR",
+        "instances": [
+            {
+                "video_id": "3109603656677207-ACTOR",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "FLOWER",
+        "instances": [
+            {
+                "video_id": "7281385110348666-FLOWER",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "HEAVEN",
+        "instances": [
+            {
+                "video_id": "7314661586264413-HEAVEN",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "EGG",
+        "instances": [
+            {
+                "video_id": "7906559089866683-EGG",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "WINDOW",
+        "instances": [
+            {
+                "video_id": "41174529565711504-WINDOW",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SOUP",
+        "instances": [
+            {
+                "video_id": "6571827465395499-SOUP",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "WHIP",
+        "instances": [
+            {
+                "video_id": "855873848440323-WHIP",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "PAPERCUTTER",
+        "instances": [
+            {
+                "video_id": "3355315213158083-PAPERCUTTER",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "HUNT",
+        "instances": [
+            {
+                "video_id": "4852327872515856-HUNT",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SHRIMP",
+        "instances": [
+            {
+                "video_id": "7975839816843582-SHRIMP",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SOME",
+        "instances": [
+            {
+                "video_id": "8893212111344746-SOME",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "PRINT",
+        "instances": [
+            {
+                "video_id": "5337176194439026-PRINT",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "BATHROOM",
+        "instances": [
+            {
+                "video_id": "5897795552292975-BATHROOM",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "COCONUT",
+        "instances": [
+            {
+                "video_id": "9524319030038324-COCONUT",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "PILL",
+        "instances": [
+            {
+                "video_id": "1332295173780358-PILL",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "UNDERWEAR",
+        "instances": [
+            {
+                "video_id": "8424337476976695-UNDERWEAR",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "STAIRS",
+        "instances": [
+            {
+                "video_id": "41060414267953504-STAIRS",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SHOULDER",
+        "instances": [
+            {
+                "video_id": "1674492320377452-SHOULDER",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "BANANA",
+        "instances": [
+            {
+                "video_id": "3893312737948338-BANANA",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "DOOR",
+        "instances": [
+            {
+                "video_id": "9627620134924044-DOOR",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "STAR",
+        "instances": [
+            {
+                "video_id": "8780647156659958-STAR",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "FOX",
+        "instances": [
+            {
+                "video_id": "7291195430510682-FOX",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "BATH",
+        "instances": [
+            {
+                "video_id": "8044573251996572-BATH",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "THREE",
+        "instances": [
+            {
+                "video_id": "3652933102269593-THREE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "ANGRY",
+        "instances": [
+            {
+                "video_id": "1524601169265407-ANGRY",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "MOTHER",
+        "instances": [
+            {
+                "video_id": "513364294341683-MOTHER",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "DRESS",
+        "instances": [
+            {
+                "video_id": "5415500847323069-DRESS",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "BRIDGE",
+        "instances": [
+            {
+                "video_id": "7445051297276415-BRIDGE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "GRANDFATHER",
+        "instances": [
+            {
+                "video_id": "4319655483823037-GRANDFATHER",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CONCEPT",
+        "instances": [
+            {
+                "video_id": "43400541066255105-CONCEPT",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "FAVORITE",
+        "instances": [
+            {
+                "video_id": "4827570199947746-FAVORITE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "LOOKAPPEARANCE",
+        "instances": [
+            {
+                "video_id": "17725043325452972-LOOK APPEARANCE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CITY",
+        "instances": [
+            {
+                "video_id": "30022354763176407-CITY",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "BUTTERFLY",
+        "instances": [
+            {
+                "video_id": "16583006380727028-BUTTERFLY",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "BECAUSE",
+        "instances": [
+            {
+                "video_id": "5409396391126184-BECAUSE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "TRAIN",
+        "instances": [
+            {
+                "video_id": "6093405680855857-TRAIN",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CHOCOLATE",
+        "instances": [
+            {
+                "video_id": "5746905151261044-CHOCOLATE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "BELT",
+        "instances": [
+            {
+                "video_id": "492085987654973-BELT",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SPEAKERS",
+        "instances": [
+            {
+                "video_id": "5630796646758309-SPEAKERS",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CABINET",
+        "instances": [
+            {
+                "video_id": "05280876714047955-CABINET",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "IMPORTANT",
+        "instances": [
+            {
+                "video_id": "35592661539763526-IMPORTANT",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "RAIN",
+        "instances": [
+            {
+                "video_id": "4146368402347771-RAIN",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SAME",
+        "instances": [
+            {
+                "video_id": "8573405466568549-SAME 2",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "WORK",
+        "instances": [
+            {
+                "video_id": "8036096309211829-WORK",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SURPRISE",
+        "instances": [
+            {
+                "video_id": "6328583807305357-SURPRISE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SLOW",
+        "instances": [
+            {
+                "video_id": "43656833300281983-SLOW",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "RECORDING",
+        "instances": [
+            {
+                "video_id": "0025371951792836356-RECORDING",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "FARM",
+        "instances": [
+            {
+                "video_id": "766173296942239-FARM",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "LIPSTICK",
+        "instances": [
+            {
+                "video_id": "8798902230664569-LIPSTICK",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "VIDEOPHONE",
+        "instances": [
+            {
+                "video_id": "17309586344618877-VIDEOPHONE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SEW",
+        "instances": [
+            {
+                "video_id": "38008335512127855-SEW",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "FOUR",
+        "instances": [
+            {
+                "video_id": "2294038067755373-FOUR",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "ALPHABET",
+        "instances": [
+            {
+                "video_id": "15590791007560734-ALPHABET",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "BROTHER",
+        "instances": [
+            {
+                "video_id": "33343477219844675-BROTHER",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "COOKIE",
+        "instances": [
+            {
+                "video_id": "8616693559712005-COOKIE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CIGAR",
+        "instances": [
+            {
+                "video_id": "5916801438569907-CIGAR",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "WORM",
+        "instances": [
+            {
+                "video_id": "6873664503673502-WORM",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "PERSON",
+        "instances": [
+            {
+                "video_id": "9060454743413187-PERSON",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "THINGS",
+        "instances": [
+            {
+                "video_id": "2737456077985816-THINGS",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "HEALTH",
+        "instances": [
+            {
+                "video_id": "26344063219593505-HEALTH",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "THIEF",
+        "instances": [
+            {
+                "video_id": "2507181851294087-THIEF 1",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "TROUBLE",
+        "instances": [
+            {
+                "video_id": "8326889068103933-TROUBLE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "AFTER",
+        "instances": [
+            {
+                "video_id": "7270079827660334-AFTER",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "WEAR",
+        "instances": [
+            {
+                "video_id": "9334432907051793-WEAR",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "PEOPLE",
+        "instances": [
+            {
+                "video_id": "38987494024186353-PEOPLE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "DANCE",
+        "instances": [
+            {
+                "video_id": "6031185500353369-DANCE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "EXPERIENCE",
+        "instances": [
+            {
+                "video_id": "9224914998605525-EXPERIENCE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "TRAVEL",
+        "instances": [
+            {
+                "video_id": "5542150834230197-TRAVEL",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "BASEMENT",
+        "instances": [
+            {
+                "video_id": "2983449836704022-BASEMENT",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "MOVIE",
+        "instances": [
+            {
+                "video_id": "8229673832022837-MOVIE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CALLTTY",
+        "instances": [
+            {
+                "video_id": "14658700756318543-CALL TTY",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CIGARETTE",
+        "instances": [
+            {
+                "video_id": "7832027120827776-CIGARETTE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "AND",
+        "instances": [
+            {
+                "video_id": "5795543609282536-AND",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "EMBARRASS",
+        "instances": [
+            {
+                "video_id": "7079419016789377-EMBARRASS",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CHARACTER",
+        "instances": [
+            {
+                "video_id": "6077814039488578-CHARACTER",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "BORROW",
+        "instances": [
+            {
+                "video_id": "3513991187761709-BORROW",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SERIOUS",
+        "instances": [
+            {
+                "video_id": "259469450377527-SERIOUS",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "FINISH",
+        "instances": [
+            {
+                "video_id": "9292882782041088-FINISH",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "TEXT",
+        "instances": [
+            {
+                "video_id": "04649883532904475-TEXT",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "EAT",
+        "instances": [
+            {
+                "video_id": "7910128481289247-EAT",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "MUSEUM",
+        "instances": [
+            {
+                "video_id": "1225716010928306-MUSEUM",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "FRONT",
+        "instances": [
+            {
+                "video_id": "39334835816233915-FRONT",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "MUCH",
+        "instances": [
+            {
+                "video_id": "42167359021036166-MUCH",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "THIEF",
+        "instances": [
+            {
+                "video_id": "01150649458986952-THIEF 2",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "EXPENSIVE",
+        "instances": [
+            {
+                "video_id": "45300567841454265-EXPENSIVE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "WHATEVER",
+        "instances": [
+            {
+                "video_id": "7069554897804451-WHATEVER",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "ZOOMIN",
+        "instances": [
+            {
+                "video_id": "16791776031830974-ZOOM IN",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "LEAVE",
+        "instances": [
+            {
+                "video_id": "8843513218166801-LEAVE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "FATHER",
+        "instances": [
+            {
+                "video_id": "8291769061447769-FATHER",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "FOR",
+        "instances": [
+            {
+                "video_id": "6657708572395775-FOR",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "LONELY",
+        "instances": [
+            {
+                "video_id": "2259041310701282-LONELY",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "FAMILY",
+        "instances": [
+            {
+                "video_id": "452008504354493-FAMILY",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SORRY",
+        "instances": [
+            {
+                "video_id": "6724466474942836-SORRY",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "UGLY",
+        "instances": [
+            {
+                "video_id": "25098115370677876-UGLY",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "DAY",
+        "instances": [
+            {
+                "video_id": "565670988607345-DAY",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "STAFF",
+        "instances": [
+            {
+                "video_id": "8620738169725579-STAFF",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SCARCELY",
+        "instances": [
+            {
+                "video_id": "36059385950428324-SCARCELY",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SHOW",
+        "instances": [
+            {
+                "video_id": "7661574386097922-SHOW",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "GROW",
+        "instances": [
+            {
+                "video_id": "5941349283407933-GROW",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "AMERICA",
+        "instances": [
+            {
+                "video_id": "563695629405446-AMERICA",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "FOOTBALL",
+        "instances": [
+            {
+                "video_id": "8008447229238296-FOOTBALL",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "TYPE",
+        "instances": [
+            {
+                "video_id": "9957146339735443-TYPE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "DECIDE",
+        "instances": [
+            {
+                "video_id": "11276204524425326-DECIDE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "VOLLEYBALL",
+        "instances": [
+            {
+                "video_id": "6250203412029869-VOLLEYBALL",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SUMMER",
+        "instances": [
+            {
+                "video_id": "5047404639961088-SUMMER",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "TEA",
+        "instances": [
+            {
+                "video_id": "30509059764419244-TEA",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "PIG",
+        "instances": [
+            {
+                "video_id": "0004934454947953526-PIG",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SHOES",
+        "instances": [
+            {
+                "video_id": "4424668281960602-SHOES",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SOCCER",
+        "instances": [
+            {
+                "video_id": "9356320932663813-SOCCER",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "FRIDAY",
+        "instances": [
+            {
+                "video_id": "35343898936871176-FRIDAY",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "STARBUCKS",
+        "instances": [
+            {
+                "video_id": "7953086995783847-STARBUCKS",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "MEAN",
+        "instances": [
+            {
+                "video_id": "8322238943393518-MEAN 1",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "TOURNAMENT",
+        "instances": [
+            {
+                "video_id": "311362518737923-TOURNAMENT",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "FIRE",
+        "instances": [
+            {
+                "video_id": "12133278209760867-FIRE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "WASTE",
+        "instances": [
+            {
+                "video_id": "6573323576095793-WASTE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "WEEK",
+        "instances": [
+            {
+                "video_id": "7290718464963901-WEEK",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "GRAPES",
+        "instances": [
+            {
+                "video_id": "17463372070908045-GRAPES",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SCIENCE",
+        "instances": [
+            {
+                "video_id": "8162763337666421-SCIENCE",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "SPOON",
+        "instances": [
+            {
+                "video_id": "845309414006149-SPOON",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "PERFUME",
+        "instances": [
+            {
+                "video_id": "0015759999269204794-PERFUME",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "PIANO",
+        "instances": [
+            {
+                "video_id": "04141001685043966-PIANO",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "NEXTDOWN",
+        "instances": [
+            {
+                "video_id": "9542209130386732-NEXT DOWN",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "OIL",
+        "instances": [
+            {
+                "video_id": "3521098791077266-OIL 3",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "CURL",
+        "instances": [
+            {
+                "video_id": "5628511186280081-CURL 2",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "PIPE",
+        "instances": [
+            {
+                "video_id": "6292559536243458-PIPE 2",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "KNIGHT",
+        "instances": [
+            {
+                "video_id": "0895294715256767-KNIGHT 5",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "WINDMILL",
+        "instances": [
+            {
+                "video_id": "7780782958725359-WINDMILL 2",
+                "split": "test"
+            }
+        ]
+    },
+    {
+        "gloss": "LICKENVELOPE",
+        "instances": [
+            {
+                "video_id": "7065781147020818-LICK ENVELOPE_2",
+                "split": "test"
+            }
+        ]
+    }
+]
