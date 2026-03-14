@@ -19,7 +19,7 @@ export function useTranslatorSession() {
     let isRunning = false;
     let lastVideoTime = -1;
 
-    const WS_URL = "ws://127.0.0.1:8000/ws";
+    // const WS_URL = "ws://127.0.0.1:8000/ws";
 
     function setDebug(text: string) {
         debugText.value = text;
@@ -195,14 +195,17 @@ export function useTranslatorSession() {
                     if (results?.landmarks?.length) {
                         drawLandmarks(canvasCtx, results, canvasEl.width, canvasEl.height);
 
-                        if (ws && ws.readyState === WebSocket.OPEN) {
-                            ws.send(
-                                JSON.stringify({
-                                type: "mediapipe_landmarks",
-                                payload: results
-                                })
-                            );
-                        }
+                        // if (ws && ws.readyState === WebSocket.OPEN) {
+                        //     ws.send(
+                        //         JSON.stringify({
+                        //         type: "mediapipe_landmarks",
+                        //         payload: results
+                        //         })
+                        //     );
+                        // }
+                        translationText.value = "Hand(s) detected on captured meeting tab";
+                    } else {
+                        translationText.value = "No hands detected on captured meeting tab";
                     }
                 }
             } catch (error) {

@@ -1,4 +1,4 @@
-import { VitePWA } from 'vite-plugin-pwa';
+// import { VitePWA } from 'vite-plugin-pwa';
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import type { PluginOption } from 'vite'
@@ -12,35 +12,35 @@ export default defineConfig({
     vue(),
     mkcert(),
     tailwindcss(),
-    VitePWA({
-      registerType: 'autoUpdate',
-      injectRegister: false,
+    // VitePWA({
+    //   registerType: 'autoUpdate',
+    //   injectRegister: false,
 
-      pwaAssets: {
-        disabled: false,
-        config: true,
-      },
+    //   pwaAssets: {
+    //     disabled: false,
+    //     config: true,
+    //   },
 
-      manifest: {
-        name: 'rtsl-frontend',
-        short_name: 'rtsl-frontend',
-        description: 'Frontend for rtsl, real-time (American) sign language translation',
-        theme_color: '#ffffff',
-      },
+    //   manifest: {
+    //     name: 'rtsl-frontend',
+    //     short_name: 'rtsl-frontend',
+    //     description: 'Frontend for rtsl, real-time (American) sign language translation',
+    //     theme_color: '#ffffff',
+    //   },
 
-      workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
-        cleanupOutdatedCaches: true,
-        clientsClaim: true,
-      },
+    //   workbox: {
+    //     globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
+    //     cleanupOutdatedCaches: true,
+    //     clientsClaim: true,
+    //   },
 
-      devOptions: {
-        enabled: false,
-        navigateFallback: 'index.html',
-        suppressWarnings: true,
-        type: 'module',
-      }
-    }),
+    //   devOptions: {
+    //     enabled: false,
+    //     navigateFallback: 'index.html',
+    //     suppressWarnings: true,
+    //     type: 'module',
+    //   }
+    // }),
   ] as PluginOption[],
   server: {
     host: '0.0.0.0',
@@ -50,5 +50,14 @@ export default defineConfig({
     alias: [
       { find: "@", replacement: path.resolve(__dirname, "./src") }
     ]
+  },
+  build: {
+    rollupOptions: {
+      input: {
+        index: path.resolve(__dirname, 'index.html'),
+        popup: path.resolve(__dirname, 'src/extension/popup.html'),
+        translator: path.resolve(__dirname, 'src/extension/translator.html'),
+      }
+    }
   }
 })

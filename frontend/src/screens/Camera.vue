@@ -19,7 +19,7 @@ let stream: MediaStream | null = null;
 const videoEl = ref<HTMLVideoElement | null>(null);
 const canvasEl = ref<HTMLCanvasElement | null>(null);
 
-const { status, data, send, open, close } = useWebSocket(
+const { send } = useWebSocket(
   "http://127.0.0.1:8000/ws"
 );
 
