@@ -60,3 +60,5 @@ events.out.tfevents.*
 
 # Logs
 landmarks.json
+
+dist/

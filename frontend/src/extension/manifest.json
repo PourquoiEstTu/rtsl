@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "RTSL Meeting Tab Translator",
+  "version": "0.1.0",
+  "description": "Capture the current meeting tab and run sign-language translation in an extension page.",
+  "permissions": [
+    "tabCapture",
+    "tabs",
+    "storage"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1:8000/*",
+    "ws://127.0.0.1:8000/*"
+  ],
+   "background": {
+    "service_worker": "background/service-worker.ts",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "RTSL Translator",
+    "default_popup": "popup.html"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "models/*",
+        "wasm/*"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
