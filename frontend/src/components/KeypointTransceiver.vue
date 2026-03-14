@@ -3,6 +3,8 @@ import { onBeforeUnmount, onMounted, ref } from "vue";
 import {
   FilesetResolver,
   HandLandmarker,
+  PoseLandmarker,
+  PoseLandmarkerResult,
   type HandLandmarkerResult,
 } from "@mediapipe/tasks-vision";
 import { useWebSocket } from "@vueuse/core";
@@ -11,6 +13,7 @@ import { useWebSocket } from "@vueuse/core";
 const isExtension = typeof chrome !== 'undefined' && !!chrome.runtime?.id;
 
 let handLandmarker: HandLandmarker | null = null;
+let poseLandmarker: PoseLandmarker | null = null;
 let animationFrameId: number | null = null;
 let stream: MediaStream | null = null;
 
@@ -19,12 +22,13 @@ const canvasEl = ref<HTMLCanvasElement | null>(null);
 
 // Todo: use env vars for server url
 const { send } = useWebSocket(
-  "http://127.0.0.1:8000/ws"
+  "wss://130.113.255.255/ws"
 );
 
 onBeforeUnmount(() => {
   // Close MediaPipe
   handLandmarker?.close();
+  poseLandmarker?.close();
 
   // Stop camera stream
   if (stream) {
@@ -45,9 +49,16 @@ onMounted(async () => {
       return;
     }
 
-    handLandmarker = await initMediaPipe();
+    const landmarkers = await initMediaPipe();
+    handLandmarker = landmarkers.handLandmarker
+    poseLandmarker = landmarkers.poseLandmarker
+
     if (!handLandmarker) {
       console.error("Failed to initialize Hand Landmarker");
+      return;
+    }
+    if (!poseLandmarker) {
+      console.error("Failed to initialize Pose Landmarker");
       return;
     }
 
@@ -63,11 +74,12 @@ onMounted(async () => {
     videoEl.value.srcObject = stream;
 
     let lastVideoTime = -1;
-    let results: HandLandmarkerResult | undefined = undefined;
+    let handLandmarkerResults: HandLandmarkerResult | undefined = undefined;
+    let poseLandmarkerResults: PoseLandmarkerResult | undefined = undefined;
 
     const predictWebcam = () => {
       try {
-        if (!videoEl.value || !canvasEl.value || !handLandmarker) return;
+        if (!videoEl.value || !canvasEl.value || !handLandmarker || !poseLandmarker) return;
 
         const videoWidth = videoEl.value.videoWidth;
         const videoHeight = videoEl.value.videoHeight;
@@ -79,20 +91,24 @@ onMounted(async () => {
         const startTimeMs = performance.now();
         if (lastVideoTime !== videoEl.value.currentTime) {
           lastVideoTime = videoEl.value.currentTime;
-          results = handLandmarker.detectForVideo(videoEl.value, startTimeMs);
+          handLandmarkerResults = handLandmarker.detectForVideo(videoEl.value, startTimeMs);
+          poseLandmarkerResults = poseLandmarker.detectForVideo(videoEl.value, startTimeMs);
         }
 
         canvasCtx.clearRect(0, 0, canvasEl.value.width, canvasEl.value.height);
 
-        if (results?.landmarks) {
+        // todo sending pose
+        if (handLandmarkerResults?.landmarks && poseLandmarkerResults?.landmarks) {
           drawLandmarks(
             canvasCtx,
-            results,
+            handLandmarkerResults,
+            poseLandmarkerResults,
             canvasEl.value.width,
             canvasEl.value.height
           );
-          // Send results via WebSocket once per frame
-          send(JSON.stringify(results));
+
+          // Combine results and send over websocket
+          send(JSON.stringify({ hand: handLandmarkerResults, pose: poseLandmarkerResults }));
         }
       } catch (error) {
         console.error("Error in prediction loop:", error);
@@ -110,35 +126,44 @@ onMounted(async () => {
   }
 });
 
-// Before we can use HandLandmarker class we must wait for it to finish
-// loading. Machine Learning models can be large and take a moment to
-// get everything needed to run.
+// Takes a moment to get everything needed to run.
 async function initMediaPipe() {
   // Use extension URL if available, otherwise fallback to your current web app path
   const wasmPath = isExtension ? chrome.runtime.getURL("/wasm") : "/wasm";
-  const modelPath = isExtension
+  const modelPath = (landmarkerType: 'hand' | 'pose') => isExtension
     ? chrome.runtime.getURL("/models/hand_landmarker.task")
-    : "/models/hand_landmarker.task";
+    : `/models/${landmarkerType}_landmarker.task`;
 
   const vision = await FilesetResolver.forVisionTasks(wasmPath);
-  return await HandLandmarker.createFromOptions(vision, {
-    baseOptions: {
-      modelAssetPath: modelPath,
-      delegate: "GPU",
-    },
-    runningMode: "VIDEO",
-    numHands: 2,
-  });
+
+  return {
+    handLandmarker: await HandLandmarker.createFromOptions(vision, {
+      baseOptions: {
+        modelAssetPath: modelPath('hand'),
+        delegate: "GPU",
+      },
+      runningMode: "VIDEO",
+      numHands: 2,
+    }),
+    poseLandmarker: await PoseLandmarker.createFromOptions(vision, {
+      baseOptions: {
+        modelAssetPath: modelPath('pose'),
+        delegate: "GPU",
+      },
+      runningMode: "VIDEO",
+    })
+  };
 }
 
 
 function drawLandmarks(
   ctx: CanvasRenderingContext2D,
-  results: HandLandmarkerResult,
+  handLandmarkerResults: HandLandmarkerResult,
+  poseLandmarkerResults: PoseLandmarkerResult,
   W: number,
   H: number
 ) {
-  for (const landmarks of results.landmarks) {
+  for (const landmarks of handLandmarkerResults.landmarks) {
     // Draw all 21 landmarks as circles
     for (const landmark of landmarks) {
       const x = landmark.x * W;
@@ -153,6 +178,35 @@ function drawLandmarks(
     // Draw connections between landmarks
     const connections = HandLandmarker.HAND_CONNECTIONS;
     ctx.strokeStyle = "#FFFF00";
+    ctx.lineWidth = 2;
+
+    for (const conn of connections) {
+      const start = landmarks[conn.start];
+      const end = landmarks[conn.end];
+      if (!start || !end) continue;
+
+      ctx.beginPath();
+      ctx.moveTo(start.x * W, start.y * H);
+      ctx.lineTo(end.x * W, end.y * H);
+      ctx.stroke();
+    }
+  }
+
+  for (const landmarks of poseLandmarkerResults.landmarks) {
+    // Draw all 21 landmarks as circles
+    for (const landmark of landmarks) {
+      const x = landmark.x * W;
+      const y = landmark.y * H;
+
+      ctx.beginPath();
+      ctx.arc(x, y, 5, 0, 2 * Math.PI);
+      ctx.fillStyle = "#007FFF";
+      ctx.fill();
+    }
+
+    // Draw connections between landmarks
+    const connections = PoseLandmarker.POSE_CONNECTIONS;
+    ctx.strokeStyle = "#007FFF";
     ctx.lineWidth = 2;
 
     for (const conn of connections) {
