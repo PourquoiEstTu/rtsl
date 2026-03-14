@@ -72,7 +72,6 @@ main {
   display: flex; /* flex */
   align-items: center; /* items-center */
   justify-content: center; /* justify-center */
-  padding: 1.5rem; /* p-6 */
   margin-left: 220px;
 }
 

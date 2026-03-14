@@ -16,6 +16,7 @@ rtsl/
 .idea/
 .vscode/
 node_modules/
+dist/
 
 # C++ build
 bindings/build/
