@@ -22,7 +22,7 @@ const canvasEl = ref<HTMLCanvasElement | null>(null);
 
 // Todo: use env vars for server url
 const { send } = useWebSocket(
-  "wss://130.113.255.255/ws"
+  "wss://130.113.70.18:8000/ws"
 );
 
 onBeforeUnmount(() => {
@@ -68,10 +68,28 @@ onMounted(async () => {
       return;
     }
 
-    stream = isExtension
-      ? await navigator.mediaDevices.getDisplayMedia({ video: true })                        // If its an extension, use screen capture
-      : await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }); // Otherwise (app), use camera
+    // stream = isExtension
+    //   ? await navigator.mediaDevices.getDisplayMedia({ video: true })                        // If its an extension, use screen capture
+    //   : await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }); // Otherwise (app), use camera
+    // videoEl.value.srcObject = stream;
+
+    console.log("isExtension =", isExtension);
+
+    if (isExtension) {
+      console.log("About to call getDisplayMedia");
+      stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+      console.log("getDisplayMedia success", stream);
+    } else {
+      console.log("About to call getUserMedia");
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "environment" }
+      });
+      console.log("getUserMedia success", stream);
+    }
+
     videoEl.value.srcObject = stream;
+    console.log("Assigned stream to video", videoEl.value.srcObject);
+
 
     let lastVideoTime = -1;
     let handLandmarkerResults: HandLandmarkerResult | undefined = undefined;
@@ -109,6 +127,7 @@ onMounted(async () => {
 
           // Combine results and send over websocket
           send(JSON.stringify({ hand: handLandmarkerResults, pose: poseLandmarkerResults }));
+          console.log("Sent landmarks over WebSocket", { handLandmarkerResults, poseLandmarkerResults });
         }
       } catch (error) {
         console.error("Error in prediction loop:", error);
@@ -131,7 +150,7 @@ async function initMediaPipe() {
   // Use extension URL if available, otherwise fallback to your current web app path
   const wasmPath = isExtension ? chrome.runtime.getURL("/wasm") : "/wasm";
   const modelPath = (landmarkerType: 'hand' | 'pose') => isExtension
-    ? chrome.runtime.getURL("/models/hand_landmarker.task")
+    ? chrome.runtime.getURL(`/models/${landmarkerType}_landmarker.task`)
     : `/models/${landmarkerType}_landmarker.task`;
 
   const vision = await FilesetResolver.forVisionTasks(wasmPath);
