@@ -7,6 +7,11 @@ const started = ref(false);
 function startCapture() {
   started.value = true;
 }
+
+function stopCapture() {
+  started.value = false;
+}
+
 </script>
 
 <template>
@@ -26,9 +31,23 @@ function startCapture() {
         </div>
       </div>
 
-      <button v-if="!started" class="start-btn" @click="startCapture">
-        Start Capture
-      </button>
+      <div class="actions">
+        <button
+          v-if="!started"
+          class="start-btn"
+          @click="startCapture"
+        >
+          Start Capture
+        </button>
+
+        <button
+          v-else
+          class="stop-btn"
+          @click="stopCapture"
+        >
+          Stop Capture
+        </button>
+      </div>
 
       <div v-if="started" class="hidden-capture">
         <KeypointTransceiver />
@@ -120,14 +139,24 @@ function startCapture() {
   pointer-events: none;
 }
 
-.start-btn {
+.start-btn,
+.stop-btn {
   border: none;
   border-radius: 14px;
   padding: 10px 14px;
-  background: #274690;
-  color: white;
   font-size: 0.85rem;
   font-weight: 700;
   cursor: pointer;
+  flex-shrink: 0;
+}
+
+.start-btn {
+  background: #274690;
+  color: white;
+}
+
+.stop-btn {
+  background: #dc2626;
+  color: white;
 }
 </style>
