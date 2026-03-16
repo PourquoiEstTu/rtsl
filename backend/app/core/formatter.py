@@ -10,7 +10,7 @@ def mid_xyc(keypoint1, keypoint2):
     x2, y2, c2 = get_xyc(keypoint2)
     return (x1 + x2) / 2.0, (y1 + y2) / 2.0, (c1 + c2) / 2.0
 
-def convert_format(pose_keypoints, multi_hand_keypoints, hand_handedness):
+def convert_format_to_55(pose_keypoints, multi_hand_keypoints, hand_handedness):
     # -------------------------------------------------------
     # BODY KEYPOINTS — matches OpenPose BODY_25 format
     # -------------------------------------------------------
@@ -99,3 +99,26 @@ def convert_format(pose_keypoints, multi_hand_keypoints, hand_handedness):
     flat_right_hand_keypoints = [v for trip in right_hand for v in trip]
     
     return flat_pose_keypoints, flat_left_hand_keypoints, flat_right_hand_keypoints
+
+
+def normalize_x_y_data(data):
+    num_landmarks = len(data) // 3 if len(data) >= 3 else 0
+    x_list = []
+    y_list = []
+    
+    for j in range(num_landmarks):
+        # Skip excluded body keypoints (indices 0-24 are body) 67 - 12 = 55
+        if j < 25 and j in {9, 10, 11, 22, 23, 24, 12, 13, 14, 19, 20, 21}:
+            continue
+        
+        xi = data[j*3 + 0] if j*3 + 0 < len(data) else 0.0
+        yi = data[j*3 + 1] if j*3 + 1 < len(data) else 0.0
+        
+        # Normalize to [-1, 1] range: 2 * ((x / 256) - 0.5)
+        x_norm = 2.0 * ((float(xi) / 256.0) - 0.5)
+        y_norm = 2.0 * ((float(yi) / 256.0) - 0.5)
+        
+        x_list.append(x_norm)
+        y_list.append(y_norm)
+    
+    return x_list, y_list
