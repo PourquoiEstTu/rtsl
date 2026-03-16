@@ -1,6 +1,7 @@
 from fastapi import FastAPI, WebSocket
 import json
 import numpy as np
+import torch
 
 # import from local files
 from core.loader import get_model, get_labels
