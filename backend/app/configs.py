@@ -13,6 +13,8 @@ class Config:
         self.log_interval = int(train_config['LOG_INTERVAL'])
         self.num_samples = int(train_config['NUM_SAMPLES'])
         self.drop_p = float(train_config['DROP_P'])
+        self.patience = int(config['TRAIN']['PATIENCE'])
+        self.min_delta = float(config['TRAIN']['MIN_DELTA'])
 
         # optimizer
         opt_config = config['OPTIMIZER']

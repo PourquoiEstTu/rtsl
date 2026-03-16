@@ -5,6 +5,8 @@ import torch
 import torch.nn.functional as F
 from sklearn.metrics import accuracy_score
 
+import warnings
+warnings.filterwarnings('ignore', category=UserWarning)
 
 def train(log_interval, model, train_loader, optimizer, epoch):
     # set model as training mode

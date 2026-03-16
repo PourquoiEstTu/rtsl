@@ -176,7 +176,7 @@ class Sign_Dataset(Dataset):
                 if instance['split'] not in split:
                     continue
 
-                frame_end = instance['frame_end']
+                # frame_end = instance['frame_end']
                 # frame_start = instance['frame_start']
                 video_id = instance['video_id']
 

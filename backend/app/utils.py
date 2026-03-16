@@ -122,10 +122,10 @@ def gather_last(batch_hidden_states, in_lengths):
 
 def plot_curves(A=None, B=None, C=None, D=None):
     if not A:
-        A = np.load('output/epoch_training_losses.npy')
-        B = np.load('output/epoch_training_scores.npy')
-        C = np.load('output/epoch_test_loss.npy')
-        D = np.load('output/epoch_test_score.npy')
+        A = np.load('outputs/epoch_training_losses.npy')
+        B = np.load('outputs/epoch_training_scores.npy')
+        C = np.load('outputs/epoch_test_loss.npy')
+        D = np.load('outputs/epoch_test_score.npy')
 
     epochs = A.shape[0]
     # plot
@@ -147,7 +147,7 @@ def plot_curves(A=None, B=None, C=None, D=None):
     plt.xlabel('epochs')
     plt.ylabel('accuracy')
     plt.legend(['train', 'test'], loc="upper left")
-    title = "output/curves.png"
+    title = "outputs/curves.png"
     plt.savefig(title, dpi=600)
     # plt.close(fig)
     # plt.show()
