@@ -11,7 +11,7 @@ from utils.motion_analyzer import movement_score, update_ema
 
 DIR = "/home/sharmg36"
 NUM_CLASSES = 300
-MOVEMENT_THRESHOLD = 1.2
+MOVEMENT_THRESHOLD = 0.8
 WINDOW_SIZE = 50
 INPUT_SIZE = 55
 PAUSE_THRESHOLD = 20 # number of frames
@@ -19,7 +19,9 @@ PAUSE_THRESHOLD = 20 # number of frames
 app = FastAPI()
 
 # TODO: delete this once gloss_to_sentence is finished
-def add_to_sequence(gloss_counter, gloss_arr, last_pred, word):        
+def add_to_sequence(gloss_counter, gloss_arr, last_pred, word):  
+    print(gloss_counter)
+    
     if (last_pred == word):
         gloss_counter += 1
     else:
@@ -27,6 +29,8 @@ def add_to_sequence(gloss_counter, gloss_arr, last_pred, word):
         
     if (gloss_counter > 3 and gloss_arr[-1] != word):            
         gloss_arr.append(word)
+    
+    return gloss_counter
 
 
 @app.get("/")
@@ -49,6 +53,7 @@ async def websocket_endpoint(websocket: WebSocket):
     
     await websocket.accept()
     while True:
+        # print(gloss_sequence)
         received = await websocket.receive_json()
         
         pose_landmarks = []
@@ -111,12 +116,12 @@ async def websocket_endpoint(websocket: WebSocket):
             if np.sum(left) + np.sum(right) != 0:
                 current_pred = predict(model, labels, torch.from_numpy(input_data))
                 # print(current_pred)
-                add_to_sequence(gloss_counter, gloss_sequence, last_pred, current_pred)
+                gloss_counter = add_to_sequence(gloss_counter, gloss_sequence, last_pred, current_pred)
                 last_pred = current_pred
         else:
             pause_counter += 1
             if (pause_counter == PAUSE_THRESHOLD):
-                add_to_sequence(gloss_counter, gloss_sequence, last_pred, ".")
+                gloss_counter = add_to_sequence(gloss_counter, gloss_sequence, last_pred, ".")
                 last_pred = "."
                 pause_counter = 0
                 #TODO call gloss to sentence stuff
