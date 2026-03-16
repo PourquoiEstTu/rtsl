@@ -5,8 +5,12 @@ const status = ref("Ready");
 const logo = "/logo_cut.png";
 async function openTranslator() {
   try {
-    await chrome.tabs.create({
-      url: chrome.runtime.getURL("src/extension/translator.html")
+    await chrome.windows.create({
+      url: chrome.runtime.getURL("src/extension/translator.html"),
+      type: "popup",
+      width: 900,
+      height: 400,
+      focused: true
     });
     status.value = "Translator opened.";
   } catch (error) {
@@ -32,9 +36,9 @@ async function openTranslator() {
         Select your meeting tab when the share prompt appears.
       </div>
 
-      <div class="status-pill">
+      <!-- <div class="status-pill">
         {{ status }}
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
