@@ -141,9 +141,9 @@ class Sign_Dataset(Dataset):
         return len(self.data)
 
     def __getitem__(self, index):
-        video_id, gloss_cat, frame_start, frame_end = self.data[index]
+        video_id, gloss_cat = self.data[index]
         # frames of dimensions (T, H, W, C)
-        x = self._load_poses(video_id, frame_start, frame_end, self.sample_strategy, self.num_samples)
+        x = self._load_poses(video_id, self.num_samples)
 
         if self.video_transforms:
             x = self.video_transforms(x)
@@ -177,19 +177,23 @@ class Sign_Dataset(Dataset):
                     continue
 
                 frame_end = instance['frame_end']
-                frame_start = instance['frame_start']
+                # frame_start = instance['frame_start']
                 video_id = instance['video_id']
 
-                instance_entry = video_id, gloss_cat, frame_start, frame_end
+                instance_entry = video_id, gloss_cat
                 self.data.append(instance_entry)
 
-    def _load_poses(self, video_id, frame_start, frame_end, sample_strategy, num_samples):
+    def _load_poses(self, video_id, num_samples):
         """ Load frames of a video. 
         try to just load the entire pt file and return the tensor?
         """
         pt_path = os.path.join(self.pose_root, f"{video_id}.pt")
         
-        data = torch.load(pt_path, weights_only=False)
+        try :
+            data = torch.load(pt_path, weights_only=False)
+        except :
+            print("File doesn't exist... returning zero tensor")
+            return torch.zeros(55, num_samples*2)
         
         if isinstance(data, np.ndarray):
             tensor = torch.from_numpy(data).squeeze(0)  # [55, num_samples*2]

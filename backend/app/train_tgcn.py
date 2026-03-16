@@ -1,5 +1,6 @@
 import logging
 import os
+from sys import exit
 
 import numpy as np
 import torch
@@ -99,12 +100,13 @@ def run(split_file, pose_data_root, configs, save_model_to=None):
             best_test_acc = val_score[0]
             best_epoch_num = epoch
 
-            torch.save(model.state_dict(), os.path.join('outputs', subset, 'gcn_epoch={}_val_acc={}.pth'.format(
-                best_epoch_num, best_test_acc)))
+            torch.save(model.state_dict(), f"splits/{subset.replace('asl','')}/{best_epoch_num}_{best_test_acc}.pth")
+            # print("Saved model!")
+            # exit(0)
 
     # why below error???
 
-    # utils.plot_curves()
+    utils.plot_curves()
 
     class_names = train_dataset.label_encoder.classes_
     # utils.plot_confusion_matrix(train_gts, train_preds, classes=class_names, normalize=False,
@@ -113,18 +115,19 @@ def run(split_file, pose_data_root, configs, save_model_to=None):
 
 
 if __name__ == "__main__":
-    root = '/u50/chandd9/capstone/rtsl/backend/app/' # My path of the project root directory
+    root = '/u50/quyumr/rtsl/backend/app/' # My path of the project root directory
 
     subset = 'asl100' # using asl100 subset first.
 
     split_file = os.path.join(root, 'splits/{}.json'.format(subset))
-    pose_data_root = "/u50/chandd9/downloads/tgcn_data"
-    config_file = os.path.join(root, 'config.ini')
+    pose_data_root = "/u50/quyumr/archive/asl-live-tl-features"
+    config_file = os.path.join(root, 'splits/100/asl100.ini')
     configs = Config(config_file)
 
+    # print('outputs/{}.log'.format(os.path.basename(config_file)[:-4]))
     logging.basicConfig(filename='outputs/{}.log'.format(os.path.basename(config_file)[:-4]), level=logging.DEBUG, filemode='w+')
 
     logging.info('Calling main.run()')
     run(split_file=split_file, configs=configs, pose_data_root=pose_data_root)
     logging.info('Finished main.run()')
-    # utils.plot_curves()
+    utils.plot_curves()
