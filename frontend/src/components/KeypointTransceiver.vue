@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 import {
   FilesetResolver,
   HandLandmarker,
@@ -8,6 +8,8 @@ import {
   type HandLandmarkerResult,
 } from "@mediapipe/tasks-vision";
 import { useWebSocket } from "@vueuse/core";
+
+const emit = defineEmits(['newSentence']);
 
 // Check if we are running inside a Chrome Extension
 const isExtension = typeof chrome !== 'undefined' && !!chrome.runtime?.id;
@@ -20,10 +22,16 @@ let stream: MediaStream | null = null;
 const videoEl = ref<HTMLVideoElement | null>(null);
 const canvasEl = ref<HTMLCanvasElement | null>(null);
 
-// Todo: use env vars for server url
-const { send } = useWebSocket(
-  "wss://130.113.255.255/ws"
+const { data, send } = useWebSocket(
+  "wss://rtsl.cas.mcmaster.com:8000/ws"
 );
+
+watch(data, (newData: { word: string, sentence: string }) => {
+  // todo: remove temp log
+  console.log(newData.word);
+
+  emit('newSentence', newData.sentence);
+});
 
 onBeforeUnmount(() => {
   // Close MediaPipe

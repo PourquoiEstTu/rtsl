@@ -17,46 +17,26 @@ function updateWidth() {
   screenWidth.value = window.innerWidth;
 }
 
+// Define what counts as desktop/laptop
+const isDesktop = computed(() => screenWidth.value >= 1024);
+
 onMounted(() => {
   window.addEventListener("resize", updateWidth);
 });
 onUnmounted(() => {
   window.removeEventListener("resize", updateWidth);
 });
-// Define what counts as desktop/laptop
-const isDesktop = computed(() => screenWidth.value >= 1024);
 
-// Todo: assign string returned from backend to this var
-const lastTranslation = ref<string>("Waiting for sign input...");
-// These are temparary for demo
-const exmapleTranslations = [
-  'Idk brochacho ✌️😭',
-  'Long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long sentence from a yapper',
-  'Test 1',
-  'Test 2',
-  'Test 3',
-  'Test 4',
-  'Test 5',
-  'Test 6',
-  'Test 7',
-  'Lol 6 7',
-];
-
+const translatedSentence = ref<string>("Waiting for sign input...");
 const translationHistory = ref<string[]>([]);
 
-watch(lastTranslation, () => {
-  translationHistory.value.push(lastTranslation.value)
-})
-
-function* exampleTranslation() {
-  while (true) {
-    for (const translation of exmapleTranslations) {
-      yield translation;
-    }
-  }
+function onNewSentence(sentence: string) {
+  translatedSentence.value = sentence
 }
 
-const genExampleTranslation = exampleTranslation();
+watch(translatedSentence, () => {
+  translationHistory.value.push(translatedSentence.value)
+})
 
 </script>
 
@@ -77,17 +57,16 @@ const genExampleTranslation = exampleTranslation();
     <main>
       <div class="outer-container lg:p-2!">
         <div class="camera-panel lg:rounded-t-4xl">
-          <KeypointTransceiver />
+          <KeypointTransceiver @new-sentence="onNewSentence" />
           <div class="background-gradient"></div>
           <ChatHistoryButton :translations="translationHistory" />
           <PhoneSidebarButton v-if="!isDesktop" />
 
           <div class="button-container">
-            <Button class="button border-5! rounded-full!"
-              @click="lastTranslation = genExampleTranslation.next().value as string" />
+            <Button class="button border-5! rounded-full!" />
           </div>
         </div>
-        <TranslationBox class="translation-box" :translation="lastTranslation" />
+        <TranslationBox class="translation-box" :translation="translatedSentence" />
       </div>
     </main>
   </div>
