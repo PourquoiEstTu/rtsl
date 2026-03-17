@@ -22,7 +22,7 @@ const canvasEl = ref<HTMLCanvasElement | null>(null);
 
 // Todo: use env vars for server url
 const { send } = useWebSocket(
-  "wss://130.113.70.18:8000/ws"
+  "wss://rtsl.cas.mcmaster.ca:8000/ws"
 );
 
 onBeforeUnmount(() => {
