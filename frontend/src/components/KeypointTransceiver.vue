@@ -12,12 +12,13 @@ const { data, send } = useWebSocket("wss://rtsl.cas.mcmaster.ca:8000/ws");
 
 const emit = defineEmits(["newSentence"]);
 
-watch(data, (newData: { word: string; sentence: string }) => {
-  // todo: remove temp log
-  console.log(newData.word);
-  console.log(newData);
+watch(data, (received: string) => {
+  if (!received) return;
 
-  emit("newSentence", newData.sentence);
+  const newData: { word: string; sentence: string } = JSON.parse(received);
+  console.log("Received:", newData.word); // todo: remove temp log
+
+  if (newData.sentence) emit("newSentence", newData.sentence);
 });
 
 // Check if we are running inside a Chrome Extension

@@ -31,15 +31,13 @@ const translatedSentence = ref<string>("Waiting for sign input...");
 const translationHistory = ref<string[]>([]);
 
 function onNewSentence(sentence: string) {
-  translatedSentence.value = sentence
+  translatedSentence.value = sentence;
 }
 
 watch(translatedSentence, () => {
-  translationHistory.value.push(translatedSentence.value)
-})
-
+  translationHistory.value.push(translatedSentence.value);
+});
 </script>
-
 
 <template>
   <div>
