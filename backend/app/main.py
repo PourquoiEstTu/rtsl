@@ -7,6 +7,7 @@ import torch
 from core.loader import get_model, get_labels
 from core.formatter import convert_format_to_55, normalize_x_y_data
 from core.predictor import predict
+from core.gloss_to_sentence import Gloss_to_Sentence_Model
 from utils.motion_analyzer import movement_score, update_ema 
 
 DIR = "/home/sharmg36"
@@ -42,6 +43,7 @@ async def root():
 async def websocket_endpoint(websocket: WebSocket):
     model = get_model(DIR, NUM_CLASSES)
     labels = get_labels(DIR, NUM_CLASSES)
+    gloss_to_sentence = Gloss_to_Sentence_Model()
     
     processed = []
     ema_score = None
@@ -53,7 +55,7 @@ async def websocket_endpoint(websocket: WebSocket):
     
     await websocket.accept()
     while True:
-        # print(gloss_sequence)
+        print(gloss_sequence)
         received = await websocket.receive_json()
         
         pose_landmarks = []
@@ -115,7 +117,7 @@ async def websocket_endpoint(websocket: WebSocket):
             # only print if hands in frame     
             if np.sum(left) + np.sum(right) != 0:
                 current_pred = predict(model, labels, torch.from_numpy(input_data))
-                # print(current_pred)
+                await websocket.send_json({"word" : current_pred, "sentence" : ""})
                 gloss_counter = add_to_sequence(gloss_counter, gloss_sequence, last_pred, current_pred)
                 last_pred = current_pred
         else:
@@ -124,4 +126,4 @@ async def websocket_endpoint(websocket: WebSocket):
                 gloss_counter = add_to_sequence(gloss_counter, gloss_sequence, last_pred, ".")
                 last_pred = "."
                 pause_counter = 0
-                #TODO call gloss to sentence stuff
+                await websocket.send_json({"word" : "", "sentence" : gloss_to_sentence.run_inference(" ".join(gloss_sequence))})

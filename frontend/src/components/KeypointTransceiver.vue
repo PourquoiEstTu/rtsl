@@ -23,12 +23,13 @@ const videoEl = ref<HTMLVideoElement | null>(null);
 const canvasEl = ref<HTMLCanvasElement | null>(null);
 
 const { data, send } = useWebSocket(
-  "wss://rtsl.cas.mcmaster.com:8000/ws"
+  "wss://rtsl.cas.mcmaster.ca:8000/ws"
 );
 
 watch(data, (newData: { word: string, sentence: string }) => {
   // todo: remove temp log
   console.log(newData.word);
+  console.log(newData)
 
   emit('newSentence', newData.sentence);
 });
