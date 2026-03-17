@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@mediapipe/tasks-vision": "^0.10.21", 
+    "@mediapipe/tasks-vision": "^0.10.21",
     "@tailwindcss/vite": "^4.1.17",
     "@types/node": "^24.10.0",
     "@vueuse/core": "^14.2.1",
