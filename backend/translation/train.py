@@ -1,3 +1,6 @@
+# IMPORTANT
+# This file is for experimenting with training T5/BART models on ASL gloss → English translation.
+# It is not used in the main application and may contain experimental code.
 import sys
 import os
 import logging
@@ -236,23 +239,11 @@ def main():
     logger.info("=" * 60)
 
     sample_glosses = [
-        "HELLO MY NAME J-O-H-N",
-        "NICE MEET YOU",
-        "HOW YOU",
-        "I FINE",
-        "YOUR NAME WHAT",
-        "WHERE YOU LIVE",
-        "I HUNGRY",
-        "I THIRSTY WANT WATER",
-        "TOMORROW STORE I GO",
-        "YESTERDAY SCHOOL I GO",
-        "LAST-WEEK MOVIE I WATCH",
-        "PAST NIGHT I SLEEP EARLY",
-        "COFFEE I DRINK WANT",
-        "MUSIC I LISTEN ENJOY",
-        "IF RAIN TOMORROW GAME CANCEL",
-        "TEACHER SAY TEST DIFFICULT BUT I STUDY HARD",
-        "AFTER EAT DINNER I WATCH TV",
+        "MONEY NOT HAVE BUY FOOD CANNOT",
+        "CAR BREAK DOWN I LATE WORK",
+        "CHILD SMALL I HOUSE LIVE HAPPY",
+        "YOU THINK WE WAIT BETTER",
+        "WORK FINISH I HOME GO COOK EAT"
     ]
 
     for gloss in sample_glosses:
