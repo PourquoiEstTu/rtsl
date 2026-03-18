@@ -451,7 +451,7 @@ def create_pose_npy2(video_dir, output_dir, split_file=None):
         except Exception as e:
             print(f"Failed on {file.name}: {e}")
             continue
-# create_pose_npy2("/u50/chandd9/downloads/ASL_Citizen/videos", "/u50/chandd9/downloads/asl_cit_npy", split_file="/u50/chandd9/capstone/rtsl/backend/app/asl_citizen/asl_citizens100.json")
+# create_pose_npy2("/u50/chandd9/downloads/ASL_Citizen/videos", "/u50/chandd9/downloads/asl_cit_all_pt")
 
 # checkpoint_path = "/home/pourquoi/repos/rtsl/backend/app/checkpoints/asl1000/pytorch_model.bin"
 # config_path =     "/home/pourquoi/repos/rtsl/backend/app/checkpoints/asl1000/config.ini"

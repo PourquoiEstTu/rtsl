@@ -113,12 +113,14 @@ def read_pose_file(filepath):
 
 class Sign_Dataset(Dataset):
     def __init__(self, index_file_path, split, pose_root, sample_strategy='rnd_start', num_samples=25, num_copies=4,
-                 img_transforms=None, video_transforms=None, test_index_file=None):
+                 img_transforms=None, video_transforms=None, test_index_file=None, labels_to_include=None, augment=False):
         assert os.path.exists(index_file_path), "Non-existent indexing file path: {}.".format(index_file_path)
         assert os.path.exists(pose_root), "Path to poses does not exist: {}.".format(pose_root)
 
         self.data = []
+        self.augment = augment
         self.label_encoder, self.onehot_encoder = LabelEncoder(), OneHotEncoder(categories='auto')
+        self.labels_to_include = {l.upper() for l in labels_to_include} if labels_to_include else None
 
         if type(split) == 'str':
             split = [split]
@@ -136,13 +138,13 @@ class Sign_Dataset(Dataset):
         self.video_transforms = video_transforms
 
         self.num_copies = num_copies
+        
 
     def __len__(self):
         return len(self.data)
 
     def __getitem__(self, index):
         video_id, gloss_cat = self.data[index]
-        # frames of dimensions (T, H, W, C)
         x = self._load_poses(video_id, self.num_samples)
 
         if self.video_transforms:
@@ -156,8 +158,15 @@ class Sign_Dataset(Dataset):
         with open(index_file_path, 'r') as f:
             content = json.load(f)
 
+        if self.labels_to_include != None:
+            content = [e for e in content if e['gloss'].upper() in self.labels_to_include]
+            if not content:
+                raise ValueError(f"None of the labels {self.labels_to_include} found in split file.")
+
         # create label encoder
         glosses = sorted([gloss_entry['gloss'] for gloss_entry in content])
+        self.label_encoder.fit(glosses)
+        self.onehot_encoder.fit(self.label_encoder.transform(self.label_encoder.classes_).reshape(-1, 1))
 
         self.label_encoder.fit(glosses)
         self.onehot_encoder.fit(self.label_encoder.transform(self.label_encoder.classes_).reshape(-1, 1))
