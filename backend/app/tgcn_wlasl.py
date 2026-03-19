@@ -223,6 +223,92 @@ def _setup_model(onnx_path):
         pretrained_model = None
     return pretrained_model, NUM_SAMPLES
 
+def _preprocess_keypoints_interpolate(frames_data):
+    # same preprocess func but with interpolation 
+    body_pose_exclude = {9, 10, 11, 22, 23, 24, 12, 13, 14, 19, 20, 21}
+    processed = []
+    
+    for frame_idx, frame_data in enumerate(frames_data):
+        people = frame_data.get('people', [])
+        if not people:
+            processed.append(np.zeros((NUM_NODES, 2), dtype=np.float32))
+            continue
+        
+        p = people[0]
+        body  = p.get('pose_keypoints_2d', [])
+        left  = p.get('hand_left_keypoints_2d', [])
+        right = p.get('hand_right_keypoints_2d', [])
+        
+        combined = list(body) + list(left) + list(right)
+        num_landmarks = len(combined) // 3 if len(combined) >= 3 else 0
+        x_list = []
+        y_list = []
+        
+        for j in range(num_landmarks):
+            if j < 25 and j in body_pose_exclude:
+                continue
+            
+            xi = combined[j*3 + 0] if j*3 + 0 < len(combined) else 0.0
+            yi = combined[j*3 + 1] if j*3 + 1 < len(combined) else 0.0
+            
+            x_norm = 2.0 * ((float(xi) / 256.0) - 0.5)
+            y_norm = 2.0 * ((float(yi) / 256.0) - 0.5)
+            
+            x_list.append(x_norm)
+            y_list.append(y_norm)
+        
+        while len(x_list) < NUM_NODES:
+            x_list.append(0.0)
+            y_list.append(0.0)
+        x_list = x_list[:NUM_NODES]
+        y_list = y_list[:NUM_NODES]
+        
+        xy_frame = np.stack([np.array(x_list), np.array(y_list)], axis=1).astype(np.float32)
+        processed.append(xy_frame)
+    
+    T = len(processed)
+    processed_array = np.stack(processed, axis=0)  # [T, 55, 2]
+
+    # if T < NUM_SAMPLES:
+    #     # interpolate short videos up to NUM_SAMPLES
+    #     old_indices = np.linspace(0, T - 1, T)
+    #     new_indices = np.linspace(0, T - 1, NUM_SAMPLES)
+
+    #     interpolated = np.zeros((NUM_SAMPLES, NUM_NODES, 2), dtype=np.float32)
+    #     for node in range(NUM_NODES):
+    #         for coord in range(2):
+    #             interpolated[:, node, coord] = np.interp(
+    #                 new_indices, old_indices, processed_array[:, node, coord]
+    #             )
+    #     processed_array = interpolated
+
+    # elif T > NUM_SAMPLES:
+    #     # uniformly sample long videos down to NUM_SAMPLES
+    #     indices = np.linspace(0, T - 1, NUM_SAMPLES).astype(int)
+    #     processed_array = processed_array[indices]
+
+    # interpolate regardless
+    old_indices = np.linspace(0, T - 1, T)
+    new_indices = np.linspace(0, T - 1, NUM_SAMPLES)
+    interpolated = np.zeros((NUM_SAMPLES, NUM_NODES, 2), dtype=np.float32)
+    for node in range(NUM_NODES):
+        for coord in range(2):
+            interpolated[:, node, coord] = np.interp(new_indices, old_indices, processed_array[:, node, coord])
+    processed_array = interpolated
+
+    # reshape to model input format: (1, num_nodes, feature_len)
+    feature_len = NUM_SAMPLES * 2
+    input_data  = np.zeros((1, NUM_NODES, feature_len), dtype=np.float32)
+
+    for node_idx in range(NUM_NODES):
+        for t in range(NUM_SAMPLES):
+            input_data[0, node_idx, t*2 + 0] = processed_array[t, node_idx, 0]
+            input_data[0, node_idx, t*2 + 1] = processed_array[t, node_idx, 1]
+
+    return input_data
+
+
+
 # dhruv test run of pose extractor and setupmodel
 def test_run():
     idx_to_class, class_to_idx = generate_class_integer_mappings("/u50/chandd9/capstone/rtsl/backend/app/splits/100", mappings_exist=False, json_path="/u50/chandd9/capstone/rtsl/backend/app/splits/asl100.json")
@@ -304,7 +390,7 @@ def process_all_vids(video_dir, output_dir, split_file=None):
             out_path = f"{output_dir}/{video_id}.pt"
             if not os.path.isfile(out_path):
                 frames_data = extractor.extract_from_video(f"{video_dir}/{file.name}")
-                keypoints = _preprocess_keypoints(frames_data)
+                keypoints = _preprocess_keypoints_interpolate(frames_data)
                 torch.save(keypoints, out_path)
                 print(f"Video {file.name} processed and saved.")
             else:
@@ -313,7 +399,7 @@ def process_all_vids(video_dir, output_dir, split_file=None):
             print(f"Preprocessing on video {file.name} failed... Skipping.")
             continue
 # process_all_vids("/u50/quyumr/archive/videos", "/u50/quyumr/archive/asl-live-tl-features") 
-# process_all_vids2("/u50/chandd9/downloads/ASL_Citizen/videos", "/u50/chandd9/downloads/asl_cit_pt", split_file="/u50/chandd9/capstone/rtsl/backend/app/asl_citizen/asl_citizens100.json")
+# process_all_vids("/u50/chandd9/downloads/ASL_Citizen/videos", "/u50/chandd9/downloads/asl_cit_pt_inter_all", split_file="/u50/chandd9/capstone/rtsl/backend/app/asl_citizen/asl_citizens100.json")
 
 # 
 def create_pose_npy(video_dir, output_dir):

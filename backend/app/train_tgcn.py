@@ -17,6 +17,7 @@ from train_utils import train, validation
 
 import itertools
 from copy import deepcopy
+import matplotlib.pyplot as plt
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 # os.environ['CUDA_VISIBLE_DEVICES'] = '0'
@@ -41,7 +42,7 @@ def normal_run(split_file, pose_data_root, configs, save_model_to=None, labels_t
                                                     shuffle=True)
 
     val_dataset = Sign_Dataset(index_file_path=split_file, split='test', pose_root=pose_data_root,
-                               img_transforms=None, video_transforms=None,W
+                               img_transforms=None, video_transforms=None,
                                num_samples=num_samples, sample_strategy='seq',
                                labels_to_include=labels_to_include)
     val_data_loader = torch.utils.data.DataLoader(dataset=val_dataset, batch_size=configs.batch_size,
@@ -305,19 +306,186 @@ def grid_search(split_file, pose_data_root, config_file, n_runs=1):
 
     return best_overall_params, results
 
+def train_and_plot_subsets(subset_configs):
+    """
+    subset_configs: dict mapping subset size to (split_file, config) tuples
+    e.g. {
+        100:  ('path/to/asl100.json',  config_100),
+        300:  ('path/to/asl300.json',  config_300),
+        1000: ('path/to/asl1000.json', config_1000),
+        2000: ('path/to/asl2000.json', config_2000),
+    }
+    """
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    all_val_scores = {}
+
+    for subset_size, (split_file, configs) in subset_configs.items():
+        print(f"\n{'='*60}")
+        print(f"Training ASL-{subset_size}")
+        print(f"{'='*60}")
+
+        num_samples = configs.num_samples
+        hidden_size = configs.hidden_size
+        drop_p      = configs.drop_p
+        num_stages  = configs.num_stages
+        max_epochs  = configs.max_epochs
+        patience    = configs.patience
+
+        if not os.path.isfile(split_file):
+            print(f"Split file not found: {split_file}, skipping.")
+            continue
+
+        if subset_size == 100:
+            train_dataset = Sign_Dataset(
+                index_file_path=split_file, split=['train', 'val'],
+                pose_root="/u50/chandd9/downloads/asl_cit_pt", img_transforms=None,
+                video_transforms=None, num_samples=num_samples
+            )
+            train_loader = torch.utils.data.DataLoader(
+                dataset=train_dataset, batch_size=configs.batch_size,
+                shuffle=True, num_workers=4, pin_memory=True
+            )
+            val_dataset = Sign_Dataset(
+                index_file_path=split_file, split='test',
+                pose_root="/u50/chandd9/downloads/asl_cit_pt", img_transforms=None,
+                video_transforms=None, num_samples=num_samples                
+            )
+            val_loader = torch.utils.data.DataLoader(
+                dataset=val_dataset, batch_size=configs.batch_size,
+                shuffle=False, num_workers=4, pin_memory=True
+            )
+        else:
+            train_dataset = Sign_Dataset(
+                index_file_path=split_file, split=['train', 'val'],
+                pose_root="/u50/chandd9/downloads/tgcn_data", img_transforms=None,
+                video_transforms=None, num_samples=num_samples
+            )
+            train_loader = torch.utils.data.DataLoader(
+                dataset=train_dataset, batch_size=configs.batch_size,
+                shuffle=True, num_workers=4, pin_memory=True
+            )
+            val_dataset = Sign_Dataset(
+                index_file_path=split_file, split='test',
+                pose_root="/u50/chandd9/downloads/tgcn_data", img_transforms=None,
+                video_transforms=None, num_samples=num_samples
+            )
+            val_loader = torch.utils.data.DataLoader(
+                dataset=val_dataset, batch_size=configs.batch_size,
+                shuffle=False, num_workers=4, pin_memory=True
+            )         
+
+        print(f"Train: {len(train_dataset)}, Val: {len(val_dataset)}, Classes: {len(train_dataset.label_encoder.classes_)}")
+        print(f"Config: hidden={hidden_size}, stages={num_stages}, drop={drop_p}, lr={configs.init_lr}, batch={configs.batch_size}")
+
+        model = GCN_muti_att(
+            input_feature=num_samples * 2,
+            hidden_feature=hidden_size,
+            num_class=len(train_dataset.label_encoder.classes_),
+            p_dropout=drop_p,
+            num_stage=num_stages
+        ).to(device)
+
+        optimizer = optim.Adam(
+            model.parameters(),
+            lr=configs.init_lr,
+            eps=configs.adam_eps,
+            weight_decay=configs.adam_weight_decay
+        )
+
+        val_scores = []
+        best_acc   = 0
+        es_counter = 0
+
+        for epoch in range(max_epochs):
+            train(configs.log_interval, model, train_loader, optimizer, epoch)
+            _, val_score, _, _, _ = validation(model, val_loader, epoch, save_to=None)
+
+            val_scores.append(val_score[0])
+            # scheduler.step(val_score[0])
+
+            if val_score[0] > best_acc + configs.min_delta:
+                best_acc   = val_score[0]
+                es_counter = 0
+            else:
+                es_counter += 1
+
+            if es_counter >= patience:
+                print(f"Early stopping at epoch {epoch}, best acc: {best_acc:.4f}")
+                val_scores.extend([best_acc] * (max_epochs - len(val_scores)))
+                break
+
+            print(f"ASL-{subset_size} Epoch {epoch+1}/{max_epochs}: val_acc={val_score[0]:.4f}")
+
+        all_val_scores[subset_size] = val_scores
+        np.save(f'outputs/val_scores_asl{subset_size}.npy', np.array(val_scores))
+
+    # --- plot ---
+    plt.figure(figsize=(12, 7))
+    colors = {100: 'blue', 300: 'orange', 1000: 'green', 2000: 'red'}
+
+    for subset_size, scores in all_val_scores.items():
+        epochs     = list(range(1, len(scores) + 1))
+        best_epoch = int(np.argmax(scores))
+        best_score = max(scores) * 100
+
+        plt.plot(epochs, [s * 100 for s in scores],
+                 label=f'ASL-{subset_size}',
+                 color=colors.get(subset_size, None),
+                 linewidth=2)
+
+        # plt.annotate(f'{best_score:.1f}%',
+        #              xy=(best_epoch + 1, best_score),
+        #              xytext=(best_epoch + 3, best_score + 1),
+        #              fontsize=9,
+        #              color=colors.get(subset_size, 'black'))
+
+    plt.xlabel('Epoch', fontsize=13)
+    plt.ylabel('Validation Accuracy (%)', fontsize=13)
+    plt.title('Validation Accuracy vs Epochs by Vocabulary Size', fontsize=15)
+    plt.legend(fontsize=12)
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig('outputs/subset_comparison.png', dpi=150)
+    plt.show()
+    print("Plot saved to outputs/subset_comparison.png")
+
+    return all_val_scores
+
+# generate a graph for training curves of all subsets
+# if __name__ == "__main__":
+#     root           = '/u50/chandd9/capstone/rtsl/backend/app/'
+#     pose_data_root = "/u50/chandd9/downloads/tgcn_npy"
+
+#     # load a config per subset
+#     config_100  = Config(os.path.join(root, 'config2.ini'))
+#     config_300  = Config(os.path.join(root, 'config.ini'))
+#     config_1000 = Config(os.path.join(root, 'config.ini'))
+#     config_2000 = Config(os.path.join(root, 'config.ini'))
+
+#     subset_configs = {
+#         100:  (os.path.join(root, 'asl_citizen/asl_citizens100.json'),  config_100),
+#         300:  (os.path.join(root, 'splits/asl300.json'),  config_300),
+#         1000: (os.path.join(root, 'splits/asl1000.json'), config_1000),
+#         2000: (os.path.join(root, 'splits/asl2000.json'), config_2000),
+#     }
+
+#     train_and_plot_subsets(
+#         subset_configs=subset_configs
+#     )
+
 # pt files run test
 if __name__ == "__main__":
     root = '/u50/chandd9/capstone/rtsl/backend/app/' # My path of the project root directory
 
     subset = 'asl100' # using asl100 subset first.
 
-    split_file = os.path.join(root, 'splits/{}.json'.format(subset))
-    # split_file = "/u50/chandd9/capstone/rtsl/backend/app/asl_citizen/asl_citizens300.json"
+    # split_file = os.path.join(root, 'splits/{}.json'.format(subset))
+    split_file = "/u50/chandd9/capstone/rtsl/backend/app/asl_citizen/asl_citizens100.json"
     # split_file = "/u50/chandd9/capstone/rtsl/backend/app/splits/asl100.json"
     # pose_data_root = "/u50/quyumr/archive/asl-live-tl-features"
-    # pose_data_root = "/u50/chandd9/downloads/asl_cit_pt"
-    pose_data_root = "/u50/chandd9/downloads/tgcn_data"
-    config_file = os.path.join(root, 'config.ini')
+    pose_data_root = "/u50/chandd9/downloads/asl_cit_pt_inter_all"
+    # pose_data_root = "/u50/chandd9/downloads/tgcn_data"
+    config_file = os.path.join(root, 'config2.ini')
     configs = Config(config_file)
 
     # print('outputs/{}.log'.format(os.path.basename(config_file)[:-4]))

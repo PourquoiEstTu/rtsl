@@ -126,8 +126,7 @@ class Sign_Dataset(Dataset):
             split = [split]
 
         self.test_index_file = test_index_file
-        self._make_dataset(index_file_path, split)
-
+       
         self.index_file_path = index_file_path
         self.pose_root = pose_root
         self.framename = 'image_{}_keypoints.json'
@@ -138,6 +137,9 @@ class Sign_Dataset(Dataset):
         self.video_transforms = video_transforms
 
         self.num_copies = num_copies
+
+        self._make_dataset(index_file_path, split)
+
         
 
     def __len__(self):
