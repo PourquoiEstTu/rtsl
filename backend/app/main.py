@@ -20,21 +20,6 @@ MODEL_TYPE = "ONNX"
 
 app = FastAPI()
 
-# TODO: delete this once gloss_to_sentence is finished
-def add_to_sequence(gloss_counter, gloss_arr, last_pred, word):  
-    # print(gloss_counter)
-    
-    if (last_pred == word):
-        gloss_counter += 1
-    else:
-        gloss_counter = 1
-        
-    if (gloss_counter > 3 and gloss_arr[-1] != word):            
-        gloss_arr.append(word)
-    
-    return gloss_counter
-
-
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
@@ -102,7 +87,7 @@ async def websocket_endpoint(websocket: WebSocket):
         ema_score = update_ema(ema_score, movement_score(processed[-5:]))
         if ema_score > MOVEMENT_THRESHOLD:
             pause_counter = 0
-            print("-- MOVEMENT THRESHOLD PASSED --")
+            # print("-- MOVEMENT THRESHOLD PASSED --")
             # Reshape to model input format: (1, num_nodes, feature_len)
             # feature_len = num_samples * 2 (x,y coordinates across time)
             # Each node has: [x_t0, y_t0, x_t1, y_t1, ..., x_t49, y_t49]
@@ -117,13 +102,23 @@ async def websocket_endpoint(websocket: WebSocket):
                     input_data[0, node_idx, t*2 + 0] = x_val
                     input_data[0, node_idx, t*2 + 1] = y_val
                 
-            # only print if hands in frame     
+            # only predict if hands in frame     
             if np.sum(left) + np.sum(right) != 0:
                 if MODEL_TYPE != "ONNX":
                     input_data = torch.from_numpy(input_data)
                 current_pred = prediction_function(model, labels, input_data).upper()
-                await websocket.send_json({"word" : current_pred, "sentence" : ""})
-                gloss_counter = add_to_sequence(gloss_counter, gloss_sequence, last_pred, current_pred)
+                
+                # predicting same word again,          
+                if (last_pred == current_pred):
+                    gloss_counter += 1
+                else:
+                    gloss_counter = 1
+
+                # if seen the same prediction for multiple frames in a row, add to sequence and send to front_end
+                if (gloss_counter > 3 and gloss_sequence[-1] != current_pred):            
+                    gloss_sequence.append(current_pred)
+                    await websocket.send_json({"word" : current_pred, "sentence" : ""})
+                
                 last_pred = current_pred
         else:
             pause_counter += 1
