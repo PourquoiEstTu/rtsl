@@ -14,15 +14,11 @@ from scipy.interpolate import interp1d
 # np.set_printoptions(threshold=sys.maxsize)
 
 # global vars
-# BASE_DIR = Path(__file__).resolve().parents[3] / "archive"
-# DIR = str(BASE_DIR)
+BASE_DIR = Path(__file__).resolve().parents[3] / "archive"
+DIR = str(BASE_DIR)
  # folder where your dataset is
-# DIR = "/u50/chandd9/capstone/personal_preprocessed4"
-DIR = "/Users/thanhhanguyen/Documents/4th_year_CS/Capstone/archive"
 JSON_PATH = f"{DIR}/WLASL_v0.3.json"
-# JSON_PATH = f"{DIR}/info.json"
-
-VIDEO_DIR = f"/u50/chandd9/capstone/personal_preprocessed2/videos/"  # folder with your video files
+VIDEO_DIR = f"{DIR}/videos/"  # folder with your video files
 TRAIN_OUTPUT_DIR = f"{DIR}/train_output" # folder to save .npy feature files
 TEST_OUTPUT_DIR = f"{DIR}/test_output" # folder to save .npy feature files
 VALIDATION_OUTPUT_DIR = f"{DIR}/validation_output" # folder to save .npy feature files
@@ -122,9 +118,6 @@ def gen_videos_features(json_path: str=JSON_PATH, overwrite_prev_files:bool=Fals
 
     for entry in data:
         gloss = entry["gloss"]
-        # only use the categories we care about
-        # if gloss not in CATEGORIES_TO_USE:
-        #     continue  # Skip unwanted categories
 
         for instance in entry["instances"]:
             video_file = os.path.join(VIDEO_DIR, f"{instance['video_id']}.mp4")
@@ -190,10 +183,13 @@ def find_gloss_by_video_id(video_id: str, json_path: str=JSON_PATH) -> str :
                 return entry["gloss"]
 # print(find_gloss_by_video_id("00421"))
 
-# same as get_labels_normalize
-def get_labels_pytorch(features_dir:str, json_path: str=JSON_PATH, overwrite_prev_file:bool=False) -> None :
+def get_labels_sklearn(features_dir:str, json_path: str=JSON_PATH, overwrite_prev_file:bool=False) -> None :
     """Output corresponding label/gloss for a video in a 1d array
-       that pytorch code can use. """
+       that a sklearn SVM can use. Implicitly orders the labels
+       by which file in features_dir is seen first, so ascending
+       numerical order.
+       features_dir: directory where features from gen_videos_features()
+         are saved."""
     npy_path = os.path.join(features_dir, "ordered_labels.npy")
     if not overwrite_prev_file :
         if os.path.exists(npy_path) :
