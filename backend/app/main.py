@@ -123,7 +123,18 @@ async def websocket_endpoint(websocket: WebSocket):
         else:
             pause_counter += 1
             if (pause_counter == PAUSE_THRESHOLD):
-                await websocket.send_json({"word" : "", "sentence" : gloss_to_sentence.run_inference(" ".join(gloss_sequence[1:]))})
+                sentence = gloss_to_sentence.run_inference(" ".join(gloss_sequence[1:])).rstrip()
+                correct_sentence = ""
+                # fixes punctuation spacing
+                for i in range(len(sentence)):
+                    if ord(sentence[i]) != 32:
+                        correct_sentence += sentence[i]
+                    elif (96 < ord(sentence[i + 1]) < 123) or (64 < ord(sentence[i + 1]) < 91) or (47 < ord(sentence[i + 1]) < 58):
+                        correct_sentence += sentence[i] # only add space if it's followed by a lowercase or uppercase letter or number
+                # print(f"GLOSSES: {gloss_sequence[1:]}")
+                # print(f"SENTENCE: {correct_sentence}")
+                
+                await websocket.send_json({"word" : "", "sentence" : correct_sentence})
                 last_pred = ""
                 gloss_sequence = [""]
                 pause_counter = 0
