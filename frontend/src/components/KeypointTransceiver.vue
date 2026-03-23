@@ -10,15 +10,18 @@ const landmarkerService = useLandmarkerService();
 const toast = useToast();
 const { status, data, send, open, close } = useWebSocket("wss://rtsl.cas.mcmaster.ca:8000/ws");
 
-const emit = defineEmits(["newSentence"]);
+const emit = defineEmits(["newWord", "newSentence"]);
 
 watch(data, (received: string) => {
   if (!received) return;
-
   const newData: { word: string; sentence: string } = JSON.parse(received);
-  console.log("Received:", newData.word); // todo: remove temp log
 
-  if (newData.sentence) emit("newSentence", newData.sentence);
+  if (newData.word) {
+    emit("newWord", newData.word);
+  }
+  if (newData.sentence) {
+    emit("newSentence", newData.sentence);
+  }
 });
 
 // Check if we are running inside a Chrome Extension
@@ -34,7 +37,7 @@ const CLOSE_WS_THRESHOLD_MS = 15000;
 const keepWebsocketClosed = ref(false);
 
 watch(status, (newStatus) => {
-  if (!keepWebsocketClosed && newStatus === "CLOSED") {
+  if (!keepWebsocketClosed.value && newStatus === "CLOSED") {
     console.log("Reopening WS connection.");
     open();
   }
@@ -78,8 +81,9 @@ onMounted(async () => {
       hasShownMissingToast = false;
 
       // Reopen WS if it was closed due to inactivity
-      if (keepWebsocketClosed && status.value === "CLOSED") {
+      if (keepWebsocketClosed.value && status.value === "CLOSED") {
         keepWebsocketClosed.value = false;
+        console.log("Reopening WS connection.");
         open();
       }
 
@@ -105,6 +109,7 @@ onMounted(async () => {
     // Close WS connection no landmarks in a long time
     if (now - lastSeenTime > CLOSE_WS_THRESHOLD_MS && status.value === "OPEN") {
       keepWebsocketClosed.value = true;
+      console.log("Closing WS connection.");
       close();
     }
 

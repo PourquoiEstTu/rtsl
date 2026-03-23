@@ -27,8 +27,16 @@ onUnmounted(() => {
   window.removeEventListener("resize", updateWidth);
 });
 
+const translatedWord = ref<string>("");
+let wordTimeout: ReturnType<typeof setTimeout> | null = null;
 const translatedSentence = ref<string>("Waiting for sign input...");
 const translationHistory = ref<string[]>([]);
+
+function onNewWord(word: string) {
+  translatedWord.value = word;
+  if (wordTimeout) clearTimeout(wordTimeout);
+  wordTimeout = setTimeout(() => (translatedWord.value = ""), 1500);
+}
 
 function onNewSentence(sentence: string) {
   translatedSentence.value = sentence;
@@ -54,9 +62,18 @@ watch(translatedSentence, () => {
     </aside>
     <main>
       <div class="outer-container lg:p-2!">
-        <div class="camera-panel lg:rounded-t-4xl">
-          <KeypointTransceiver @new-sentence="onNewSentence" />
+        <div class="camera-panel h-full! lg:rounded-t-4xl">
+          <KeypointTransceiver @new-word="onNewWord" @new-sentence="onNewSentence" />
           <div class="background-gradient"></div>
+
+          <div class="relative w-full h-full">
+            <div v-if="translatedWord" class="absolute inset-0 flex items-start justify-center pointer-events-none">
+              <div class="px-4! py-2! mt-3! bg-gradient-to-b from-[#e9f6ff] to-[#a6d0f1] rounded-md text-black">
+                {{ translatedWord }}
+              </div>
+            </div>
+          </div>
+
           <ChatHistoryButton :translations="translationHistory" />
           <PhoneSidebarButton v-if="!isDesktop" />
 
