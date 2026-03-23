@@ -1,11 +1,13 @@
 import { mount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
+import ToastService from 'primevue/toastservice';
 import Camera from "../Camera.vue";
 
 describe("CameraPage", () => {
   it("renders layout correctly", () => {
     const wrapper = mount(Camera, {
       global: {
+        plugins: [ToastService],
         stubs: {
           Sidebar: true,
           Button: true,

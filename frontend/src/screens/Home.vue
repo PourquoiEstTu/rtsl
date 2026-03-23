@@ -60,7 +60,7 @@ function goToAbout() {
         <p class="home-card-desc">Translate ASL to English</p>
       </div>
 
-      <div class="home-card" v-if="isDesktop" @click="goToWebExtension">
+      <div class="home-card" data-testid="plugin-card" v-if="isDesktop" @click="goToWebExtension">
         <div class="home-icon flex items-center justify-center h-[90px]">
           <ExtensionIcon />
         </div>
