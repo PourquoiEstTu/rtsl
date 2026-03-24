@@ -1,5 +1,5 @@
-name: Run Frontend Unit Tests
-on: [push, pull_request]
+name: Frontend Unit Tests
+on: push
 
 jobs:
   test:
@@ -19,9 +19,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci 
-
-      - name: Install vitest
-        run: npx vitest
 
       - name: Run Vitest
         run: npm test -- --run 
