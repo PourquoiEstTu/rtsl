@@ -4,35 +4,21 @@ import numpy as np
 import torch
 
 # import from local files
-from core.loader import get_model, get_labels
+from core.loader import get_model, get_onnx_model, get_labels
 from core.formatter import convert_format_to_55, normalize_x_y_data
-from core.predictor import predict
+from core.predictor import predict, onnx_predict
 from core.gloss_to_sentence import Gloss_to_Sentence_Model
 from utils.motion_analyzer import movement_score, update_ema 
 
 DIR = "/home/sharmg36"
-NUM_CLASSES = 300
+NUM_CLASSES = 100
 MOVEMENT_THRESHOLD = 0.8
 WINDOW_SIZE = 50
 INPUT_SIZE = 55
 PAUSE_THRESHOLD = 20 # number of frames
+MODEL_TYPE = "ONNX"
 
 app = FastAPI()
-
-# TODO: delete this once gloss_to_sentence is finished
-def add_to_sequence(gloss_counter, gloss_arr, last_pred, word):  
-    print(gloss_counter)
-    
-    if (last_pred == word):
-        gloss_counter += 1
-    else:
-        gloss_counter = 1
-        
-    if (gloss_counter > 3 and gloss_arr[-1] != word):            
-        gloss_arr.append(word)
-    
-    return gloss_counter
-
 
 @app.get("/")
 async def root():
@@ -41,7 +27,9 @@ async def root():
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
-    model = get_model(DIR, NUM_CLASSES)
+    model =  get_onnx_model(DIR, NUM_CLASSES) if MODEL_TYPE == "ONNX" else get_model(DIR, NUM_CLASSES)
+    prediction_function = onnx_predict if MODEL_TYPE == "ONNX" else predict
+    get_model(DIR, NUM_CLASSES)
     labels = get_labels(DIR, NUM_CLASSES)
     gloss_to_sentence = Gloss_to_Sentence_Model()
     
@@ -55,7 +43,7 @@ async def websocket_endpoint(websocket: WebSocket):
     
     await websocket.accept()
     while True:
-        print(gloss_sequence)
+        # print(gloss_sequence)
         received = await websocket.receive_json()
         
         pose_landmarks = []
@@ -99,7 +87,7 @@ async def websocket_endpoint(websocket: WebSocket):
         ema_score = update_ema(ema_score, movement_score(processed[-5:]))
         if ema_score > MOVEMENT_THRESHOLD:
             pause_counter = 0
-            print("-- MOVEMENT THRESHOLD PASSED --")
+            # print("-- MOVEMENT THRESHOLD PASSED --")
             # Reshape to model input format: (1, num_nodes, feature_len)
             # feature_len = num_samples * 2 (x,y coordinates across time)
             # Each node has: [x_t0, y_t0, x_t1, y_t1, ..., x_t49, y_t49]
@@ -114,16 +102,39 @@ async def websocket_endpoint(websocket: WebSocket):
                     input_data[0, node_idx, t*2 + 0] = x_val
                     input_data[0, node_idx, t*2 + 1] = y_val
                 
-            # only print if hands in frame     
+            # only predict if hands in frame     
             if np.sum(left) + np.sum(right) != 0:
-                current_pred = predict(model, labels, torch.from_numpy(input_data))
-                await websocket.send_json({"word" : current_pred, "sentence" : ""})
-                gloss_counter = add_to_sequence(gloss_counter, gloss_sequence, last_pred, current_pred)
+                if MODEL_TYPE != "ONNX":
+                    input_data = torch.from_numpy(input_data)
+                current_pred = prediction_function(model, labels, input_data).upper()
+                
+                # predicting same word again,          
+                if (last_pred == current_pred):
+                    gloss_counter += 1
+                else:
+                    gloss_counter = 1
+
+                # if seen the same prediction for multiple frames in a row, add to sequence and send to front_end
+                if (gloss_counter > 3 and gloss_sequence[-1] != current_pred):            
+                    gloss_sequence.append(current_pred)
+                    await websocket.send_json({"word" : current_pred, "sentence" : ""})
+                
                 last_pred = current_pred
         else:
             pause_counter += 1
             if (pause_counter == PAUSE_THRESHOLD):
-                gloss_counter = add_to_sequence(gloss_counter, gloss_sequence, last_pred, ".")
-                last_pred = "."
+                sentence = gloss_to_sentence.run_inference(" ".join(gloss_sequence[1:])).rstrip()
+                correct_sentence = ""
+                # fixes punctuation spacing
+                for i in range(len(sentence)):
+                    if ord(sentence[i]) != 32:
+                        correct_sentence += sentence[i]
+                    elif (96 < ord(sentence[i + 1]) < 123) or (64 < ord(sentence[i + 1]) < 91) or (47 < ord(sentence[i + 1]) < 58):
+                        correct_sentence += sentence[i] # only add space if it's followed by a lowercase or uppercase letter or number
+                # print(f"GLOSSES: {gloss_sequence[1:]}")
+                # print(f"SENTENCE: {correct_sentence}")
+                
+                await websocket.send_json({"word" : "", "sentence" : correct_sentence})
+                last_pred = ""
+                gloss_sequence = [""]
                 pause_counter = 0
-                await websocket.send_json({"word" : "", "sentence" : gloss_to_sentence.run_inference(" ".join(gloss_sequence))})
