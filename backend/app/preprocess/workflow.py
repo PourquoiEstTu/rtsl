@@ -1,13 +1,11 @@
 import os
 import sys
 import json
-import time
 import cv2
 import numpy as np
-# import mediapipe as mp
-# from sklearn.preprocessing import LabelEncoder
+import mediapipe as mp
+from sklearn.preprocessing import LabelEncoder
 from pathlib import Path
-# TODO: these are only used in the new code 
 from scipy.interpolate import interp1d
 # commenting some of these out can make script run faster if you only want to call
 #   specific functions
@@ -67,9 +65,7 @@ def extract_features(video_path: str):
        the keypoints, each group of 3 represents the x, y, z 
        coordinates of the keypoint in the image."""
     cap = cv2.VideoCapture(video_path)
-    hand_sequence = []
-    pose_sequence = []
-    face_sequence = []
+    sequence = []
 
     # read frames from video
     while cap.isOpened():
@@ -101,39 +97,12 @@ def extract_features(video_path: str):
         else:
             hand_keypoints.extend([0] * 21 * 3)
 
-        # pose 
-        pose_keypoints = []
-        if results.pose_landmarks :
-            for lm in results.pose_landmarks.landmark :
-                # all 3 coords added in due to prev functions assuming 3 coords,
-                #   but z coord is currently not usable per mediapipe docs
-                pose_keypoints.extend([lm.x, lm.y, lm.z])
-        else :
-            pose_keypoints.extend([0] * 21 * 3)
-
-        # face
-        face_keypoints = []
-        if results.face_landmarks :
-            for lm in results.face_landmarks.landmark :
-                face_keypoints.extend([lm.x, lm.y, lm.z])
-        else :
-            face_keypoints.extend([0] * 21 * 3)
-
-        hand_sequence.append(hand_keypoints)
-        pose_sequence.append(pose_keypoints)
-        face_sequence.append(face_keypoints)
+        sequence.append(hand_keypoints)
 
     cap.release()
+    sequence = np.array(sequence)
 
-    # ndarray's aren't serializable to json, could use array.to_list() on them
-    #   but not doing that because its expensive
-    # hand_sequence = np.array(hand_sequence)
-    # pose_sequence = np.array(pose_sequence)
-    # face_sequence = np.array(face_sequence)
-
-    return {"hands": hand_sequence, "pose": pose_sequence, "face": face_sequence}
-# extract_features(f"{DIR}/videos/69547.mp4")
-# sys.exit()
+    return sequence.astype(np.float32)
 
 def gen_videos_features(json_path: str=JSON_PATH, overwrite_prev_files:bool=False) -> None :
     """Generate features for each video and save them to disk."""
@@ -158,25 +127,20 @@ def gen_videos_features(json_path: str=JSON_PATH, overwrite_prev_files:bool=Fals
                 continue
 
             if instance["split"] == "train":
-                npy_path = os.path.join(TRAIN_OUTPUT_DIR, f"{instance['video_id']}.json")
+                npy_path = os.path.join(TRAIN_OUTPUT_DIR, f"{instance['video_id']}.npy")
             elif instance["split"] == "test" :
-                npy_path = os.path.join(TEST_OUTPUT_DIR, f"{instance['video_id']}.json")
+                npy_path = os.path.join(TEST_OUTPUT_DIR, f"{instance['video_id']}.npy")
             elif instance["split"] == "val" :
-                npy_path = os.path.join(VALIDATION_OUTPUT_DIR, f"{instance['video_id']}.json")
+                npy_path = os.path.join(VALIDATION_OUTPUT_DIR, f"{instance['video_id']}.npy")
             if overwrite_prev_files :
-                # features = extract_features(video_file) #to be changed
-                feature_dict = extract_features(video_file)
-                with open(npy_path, 'w') as f :
-                    json.dump(feature_dict, f)
+                features = extract_features(video_file)
+                np.save(npy_path, features)
                 print(f"Saved features: {npy_path}")
             else :
                 if not os.path.exists(npy_path):
                     # print(video_file)
-                    # features = extract_features(video_file) #to be changed
-                    # not sure what above comment is talking about so leaving it in
-                    feature_dict = extract_features(video_file)
-                    with open(npy_path, 'w') as f :
-                        json.dump(feature_dict, f)
+                    features = extract_features(video_file)
+                    np.save(npy_path, features)
                     print(f"Saved features: {npy_path}")
                 else :
                     print(f"Features already generated for {npy_path}, skipped...")

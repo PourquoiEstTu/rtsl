@@ -4,7 +4,145 @@ import numpy as np
 import cv2
 import ffmpeg
 import torch
+from pathlib import Path
 
+BASE_DIR = Path(__file__).resolve().parents[3] / "archive"
+DIR = str(BASE_DIR)
+JSON_PATH = f"{DIR}/WLASL_v0.3.json"
+VIDEO_DIR = f"{DIR}/videos/"  # folder with your video files
+TRAIN_OUTPUT_DIR = f"{DIR}/train_output" # folder to save .npy feature files
+TEST_OUTPUT_DIR = f"{DIR}/test_output" # folder to save .npy feature files
+VALIDATION_OUTPUT_DIR = f"{DIR}/validation_output" # folder to save .npy feature files
+
+# INITIALIZE MEDIAPIPE HOLISTIC
+# essentially uses the mediapipe holistic model to extract hands and pose features
+# comment out if not needed when running this file
+# mp_holistic = mp.solutions.holistic
+# holistic = mp_holistic.Holistic(
+#     static_image_mode=False,
+#     model_complexity=1,
+#     smooth_landmarks=True,
+#     enable_segmentation=False, # mediapipe crashes when true? 
+#         # someone else run this file with this and refine_face_landmarks=True as well
+#     refine_face_landmarks=False,
+#     min_detection_confidence=0.5,
+#     min_tracking_confidence=0.5
+# )
+
+# custom extract_features for hand, pose, and face
+def extract_features(video_path: str):
+    cap = cv2.VideoCapture(video_path)
+    hand_sequence = []
+    pose_sequence = []
+    face_sequence = []
+
+    # read frames from video
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        # convert the BGR image to RGB before processing?
+        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        # if we want to de-normalize landmark points later, we can
+        #   multiply by x by width and y by height
+        # img_height, img_width, _ = frame_rgb.shape
+        results = holistic.process(frame_rgb) # process the frame
+
+        # HANDS
+        hand_keypoints = []
+        if results.right_hand_landmarks:
+            for lm in results.right_hand_landmarks.landmark:
+                hand_keypoints.extend([lm.x, lm.y, lm.z])
+        else:
+            # if hand isn't in frame, add 0s as the feature
+            # add 21*3 0's since there's 21 landmarks per hand and they
+            #   are represented using 3D coordinates
+            hand_keypoints.extend([0] * 21 * 3)
+
+        if results.left_hand_landmarks:
+            for lm in results.left_hand_landmarks.landmark:
+                hand_keypoints.extend([lm.x, lm.y, lm.z])
+        else:
+            hand_keypoints.extend([0] * 21 * 3)
+
+        # pose 
+        pose_keypoints = []
+        if results.pose_landmarks :
+            for lm in results.pose_landmarks.landmark :
+                # all 3 coords added in due to prev functions assuming 3 coords,
+                #   but z coord is currently not usable per mediapipe docs
+                pose_keypoints.extend([lm.x, lm.y, lm.z])
+        else :
+            pose_keypoints.extend([0] * 21 * 3)
+
+        # face
+        face_keypoints = []
+        if results.face_landmarks :
+            for lm in results.face_landmarks.landmark :
+                face_keypoints.extend([lm.x, lm.y, lm.z])
+        else :
+            face_keypoints.extend([0] * 21 * 3)
+
+        hand_sequence.append(hand_keypoints)
+        pose_sequence.append(pose_keypoints)
+        face_sequence.append(face_keypoints)
+
+    cap.release()
+
+    # ndarray's aren't serializable to json, could use array.to_list() on them
+    #   but not doing that because its expensive
+    # hand_sequence = np.array(hand_sequence)
+    # pose_sequence = np.array(pose_sequence)
+    # face_sequence = np.array(face_sequence)
+
+    return {"hands": hand_sequence, "pose": pose_sequence, "face": face_sequence}
+
+def gen_videos_features_json(json_path: str=JSON_PATH, overwrite_prev_files:bool=False) -> None :
+    """Generate features for each video and save them to disk."""
+    with open(json_path, "r") as f:
+        data = json.load(f)
+
+    train_feature_paths = []
+    train_labels = []
+    test_feature_paths = []
+    test_labels = []
+    validation_feature_paths = []
+    validation_labels = []
+
+    for entry in data:
+        gloss = entry["gloss"]
+
+        for instance in entry["instances"]:
+            video_file = os.path.join(VIDEO_DIR, f"{instance['video_id']}.mp4")
+
+            if not os.path.exists(video_file):
+                print(f"Skipping missing video: {video_file}")
+                continue
+
+            if instance["split"] == "train":
+                npy_path = os.path.join(TRAIN_OUTPUT_DIR, f"{instance['video_id']}.json")
+            elif instance["split"] == "test" :
+                npy_path = os.path.join(TEST_OUTPUT_DIR, f"{instance['video_id']}.json")
+            elif instance["split"] == "val" :
+                npy_path = os.path.join(VALIDATION_OUTPUT_DIR, f"{instance['video_id']}.json")
+            if overwrite_prev_files :
+                # features = extract_features(video_file) #to be changed
+                feature_dict = extract_features(video_file)
+                with open(npy_path, 'w') as f :
+                    json.dump(feature_dict, f)
+                print(f"Saved features: {npy_path}")
+            else :
+                if not os.path.exists(npy_path):
+                    # print(video_file)
+                    # features = extract_features(video_file) #to be changed
+                    feature_dict = extract_features(video_file)
+                    with open(npy_path, 'w') as f :
+                        json.dump(feature_dict, f)
+                    print(f"Saved features: {npy_path}")
+                else :
+                    print(f"Features already generated for {npy_path}, skipped...")
+# gen_videos_features()
 
 def hand_keypoint_to_img(keypoint_file: str, img_size: int = 300) :
     """Takes a set of unflattened keypoints (single file) generated by Mediapipe and 
