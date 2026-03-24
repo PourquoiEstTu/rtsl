@@ -1,0 +1,436 @@
+import os
+import json
+import numpy as np
+import cv2
+import ffmpeg
+import torch
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parents[3] / "archive"
+DIR = str(BASE_DIR)
+JSON_PATH = f"{DIR}/WLASL_v0.3.json"
+VIDEO_DIR = f"{DIR}/videos/"  # folder with your video files
+TRAIN_OUTPUT_DIR = f"{DIR}/train_output" # folder to save .npy feature files
+TEST_OUTPUT_DIR = f"{DIR}/test_output" # folder to save .npy feature files
+VALIDATION_OUTPUT_DIR = f"{DIR}/validation_output" # folder to save .npy feature files
+
+# INITIALIZE MEDIAPIPE HOLISTIC
+# essentially uses the mediapipe holistic model to extract hands and pose features
+# comment out if not needed when running this file
+# mp_holistic = mp.solutions.holistic
+# holistic = mp_holistic.Holistic(
+#     static_image_mode=False,
+#     model_complexity=1,
+#     smooth_landmarks=True,
+#     enable_segmentation=False, # mediapipe crashes when true? 
+#         # someone else run this file with this and refine_face_landmarks=True as well
+#     refine_face_landmarks=False,
+#     min_detection_confidence=0.5,
+#     min_tracking_confidence=0.5
+# )
+
+# custom extract_features for hand, pose, and face
+def extract_features(video_path: str):
+    cap = cv2.VideoCapture(video_path)
+    hand_sequence = []
+    pose_sequence = []
+    face_sequence = []
+
+    # read frames from video
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        # convert the BGR image to RGB before processing?
+        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        # if we want to de-normalize landmark points later, we can
+        #   multiply by x by width and y by height
+        # img_height, img_width, _ = frame_rgb.shape
+        results = holistic.process(frame_rgb) # process the frame
+
+        # HANDS
+        hand_keypoints = []
+        if results.right_hand_landmarks:
+            for lm in results.right_hand_landmarks.landmark:
+                hand_keypoints.extend([lm.x, lm.y, lm.z])
+        else:
+            # if hand isn't in frame, add 0s as the feature
+            # add 21*3 0's since there's 21 landmarks per hand and they
+            #   are represented using 3D coordinates
+            hand_keypoints.extend([0] * 21 * 3)
+
+        if results.left_hand_landmarks:
+            for lm in results.left_hand_landmarks.landmark:
+                hand_keypoints.extend([lm.x, lm.y, lm.z])
+        else:
+            hand_keypoints.extend([0] * 21 * 3)
+
+        # pose 
+        pose_keypoints = []
+        if results.pose_landmarks :
+            for lm in results.pose_landmarks.landmark :
+                # all 3 coords added in due to prev functions assuming 3 coords,
+                #   but z coord is currently not usable per mediapipe docs
+                pose_keypoints.extend([lm.x, lm.y, lm.z])
+        else :
+            pose_keypoints.extend([0] * 21 * 3)
+
+        # face
+        face_keypoints = []
+        if results.face_landmarks :
+            for lm in results.face_landmarks.landmark :
+                face_keypoints.extend([lm.x, lm.y, lm.z])
+        else :
+            face_keypoints.extend([0] * 21 * 3)
+
+        hand_sequence.append(hand_keypoints)
+        pose_sequence.append(pose_keypoints)
+        face_sequence.append(face_keypoints)
+
+    cap.release()
+
+    # ndarray's aren't serializable to json, could use array.to_list() on them
+    #   but not doing that because its expensive
+    # hand_sequence = np.array(hand_sequence)
+    # pose_sequence = np.array(pose_sequence)
+    # face_sequence = np.array(face_sequence)
+
+    return {"hands": hand_sequence, "pose": pose_sequence, "face": face_sequence}
+
+def gen_videos_features_json(json_path: str=JSON_PATH, overwrite_prev_files:bool=False) -> None :
+    """Generate features for each video and save them to disk."""
+    with open(json_path, "r") as f:
+        data = json.load(f)
+
+    train_feature_paths = []
+    train_labels = []
+    test_feature_paths = []
+    test_labels = []
+    validation_feature_paths = []
+    validation_labels = []
+
+    for entry in data:
+        gloss = entry["gloss"]
+
+        for instance in entry["instances"]:
+            video_file = os.path.join(VIDEO_DIR, f"{instance['video_id']}.mp4")
+
+            if not os.path.exists(video_file):
+                print(f"Skipping missing video: {video_file}")
+                continue
+
+            if instance["split"] == "train":
+                npy_path = os.path.join(TRAIN_OUTPUT_DIR, f"{instance['video_id']}.json")
+            elif instance["split"] == "test" :
+                npy_path = os.path.join(TEST_OUTPUT_DIR, f"{instance['video_id']}.json")
+            elif instance["split"] == "val" :
+                npy_path = os.path.join(VALIDATION_OUTPUT_DIR, f"{instance['video_id']}.json")
+            if overwrite_prev_files :
+                # features = extract_features(video_file) #to be changed
+                feature_dict = extract_features(video_file)
+                with open(npy_path, 'w') as f :
+                    json.dump(feature_dict, f)
+                print(f"Saved features: {npy_path}")
+            else :
+                if not os.path.exists(npy_path):
+                    # print(video_file)
+                    # features = extract_features(video_file) #to be changed
+                    feature_dict = extract_features(video_file)
+                    with open(npy_path, 'w') as f :
+                        json.dump(feature_dict, f)
+                    print(f"Saved features: {npy_path}")
+                else :
+                    print(f"Features already generated for {npy_path}, skipped...")
+# gen_videos_features()
+
+def hand_keypoint_to_img(keypoint_file: str, img_size: int = 300) :
+    """Takes a set of unflattened keypoints (single file) generated by Mediapipe and 
+       converts them into a 224x224  image that can be inputted to ResNet
+    """
+    with open(keypoint_file, 'r') as f :
+        data = json.load(f)
+    # keypoints are all between 0 and 1, so we un-normalize them
+    hand_keypoints = ( np.array(data["hands"][:-1]) * img_size ).astype(np.uint32)
+    face_keypoints = ( np.array(data["face"][:-1]) * img_size  ).astype(np.uint32)
+    pose_keypoints = ( np.array(data["pose"][:-1]) * img_size  ).astype(np.uint32)
+    # for frame in data["face"] :
+    #     print(len(frame))
+    # return
+    
+    keypoints_per_frame_hand = hand_keypoints.shape[1]
+    keypoints_per_frame_face = face_keypoints.shape[1]
+    keypoints_per_frame_pose = pose_keypoints.shape[1]
+
+    # keypoints are assumed to be (x,y,z) coordinates
+    if keypoints_per_frame_hand % 3 != 0 : 
+        raise Exception("Number of hand keypoints not divisible by 3")
+    if keypoints_per_frame_face % 3 != 0 :
+        raise Exception("Number of face keypoints not divisible by 3")
+    if keypoints_per_frame_pose % 3 != 0 : 
+        raise Exception("Number of pose keypoints not divisible by 3")
+
+    # make sure to stop converting frames when no keypoints exist 
+    #   (when coordinates are (0,0))
+    patience = 0
+    real_frame_encountered = False
+    imgs = []
+    all_keypoints = [hand_keypoints, face_keypoints, pose_keypoints]
+    # all 3 keypoint arrays should have the same first dim and first dim represents
+    #   frames
+    for frame in range(hand_keypoints.shape[0]) :
+        # don't start patience counter until non-zero frame hand frame is encountered
+        if np.any(hand_keypoints[frame]) :
+            real_frame_encountered = True
+        if real_frame_encountered and not np.any(hand_keypoints[frame]) :
+            patience += 1
+        else :
+            patience = 0
+        if patience >= 3 :
+            break
+        img = np.zeros((img_size,img_size,1))
+        for keypoint_set in all_keypoints :
+            keypoint_frame = keypoint_set[frame]
+            for x_coord in range(0, len(keypoint_frame) - 3, 3) :
+                y_coord = x_coord+1
+                if keypoint_frame[y_coord] >= img_size : 
+                    keypoint_frame[y_coord] = img_size - 1
+                if keypoint_frame[x_coord] >= img_size : 
+                    keypoint_frame[x_coord] = img_size - 1
+                img[keypoint_frame[y_coord]][keypoint_frame[x_coord]] = 1
+        imgs.append(img)
+        # add line between pose keypoints for better visualization
+        POSE_CONNECTIONS = [
+            (11, 13), (13, 15), # left arm points?
+            (12, 14), (14, 16), # right arm points?
+            (11, 12) # shoulder points?
+        ]
+        HAND_CONNECTIONS = [
+            (0, 1), (1, 2), (2, 3), (3, 4), # thumb
+            (0, 5), (5, 6), (6, 7), (7, 8), # index finger
+            (0, 9), (9,10), (10,11), (11,12), # middle finger
+            (0,13), (13,14), (14,15), (15,16), # ring finger
+            (0,17), (17,18), (18,19), (19,20), # pinky finger
+            # palm connections?
+        ]
+        for connection in POSE_CONNECTIONS :
+            x1 = pose_keypoints[frame][connection[0]*3]
+            y1 = pose_keypoints[frame][connection[0]*3 + 1]
+            x2 = pose_keypoints[frame][connection[1]*3]
+            y2 = pose_keypoints[frame][connection[1]*3 + 1]
+            cv2.line(img, (x1, y1), (x2, y2), (1), 1)
+        for connection in HAND_CONNECTIONS :
+            # right hand
+            x1 = hand_keypoints[frame][connection[0]*3]
+            y1 = hand_keypoints[frame][connection[0]*3 + 1]
+            x2 = hand_keypoints[frame][connection[1]*3]
+            y2 = hand_keypoints[frame][connection[1]*3 + 1]
+            cv2.line(img, (x1, y1), (x2, y2), (1), 1)
+            # left hand
+            x1 = hand_keypoints[frame][(connection[0]+21)*3]
+            y1 = hand_keypoints[frame][(connection[0]+21)*3 + 1]
+            x2 = hand_keypoints[frame][(connection[1]+21)*3]
+            y2 = hand_keypoints[frame][(connection[1]+21)*3 + 1]
+            cv2.line(img, (x1, y1), (x2, y2), (1), 1)
+        # visualizing each frame (hold esc to play it like a video)
+        # while 1 :
+        #     cv2.imshow('', img)
+        #     k = cv2.waitKey(100)
+        #     if k==27:    # Esc key to stop
+        #         break
+        #     elif k==-1:  # normally -1 returned,so don't print it
+        #         continue
+    # for img in imgs :
+    #     cv2.imshow('', img)
+    #     k = cv2.waitKey(100)
+    #     if k==27:    # Esc key to stop
+    #         break
+    #     elif k==-1:  # normally -1 returned,so don't print it
+    #         continue
+    return imgs
+# hand_keypoint_to_img(f"{TRAIN_OUTPUT_DIR}/69538.json")
+# hand_keypoint_to_img(f"00335.json")
+
+def vidwrite(fn, images, framerate=60, vcodec='libx264'):
+    if not isinstance(images, np.ndarray):
+        images = np.asarray(images)
+    n,height,width,channels = images.shape
+    process = (
+        ffmpeg
+            .input('pipe:', format='rawvideo', pix_fmt='rgb24', s='{}x{}'.format(width, height))
+            .output(fn, pix_fmt='yuv420p', vcodec=vcodec, r=framerate)
+            .overwrite_output()
+            .run_async(pipe_stdin=True)
+    )
+    for frame in images:
+        process.stdin.write(
+            frame
+                .astype(np.uint8)
+                .tobytes()
+        )
+    process.stdin.close()
+    process.wait()
+
+# currently always overwrites old files; make it not overwrite them
+def convert_keypoints_dir_to_video(input_dir: str, output_dir: str, overwrite_file: bool = False, exit_on_fail: bool = False) :
+    if not os.path.exists(input_dir) :
+        raise Exception("Input directory does not exist.")
+    if not os.path.exists(output_dir) :
+        os.makedirs(output_dir, exist_ok=False)
+
+    fail_count = 0
+
+    for file in sorted(os.scandir(input_dir), key=lambda e: e.name) :
+        if file.is_file() and file.name.endswith(".json") :
+            # if not overwrite_file and os.path.exists(f"{output_dir}/{file.name.strip('.json')}.mp4") :
+            #     print(f"{file.name.strip('.json')}.mp4 already exists... skipped")
+            #     continue
+            if "ordered_labels" in file.name :
+                print(f"{file.name} encountered... Skipping.")
+                continue
+            if not overwrite_file :
+                print(f"{file.name.strip('.json')}.avi already exists in {output_dir}... skipping")
+                continue
+            # print(file.name)
+            try :
+                video = hand_keypoint_to_img(f"{input_dir}/{file.name}", 300)
+                # save_path = os.path.join(output_dir, file.name.strip(".json"))
+                # np.save(save_path, video)
+                # print(f"Video {file.name} saved to {output_dir}")
+                # print(save_path)
+            except :
+                fail_count += 1
+                if exit_on_fail :
+                    raise Exception(f"Failed to convert {file.name} into frames")
+                # print(f"Saving {file.name} failed")
+                print(f"Failed to convert {file.name} into frames")
+                continue
+            npy_path = os.path.join(output_dir, f"{file.name.strip('.json')}.npy")
+            # np.save(npy_path, video)
+            size = 300, 300
+            duration = 2
+            fps = 25
+            out = cv2.VideoWriter(f"{output_dir}/{file.name.strip('.json')}.avi", cv2.VideoWriter_fourcc(*'ffv1'), fps, size, False)
+            for frame in video :
+                # data = np.random.randint(0, 256, size, dtype='uint8')
+                # print(frame.dtype, frame.min(), frame.max())
+                # need to normalize the data because its float16 and cv2.VideoWriter takes uint8 (from what i found online)
+                frame_norm = cv2.normalize(
+                    frame,
+                    None,
+                    alpha=0,
+                    beta=255,
+                    norm_type=cv2.NORM_MINMAX
+                )
+                frame_u8 = frame_norm.astype(np.uint8)
+                out.write(frame_u8)
+                # out.write(frame.astype(np.uint8))
+                # while 1 :
+                #     cv2.imshow('', frame)
+                #     k = cv2.waitKey(100)
+                #     if k==27:    # Esc key to stop
+                #         break
+                #     elif k==-1:  # normally -1 returned,so don't print it
+                #         continue
+            out.release()
+            print(f"{file.name.strip('.json')}.avi saved to {output_dir}")
+            # for frame in video :
+            #     cv2.imshow('', frame)
+            #     k = cv2.waitKey(100)
+            #     if k==27:    # Esc key to stop
+            #         break
+            #     elif k==-1:  # normally -1 returned,so don't print it
+            #         continue
+            # framerate=20
+            # process = (
+            #     ffmpeg
+            #         .input('pipe:', format='rawvideo', pix_fmt='grayf16', s='300x300')
+            #         .output("strict", "2", f"{output_dir}/{file.name.strip('.json')}.avi", pix_fmt='grayf16', vcodec="ffv1", r=framerate)
+            #         .overwrite_output()
+            #         .run_async(pipe_stdin=True)
+            # )
+            # for frame in video:
+            #     process.stdin.write(
+            #         frame
+            #             .astype(np.uint8)
+            #             .tobytes()
+            #     )
+            # process.stdin.close()
+            # process.wait()
+            # vidwrite(f"{output_dir}/{file.name.strip('.json')}.avi", video)
+            # print(f"{file.name.strip('.json')}.mp4 saved to {output_dir}")
+    print(f"{fail_count} of files failed to save")
+# convert_keypoints_dir_to_video("/u50/quyumr/archive/train_output_json", "/u50/quyumr/archive/train_output_json_video_avi", True, False)
+# 174 training files and 33 test files failed to save
+# print(hand_keypoint_to_img(f"{TRAIN_OUTPUT_DIR}/00335.json"))
+
+# alternative method to prepare images for resnet
+def prepare_img_for_resnet(keypoint_file: str, img_size: int = 224, resnet_size: int = 224):
+    """Takes a keypoint JSON file and returns a tensor for ResNet"""
+    # Generate keypoint images
+    imgs = hand_keypoint_to_img(keypoint_file, img_size)
+
+    resnet_imgs = []
+
+    # for each frame in the video
+    # goes from (H, W, 1) -> (H, W) -> normalize -> 
+    # create (3, H, W) tensor -> 
+    # imagenet normalized tensor -> list of tensors
+    for img in imgs:
+        # convert the frame to (H, W) format from (H, W, 1) format 
+        img = img.squeeze(-1)  # -> (H, W)
+        # Resize to ResNet size (224x224)
+        img = cv2.resize(img, (resnet_size, resnet_size), interpolation=cv2.INTER_NEAREST)
+        # Convert to float32 (i think float 32 is the max precision torch supports)
+        img = img.astype(np.float32)
+        # Normalize to [0, 1] (normailization before ImageNet normalization)
+        if img.max() > 0: img /= img.max()
+        # 1-channel → 3-channel
+        img = np.stack([img, img, img], axis=0)  # (3, H, W)
+        # To torch tensor
+        tensor = torch.from_numpy(img)
+        # ImageNet normalization (taken from online)
+        mean = torch.tensor([0.485, 0.456, 0.406]).view(3, 1, 1)
+        std  = torch.tensor([0.229, 0.224, 0.225]).view(3, 1, 1)
+        tensor = (tensor - mean) / std
+        resnet_imgs.append(tensor)
+
+    # stack all frames into a single tensor that resnet can take
+    tensor = torch.stack(resnet_imgs)  # (T, 3, 224, 224)
+
+    # save tensor
+    # base_filename = os.path.basename(keypoint_file).replace('.json', '.pt')
+    # output_path = os.path.join(output_dir, base_filename)
+    # torch.save(tensor, output_path)
+    # print(f"Saved tensor to {output_path}")
+    return tensor
+
+def prepare_all_keypoint_files_for_resnet(input_dir: str, output_dir: str, overwrite: bool = False):
+    """basically runs the prepare_img_for_resnet function on all keypoint files in a directory
+       and saves the resulting tensors to output_dir."""
+    if not os.path.exists(input_dir):
+        raise Exception("Input directory does not exist.")
+
+    for file in sorted(os.scandir(input_dir), key=lambda e: e.name):
+        if file.is_file() and file.name.endswith(".json"):
+            base_filename = os.path.basename(file.path).replace('.json', '.pt')
+            output_path = os.path.join(output_dir, base_filename)
+            if not overwrite and os.path.exists(output_path):
+                print(f"{base_filename} already exists... skipped")
+                continue
+            try:
+                tensor = prepare_img_for_resnet(file.path, img_size=300, resnet_size=224)
+                torch.save(tensor, output_path)
+            except Exception as e:
+                print(f"Preparing {file.name} failed: {e}")
+                continue
+            print(f"{base_filename} prepared for ResNet and saved to {output_dir}")
+    return 
+# prepare_all_keypoint_files_for_resnet("/u50/quyumr/archive/train_output_json", f"/u50/quyumr/archive/resnet-keypoints", False)
+# prepare_all_keypoint_files_for_resnet(TEST_OUTPUT_DIR, f"{DIR}/test_output_resnet", True)
+# prepare_all_keypoint_files_for_resnet(VALIDATION_OUTPUT_DIR, f"{DIR}/val_output_resnet", True)
+
+# print(prepare_img_for_resnet(f"{TRAIN_OUTPUT_DIR}/00335.json").shape)
+# outputs torch.Size([44, 3, 224, 224])
+# 44 frames in video 
+# each frame is a 3x224x224 tensor f"{VALIDATION_OUTPUT_DIR_CLEANED}/ordered_labels.npy", JSON_PATH, True)
