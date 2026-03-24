@@ -7,7 +7,7 @@ from .tgcn_model import GCN_muti_att
 
 def get_model(parent_dir, num_classes):
     checkpoint_path = f"{parent_dir}/rtsl/backend/models/checkpoints/asl{num_classes}/pytorch_model.bin"
-    config_path = f"{parent_dir}/rtsl/backend/models/configs/asl{num_classes}.ini"
+    config_path = f"{parent_dir}/rtsl/backend/models/checkpoints/asl{num_classes}/config.ini"
     config = Config(config_path)
     
     # initalize model

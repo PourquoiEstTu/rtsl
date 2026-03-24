@@ -41,38 +41,3 @@ class Gloss_to_Sentence_Model:
         
         prediction = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
         return prediction
-
-# def main():
-#     sentence_model = Gloss_to_Sentence_Model()
-    
-#     sample_glosses = [
-#         "HELLO MY NAME J-O-H-N",
-#         "NICE MEET YOU",
-#         "HOW YOU",
-#         "I FINE",
-#         "YOUR NAME WHAT",
-#         "WHERE YOU LIVE",
-#         "I HUNGRY",
-#         "I THIRSTY WANT WATER",
-#         "TOMORROW STORE I GO",
-#         "YESTERDAY SCHOOL I GO",
-#         "LAST-WEEK MOVIE I WATCH",
-#         "PAST NIGHT I SLEEP EARLY",
-#         "COFFEE I DRINK WANT",
-#         "MUSIC I LISTEN ENJOY",
-#         "IF RAIN TOMORROW GAME CANCEL",
-#         "TEACHER SAY TEST DIFFICULT BUT I STUDY HARD",
-#         "AFTER EAT DINNER I WATCH TV",
-#         "YESTERDAY WORK I GO WHY SICK I",
-#         "FINISH HOMEWORK YOU WANT GO MOVIE?",
-#         "MOTHER NOT-YET FEED CAT."
-#     ]
-
-#     for gloss in sample_glosses:
-#         prediction = sentence_model.run_inference(gloss)
-#         print(f"\nGloss: {gloss}")
-#         print(f"Prediction:-----------------------\n{prediction}\n-----------------------")
-
-
-# if __name__ == "__main__":
-#     main()

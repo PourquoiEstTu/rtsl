@@ -125,10 +125,3 @@ class Gloss_to_Sentence_Config:
         print(f"  Learning rate: {self.training.learning_rate}")
         print(f"  Output dir: {self.training.output_dir}")
         print("="*60 + "\n")
-        
-if __name__ == '__main__':
-    # Updated path - use local config file
-    import os
-    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    config_path = os.path.join(project_root, 'code/TGCN/configs/local_test.ini')
-    print(str(Config(config_path)))
