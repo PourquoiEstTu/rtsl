@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import KeypointTransceiver from "@/components/KeypointTransceiver.vue";
+import KeypointTransceiver from "./KeypointTransceiver.vue";
+import TranslationBox from "@/components/TranslationBox.vue";
+
+const translatedSentence = ref<string>("Waiting for sign input...");
+
+function onNewSentence(sentence: string) {
+  translatedSentence.value = sentence;
+}
 
 const started = ref(false);
 
@@ -11,7 +18,6 @@ function startCapture() {
 function stopCapture() {
   started.value = false;
 }
-
 </script>
 
 <template>
@@ -21,36 +27,21 @@ function stopCapture() {
         <img src="/logo_cut.png" alt="RTSL logo" class="logo" />
         <div class="brand-text">
           <h1>RTSL</h1>
-          <p>Real-Time Sign Language Assistant</p>
         </div>
       </div>
 
       <div class="center">
-        <div class="translation-box">
-          Waiting for translation...
-        </div>
+        <TranslationBox class="translation-box" :translation="translatedSentence" />
       </div>
 
       <div class="actions">
-        <button
-          v-if="!started"
-          class="start-btn"
-          @click="startCapture"
-        >
-          Start Capture
-        </button>
+        <button v-if="!started" class="start-btn" @click="startCapture">Start Capture</button>
 
-        <button
-          v-else
-          class="stop-btn"
-          @click="stopCapture"
-        >
-          Stop Capture
-        </button>
+        <button v-else class="stop-btn" @click="stopCapture">Stop Capture</button>
       </div>
 
       <div v-if="started" class="hidden-capture">
-        <KeypointTransceiver />
+        <KeypointTransceiver @new-sentence="onNewSentence" />
       </div>
     </div>
   </div>
@@ -64,8 +55,14 @@ function stopCapture() {
   padding: 8px;
   box-sizing: border-box;
   background: linear-gradient(180deg, #d9ecfb 0%, #c9e0f5 100%);
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", sans-serif;
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
 .translator-card {
@@ -116,18 +113,8 @@ function stopCapture() {
 }
 
 .translation-box {
-  width: 100%;
-  min-height: 54px;
-  border-radius: 18px;
-  background: #ffffff;
-  box-shadow: 0 6px 16px rgba(75, 120, 170, 0.12);
-  display: flex;
-  align-items: center;
-  padding: 0 18px;
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #274690;
-  box-sizing: border-box;
+  flex: 0.5;
+  width: 100%; /* ensure full width */
 }
 
 .hidden-capture {
