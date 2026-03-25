@@ -17,49 +17,35 @@ function updateWidth() {
   screenWidth.value = window.innerWidth;
 }
 
+// Define what counts as desktop/laptop
+const isDesktop = computed(() => screenWidth.value >= 1024);
+
 onMounted(() => {
   window.addEventListener("resize", updateWidth);
 });
 onUnmounted(() => {
   window.removeEventListener("resize", updateWidth);
 });
-// Define what counts as desktop/laptop
-const isDesktop = computed(() => screenWidth.value >= 1024);
 
-// Todo: assign string returned from backend to this var
-const lastTranslation = ref<string>("Waiting for sign input...");
-// These are temparary for demo
-const exmapleTranslations = [
-  'Idk brochacho ✌️😭',
-  'Long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long sentence from a yapper',
-  'Test 1',
-  'Test 2',
-  'Test 3',
-  'Test 4',
-  'Test 5',
-  'Test 6',
-  'Test 7',
-  'Lol 6 7',
-];
-
+const translatedWord = ref<string>("");
+let wordTimeout: ReturnType<typeof setTimeout> | null = null;
+const translatedSentence = ref<string>("Waiting for sign input...");
 const translationHistory = ref<string[]>([]);
 
-watch(lastTranslation, () => {
-  translationHistory.value.push(lastTranslation.value)
-})
-
-function* exampleTranslation() {
-  while (true) {
-    for (const translation of exmapleTranslations) {
-      yield translation;
-    }
-  }
+function onNewWord(word: string) {
+  translatedWord.value = word;
+  if (wordTimeout) clearTimeout(wordTimeout);
+  wordTimeout = setTimeout(() => (translatedWord.value = ""), 1500);
 }
 
-const genExampleTranslation = exampleTranslation();
+function onNewSentence(sentence: string) {
+  translatedSentence.value = sentence;
+}
 
+watch(translatedSentence, () => {
+  translationHistory.value.push(translatedSentence.value);
+});
 </script>
-
 
 <template>
   <div>
@@ -76,18 +62,26 @@ const genExampleTranslation = exampleTranslation();
     </aside>
     <main>
       <div class="outer-container lg:p-2!">
-        <div class="camera-panel lg:rounded-t-4xl">
-          <KeypointTransceiver />
+        <div class="camera-panel h-full! lg:rounded-t-4xl">
+          <KeypointTransceiver @new-word="onNewWord" @new-sentence="onNewSentence" />
           <div class="background-gradient"></div>
+
+          <div class="relative w-full h-full">
+            <div v-if="translatedWord" class="absolute inset-0 flex items-start justify-center pointer-events-none">
+              <div class="px-4! py-2! mt-3! bg-gradient-to-b from-[#e9f6ff] to-[#a6d0f1] rounded-md text-black">
+                {{ translatedWord }}
+              </div>
+            </div>
+          </div>
+
           <ChatHistoryButton :translations="translationHistory" />
           <PhoneSidebarButton v-if="!isDesktop" />
 
           <div class="button-container">
-            <Button class="button border-5! rounded-full!"
-              @click="lastTranslation = genExampleTranslation.next().value as string" />
+            <Button class="button border-5! rounded-full!" />
           </div>
         </div>
-        <TranslationBox class="translation-box" :translation="lastTranslation" />
+        <TranslationBox class="translation-box" :translation="translatedSentence" />
       </div>
     </main>
   </div>

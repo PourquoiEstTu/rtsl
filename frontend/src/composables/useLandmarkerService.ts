@@ -69,6 +69,13 @@ export default function useLandmarkerService() {
     if (animationFrameId.value) {
       cancelAnimationFrame(animationFrameId.value);
     }
+
+    // Reset state so remounting is clean
+    handLandmarker = null;
+    poseLandmarker = null;
+    stream = null;
+    lastVideoTime = -1;
+    animationFrameId.value = null;
   }
 
   function getLandmarks(videoEl: Ref<HTMLVideoElement | null>, canvasEl: Ref<HTMLCanvasElement | null>) {
@@ -89,18 +96,10 @@ export default function useLandmarkerService() {
     return { handLandmarkerResults, poseLandmarkerResults };
   }
 
-  async function getVideoSrc(isExtension: boolean): Promise<MediaStream> {
-    stream = isExtension
-      ? await navigator.mediaDevices.getDisplayMedia({ video: true }) // If its an extension, use screen capture
-      : await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }); // Otherwise (app), use camera
-    return stream;
-  }
-
   return {
     init,
     stop,
     getLandmarks,
-    getVideoSrc,
     handLandmarker,
     poseLandmarker,
     animationFrameId,

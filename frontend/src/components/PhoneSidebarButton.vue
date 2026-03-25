@@ -1,17 +1,21 @@
 <script setup lang="ts">
-import Drawer from '@/volt/Drawer.vue';
-import PhoneSidebarIcon from './PhoneSidebarIcon.vue';
-import Sidebar from './Sidebar.vue';
-import { ref } from 'vue';
+import Drawer from "@/volt/Drawer.vue";
+import Button from "@/volt/Button.vue";
+import PhoneSidebarIcon from "./PhoneSidebarIcon.vue";
+import Sidebar from "./Sidebar.vue";
+import { ref } from "vue";
 import logo from "@/assets/logo_without_text-removebg-preview.png";
 
 const visible = ref(false);
-
 </script>
 
 <template>
-  <Drawer v-model:visible="visible" header="Menu" pt:header:class="pl-4!"
-    class="bg-gradient-to-b from-[#e9f6ff] to-[#a6d0f1]">
+  <Drawer
+    v-model:visible="visible"
+    header="Menu"
+    pt:header:class="pl-4!"
+    class="bg-gradient-to-b from-[#e9f6ff] to-[#a6d0f1]"
+  >
     <div class="flex flex-col h-full justify-between px-2! pb-8! rounded-0!">
       <Sidebar />
       <div class="logo">

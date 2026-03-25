@@ -1,10 +1,10 @@
-import { VitePWA } from 'vite-plugin-pwa';
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import type { PluginOption } from 'vite'
-import mkcert from 'vite-plugin-mkcert'
-import tailwindcss from '@tailwindcss/vite'
-import path from 'path';
+import { VitePWA } from "vite-plugin-pwa";
+import { defineConfig } from "vitest/config";
+import vue from "@vitejs/plugin-vue";
+import type { PluginOption } from "vite";
+import mkcert from "vite-plugin-mkcert";
+import tailwindcss from "@tailwindcss/vite";
+import path from "path";
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 // https://vitejs.dev/config/
@@ -26,7 +26,7 @@ export default defineConfig({
       ]
     }),
     VitePWA({
-      registerType: 'autoUpdate',
+      registerType: "autoUpdate",
       injectRegister: false,
 
       pwaAssets: {
@@ -35,34 +35,37 @@ export default defineConfig({
       },
 
       manifest: {
-        name: 'rtsl-frontend',
-        short_name: 'rtsl-frontend',
-        description: 'Frontend for rtsl, real-time (American) sign language translation',
-        theme_color: '#ffffff',
+        name: "rtsl-frontend",
+        short_name: "rtsl-frontend",
+        description:
+          "Frontend for rtsl, real-time (American) sign language translation",
+        theme_color: "#ffffff",
       },
 
       workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
+        globPatterns: ["**/*.{js,css,html,svg,png,ico}"],
         cleanupOutdatedCaches: true,
         clientsClaim: true,
       },
 
       devOptions: {
         enabled: false,
-        navigateFallback: 'index.html',
+        navigateFallback: "index.html",
         suppressWarnings: true,
-        type: 'module',
-      }
+        type: "module",
+      },
     }),
   ] as PluginOption[],
+  test: {
+    environment: "jsdom",
+    globals: true,
+  },
   server: {
-    host: '0.0.0.0',
+    host: "0.0.0.0",
     port: 5173,
   },
   resolve: {
-    alias: [
-      { find: "@", replacement: path.resolve(__dirname, "./src") }
-    ]
+    alias: [{ find: "@", replacement: path.resolve(__dirname, "./src") }],
   },
   build: {
     rollupOptions: {
@@ -73,5 +76,5 @@ export default defineConfig({
         serviceWorker: path.resolve(__dirname, 'src/extension/background/service-worker.ts'),
       }
     }
-  }
-})
+  },
+});

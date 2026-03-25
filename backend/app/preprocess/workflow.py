@@ -16,7 +16,7 @@ from scipy.interpolate import interp1d
 # global vars
 BASE_DIR = Path(__file__).resolve().parents[3] / "archive"
 DIR = str(BASE_DIR)
- # folder where your dataset is
+# folder where your dataset is
 JSON_PATH = f"{DIR}/WLASL_v0.3.json"
 VIDEO_DIR = f"{DIR}/videos/"  # folder with your video files
 TRAIN_OUTPUT_DIR = f"{DIR}/train_output" # folder to save .npy feature files
@@ -167,7 +167,6 @@ def remove_zero_frames(input_dir: str, output_dir: str, overwrite_prev_file: boo
             cleaned_features = np.array(cleaned_features)
             np.save(npy_path, cleaned_features)
             print(f"Saved cleaned features: {npy_path}")
-
 # remove_zero_frames(TRAIN_OUTPUT_DIR, TRAIN_OUTPUT_DIR_CLEANED)
 
 # linear search as of now, maybe add code to order json by gloss or video_id
@@ -347,9 +346,6 @@ def force_equal_dims_features_labels(input_dir: str, label_file: str, json_path:
         print("Labels array has been truncated.")
     np.save(out_path, labels)
     print("Normalized labels have been saved")
-# normalize_labels(TRAIN_OUTPUT_DIR_NORMALIZED, 
-#       f"{TRAIN_OUTPUT_DIR_CLEANED}/ordered_labels.npy", JSON_PATH, True)
-#normalize_labels(TEST_OUTPUT_DIR_NORMALIZED, 
-#           f"{TEST_OUTPUT_DIR_CLEANED}/ordered_labels.npy", JSON_PATH, True)
-# normalize_labels(VALIDATION_OUTPUT_DIR_NORMALIZED, 
-#         f"{VALIDATION_OUTPUT_DIR_CLEANED}/ordered_labels.npy", JSON_PATH, True)
+# force_equal_dims_features_labels(TRAIN_OUTPUT_DIR_NORMALIZED, f"{TRAIN_OUTPUT_DIR_CLEANED}/ordered_labels.npy", JSON_PATH, True)
+# force_equal_dims_features_labels(TEST_OUTPUT_DIR_NORMALIZED, f"{TEST_OUTPUT_DIR_CLEANED}/ordered_labels.npy", JSON_PATH, True)
+# force_equal_dims_features_labels(VALIDATION_OUTPUT_DIR_NORMALIZED, f"{VALIDATION_OUTPUT_DIR_CLEANED}/ordered_labels.npy", JSON_PATH, True)

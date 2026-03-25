@@ -52,7 +52,7 @@ function goToAbout() {
 
     <!-- Cards Section -->
     <div class="home-card-row">
-      <div class="home-card" @click="goToCamera">
+      <div class="home-card" data-testid="camera-card" @click="goToCamera">
         <div class="home-icon">
           <i class="pi pi-camera"></i>
         </div>
@@ -60,7 +60,7 @@ function goToAbout() {
         <p class="home-card-desc">Translate ASL to English</p>
       </div>
 
-      <div class="home-card" v-if="isDesktop" @click="goToWebExtension">
+      <div class="home-card" data-testid="plugin-card" v-if="isDesktop" @click="goToWebExtension">
         <div class="home-icon flex items-center justify-center h-[90px]">
           <ExtensionIcon />
         </div>
@@ -68,7 +68,7 @@ function goToAbout() {
         <p class="home-card-desc">Zoom / Meet / Teams</p>
       </div>
 
-      <div class="home-card" @click="goToAbout">
+      <div class="home-card" data-testid="about-card" @click="goToAbout">
         <div class="home-icon">
           <i class="pi pi-question"></i>
         </div>
