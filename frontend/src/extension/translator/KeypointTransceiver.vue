@@ -1,22 +1,9 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useWebSocket } from "@vueuse/core";
-import Toast from "@/volt/Toast.vue";
 import useLandmarkerService from "@/composables/useLandmarkerService";
-import { drawHandLandmarks, drawPoseLandmarks } from "@/utils/drawingUtils";
-import { useToast } from "primevue/usetoast";
-
-const props = defineProps({
-  isOn: {
-    type: Boolean,
-    required: true,
-  },
-});
-
-const isOnComputed = computed(() => props.isOn);
 
 const landmarkerService = useLandmarkerService();
-const toast = useToast();
 const { status, data, send, open, close } = useWebSocket("wss://rtsl.cas.mcmaster.ca:8000/ws");
 
 const emit = defineEmits(["newWord", "newSentence"]);
@@ -37,8 +24,6 @@ const videoEl = ref<HTMLVideoElement | null>(null);
 const canvasEl = ref<HTMLCanvasElement | null>(null);
 
 let lastSeenTime = performance.now();
-let hasShownMissingToast = false;
-const MISSING_THRESHOLD_MS = 3000;
 const CLOSE_WS_THRESHOLD_MS = 15000;
 const keepWebsocketClosed = ref(false);
 
@@ -61,7 +46,7 @@ onMounted(async () => {
     return;
   }
 
-  await landmarkerService.init(videoEl, false);
+  await landmarkerService.init(videoEl, true);
 
   const canvasCtx = canvasEl.value.getContext("2d");
   if (!canvasCtx) {
@@ -71,12 +56,6 @@ onMounted(async () => {
 
   const predictWebcam = () => {
     if (!videoEl.value || !canvasEl.value) return;
-
-    if (!isOnComputed.value) {
-      canvasCtx.clearRect(0, 0, canvasEl.value.width, canvasEl.value.height);
-      landmarkerService.animationFrameId.value = window.requestAnimationFrame(predictWebcam);
-      return;
-    }
 
     const videoWidth = videoEl.value.videoWidth;
     const videoHeight = videoEl.value.videoHeight;
@@ -90,7 +69,6 @@ onMounted(async () => {
     const hasLandmarks = !!handLandmarkerResults?.landmarks.length || !!poseLandmarkerResults?.landmarks.length;
     if (hasLandmarks) {
       lastSeenTime = performance.now();
-      hasShownMissingToast = false;
 
       // Reopen WS if it was closed due to inactivity
       if (keepWebsocketClosed.value && status.value === "CLOSED") {
@@ -108,29 +86,11 @@ onMounted(async () => {
     }
 
     const now = performance.now();
-    // Show toast if no landmarks for a while
-    if (now - lastSeenTime > MISSING_THRESHOLD_MS && !hasShownMissingToast) {
-      toast.add({
-        severity: "warn",
-        summary: "No detection",
-        detail: "We can't see you. Make sure you're in frame.",
-        life: 7000,
-      });
-      hasShownMissingToast = true;
-    }
     // Close WS connection no landmarks in a long time
     if (now - lastSeenTime > CLOSE_WS_THRESHOLD_MS && status.value === "OPEN") {
       keepWebsocketClosed.value = true;
       console.log("Closing WS connection.");
       close();
-    }
-
-    if (handLandmarkerResults?.landmarks.length) {
-      drawHandLandmarks(canvasCtx, handLandmarkerResults, canvasEl.value.width, canvasEl.value.height);
-    }
-
-    if (poseLandmarkerResults?.landmarks.length) {
-      drawPoseLandmarks(canvasCtx, poseLandmarkerResults, canvasEl.value.width, canvasEl.value.height);
     }
 
     landmarkerService.animationFrameId.value = window.requestAnimationFrame(predictWebcam);
@@ -141,7 +101,6 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Toast position="top-center" />
-  <video ref="videoEl" autoplay playsinline />
-  <canvas ref="canvasEl" class="absolute w-full object-cover h-full" />
+  <video v-show="false" ref="videoEl" autoplay playsinline />
+  <canvas v-show="false" ref="canvasEl" class="absolute w-full object-cover h-full" />
 </template>
