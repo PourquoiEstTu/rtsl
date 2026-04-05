@@ -12,7 +12,7 @@ import joblib
 
 PRETRAINED_MODEL = 0
 NUM_SAMPLES = 0
-ROOT = "/u50/quyumr/rtsl/backend/app"
+ROOT = "/u50/chandd9/rtsl/backend/app"
 
 PRETRAINED_MODEL = 0
 NUM_SAMPLES = 50
@@ -399,7 +399,11 @@ def process_all_vids(video_dir, output_dir, split_file=None):
             print(f"Preprocessing on video {file.name} failed... Skipping.")
             continue
 # process_all_vids("/u50/quyumr/archive/videos", "/u50/quyumr/archive/asl-live-tl-features") 
-# process_all_vids("/u50/chandd9/downloads/ASL_Citizen/videos", "/u50/chandd9/downloads/asl_cit_pt_inter_all", split_file="/u50/chandd9/capstone/rtsl/backend/app/asl_citizen/asl_citizens100.json")
+# process_all_vids("/u50/chandd9/downloads/ASL_Citizen/videos", "/u50/chandd9/downloads/asl_cit_pt_inter_1000", split_file="/u50/chandd9/capstone/rtsl/backend/app/asl_citizen/asl_citizens1000.json")
+
+# creating 26 alphabet
+# process_all_vids("/u50/chandd9/capstone/videos", "/u50/chandd9/downloads/wlasl_pt_26", split_file="/u50/chandd9/capstone/rtsl/backend/data_splits/26/data.json")
+
 
 # 
 def create_pose_npy(video_dir, output_dir):

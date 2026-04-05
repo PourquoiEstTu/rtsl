@@ -18,9 +18,12 @@ from train_utils import train, validation
 import itertools
 from copy import deepcopy
 import matplotlib.pyplot as plt
+import string
+import csv
+
+from sklearn.metrics import recall_score, classification_report
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
-# os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
 
 def normal_run(split_file, pose_data_root, configs, save_model_to=None, labels_to_include=None):
@@ -154,6 +157,13 @@ def normal_run(split_file, pose_data_root, configs, save_model_to=None, labels_t
     print(f"Top-5  acc: {100 * scores[2]:.2f}%")
     print(f"Top-10 acc: {100 * scores[3]:.2f}%")
     print(f"Top-30 acc: {100 * scores[4]:.2f}%") # wow top 30 does great!
+
+    # calculate recall
+    recall_m = recall_score(val_gts, val_preds, average='macro')
+    print(f"Macro-average recall: {recall_m:.4f}")
+
+    recall_w = recall_score(val_gts, val_preds, average='weighted')
+    print(f"Weighted-average recall: {recall_w:.4f}")
 
 # grid search for hyperparameters
 #     param_grid = {
@@ -296,7 +306,6 @@ def grid_search(split_file, pose_data_root, config_file, n_runs=1):
         print(f"  avg={r['avg_acc']:.4f} std={r['std_acc']:.4f} best={r['best_acc']:.4f} | {r}")
 
     # save to csv (exclude all_runs details for cleaner csv)
-    import csv
     csv_results = [{k: v for k, v in r.items() if k != 'all_runs'} for r in results]
     with open('outputs/grid_search_results.csv', 'w', newline='') as f:
         writer = csv.DictWriter(f, fieldnames=csv_results[0].keys())
@@ -481,18 +490,26 @@ if __name__ == "__main__":
 
     # split_file = os.path.join(root, 'splits/{}.json'.format(subset))
     split_file = "/u50/chandd9/capstone/rtsl/backend/app/asl_citizen/asl_citizens100.json"
+    # split_file = "/u50/chandd9/capstone/rtsl/backend/data_splits/26/data.json"
     # split_file = "/u50/chandd9/capstone/rtsl/backend/app/splits/asl100.json"
     # pose_data_root = "/u50/quyumr/archive/asl-live-tl-features"
-    pose_data_root = "/u50/chandd9/downloads/asl_cit_pt_inter_all"
+    # pose_data_root = "/u50/chandd9/downloads/wlasl_pt_26"
+    pose_data_root = "/u50/chandd9/downloads/asl_cit_pt_inter_100"
     # pose_data_root = "/u50/chandd9/downloads/tgcn_data"
-    config_file = os.path.join(root, 'config2.ini')
+    config_file = os.path.join(root, 'config3.ini')
     configs = Config(config_file)
 
     # print('outputs/{}.log'.format(os.path.basename(config_file)[:-4]))
     logging.basicConfig(filename='outputs/{}.log'.format(os.path.basename(config_file)[:-4]), level=logging.DEBUG, filemode='w+')
 
+    # letters_to_include = list(string.ascii_lowercase)
+
+    # print(f"Filtering to labels: {letters_to_include}")
+    # exit(1)
+
     logging.info('Calling main.run()')
-    # normal_run(split_file=split_file, configs=configs, pose_data_root=pose_data_root, labels_to_include=["BOOK", "WANT", "WORK", "MEDICINE", "FINE", "YES", "NO", "FINISH", "BEFORE", "SAME"])
-    normal_run(split_file=split_file, configs=configs, pose_data_root=pose_data_root)    
+    # normal_run(split_file=split_file, configs=configs, pose_data_root=pose_data_root, labels_to_include=["HELLO", "HOW", "YOU", "SAME", "RIGHT", "TELL", "ME"])
+    normal_run(split_file=split_file, configs=configs, pose_data_root=pose_data_root, labels_to_include=["YES", "NO", "HELP", "EAT", "DRINK", "WANT", "FINISH", "GO", "WHAT", "WHO"])
+    # normal_run(split_file=split_file, configs=configs, pose_data_root=pose_data_root)    
     logging.info('Finished main.run()')
     # utils.plot_curves()
