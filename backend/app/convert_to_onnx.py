@@ -10,7 +10,7 @@ import torch
 import configparser
 
 # Add TGCN code to path
-ROOT = "/u50/quyumr/rtsl/backend/app"
+ROOT = "/u50/chandd9/capstone/rtsl/backend/app"
 
 from tgcn_model import GCN_muti_att
 
@@ -61,6 +61,8 @@ def convert_to_onnx(model_name, checkpoint_path, config_path, output_dir = ROOT)
         num_class = 1000  # ASL100 has 100 classes
     elif model_name == 'asl2000':
         num_class = 2000  # ASL2000 has 2000 classes (commented out)
+    elif model_name == 'custom':
+        num_class = 3  # Example for a custom model
     else:
         # num_class = 100  # Default to ASL100
         raise Exception("Valid model not passed in. Valid strings are: ['asl100', 'asl300', 'asl1000', 'asl2000']")
@@ -181,7 +183,8 @@ if __name__ == '__main__':
     #   were taken straight from the reference repo
     # success = convert_to_onnx('asl100', f"{ROOT}/splits/100/pytorch_model100.bin", f"{ROOT}/splits/100/asl100.ini")
     # success = convert_to_onnx('asl300', f"{ROOT}/splits/300/pytorch_model300.bin", f"{ROOT}/splits/300/asl300.ini")
-    success = convert_to_onnx('asl1000', f"{ROOT}/splits/1000/pytorch_model.bin", f"{ROOT}/splits/1000/asl1000.ini")
+    # success = convert_to_onnx('asl1000', f"{ROOT}/splits/1000/pytorch_model.bin", f"{ROOT}/splits/1000/asl1000.ini")
+    success = convert_to_onnx('custom', f"{ROOT}/splits/100/0_1.0000.pth", f"{ROOT}/config2.ini")
     # success = convert_to_onnx('asl2000', f"{ROOT}/splits/2000/pytorch_model.bin", f"{ROOT}/splits/2000/asl2000.ini")
     if success:
         print("\n" + "=" * 60)
