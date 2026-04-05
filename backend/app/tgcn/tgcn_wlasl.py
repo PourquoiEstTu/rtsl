@@ -4,31 +4,28 @@ from configs import Config
 import json
 import onnxruntime as ort
 import os
-# from transformers import AutoModel, AutoModelForSequenceClassification, PreTrainedModel
 import numpy as np
 from pose_extractor import PoseExtractor
 from sys import exit
 import joblib
 
 PRETRAINED_MODEL = 0
-NUM_SAMPLES = 0
-ROOT = "/u50/chandd9/rtsl/backend/app"
+# ROOT = "/u50/chandd9/rtsl/backend/app"
 
-PRETRAINED_MODEL = 0
 NUM_SAMPLES = 50
 
 # Default values (will be overridden by model/config)
 NUM_NODES = 55  # Fixed: 13 body + 21 left hand + 21 right hand
-NUM_CLASSES = 100  # ASL100
+# NUM_CLASSES = 100  # ASL100
 # NUM_CLASSES = 2000  # ASL2000 (commented out)
 
 # Body keypoints to exclude (matching training)
-BODY_POSE_EXCLUDE = {9, 10, 11, 22, 23, 24, 12, 13, 14, 19, 20, 21}
+# BODY_POSE_EXCLUDE = {9, 10, 11, 22, 23, 24, 12, 13, 14, 19, 20, 21}
 
 # Frame capture settings
-DEFAULT_FPS = 10  # Frames per second for capture
-MAX_FRAMES = 200  # Maximum frames to process
-TARGET_FRAME_SIZE = 256  # Target size for normalization
+# DEFAULT_FPS = 10  # Frames per second for capture
+# MAX_FRAMES = 200  # Maximum frames to process
+# TARGET_FRAME_SIZE = 256  # Target size for normalization
 
 def generate_class_integer_mappings(directory: str, mappings_exist: bool, json_path: str, max_classes = None) :
     """
@@ -66,10 +63,6 @@ def generate_class_integer_mappings(directory: str, mappings_exist: bool, json_p
         print("{idx: class} dictionary created")
 
     return idx_to_class, class_to_idx
-
-# idx_to_class, class_to_idx = generate_class_integer_mappings("/u50/quyumr/rtsl/backend/app/splits/300", mappings_exist=False, json_path="/u50/quyumr/rtsl/backend/app/splits/asl300.json")
-# print(idx_to_class[1845])
-# exit()
 
 def _preprocess_keypoints(frames_data):
     """
@@ -355,9 +348,6 @@ def test_run():
     
     return 
 
-# test_run()
-
-
 def load_video_ids_from_json(split_file):
     """Load all video_ids from the split JSON file."""
     with open(split_file, 'r') as f:
@@ -370,6 +360,10 @@ def load_video_ids_from_json(split_file):
 
 
 def process_all_vids(video_dir, output_dir, split_file=None):
+    """
+        Processes all videos and saves per-video .pt files with preprocessed keypoints.
+        Each .pt file contains a tensor of shape [1, 55, num_samples*2] with normalized keypoint data.
+    """
     extractor = PoseExtractor()
     
     # load valid video ids if split file provided
@@ -398,84 +392,12 @@ def process_all_vids(video_dir, output_dir, split_file=None):
         except Exception as e:
             print(f"Preprocessing on video {file.name} failed... Skipping.")
             continue
-# process_all_vids("/u50/quyumr/archive/videos", "/u50/quyumr/archive/asl-live-tl-features") 
-# process_all_vids("/u50/chandd9/downloads/ASL_Citizen/videos", "/u50/chandd9/downloads/asl_cit_pt_inter_1000", split_file="/u50/chandd9/capstone/rtsl/backend/app/asl_citizen/asl_citizens1000.json")
-
-# creating 26 alphabet
-# process_all_vids("/u50/chandd9/capstone/videos", "/u50/chandd9/downloads/wlasl_pt_26", split_file="/u50/chandd9/capstone/rtsl/backend/data_splits/26/data.json")
-
-
-# 
-def create_pose_npy(video_dir, output_dir):
-    """
-    Processes all videos and saves per-video numpy arrays.
-    Each .npy file contains shape [T, 55, 2] - T frames, 55 keypoints, xy coords (unnormalized)
-    """
-    extractor = PoseExtractor()
-    
-    for file in os.scandir(video_dir):
-        if not file.is_file() or not file.name.endswith('.mp4'):
-            continue
-        
-        video_id = os.path.splitext(file.name)[0]
-        out_path = os.path.join(output_dir, f"{video_id}.npy")
-        
-        if os.path.isfile(out_path):
-            print(f"Video {file.name} already processed, skipping.")
-            continue
-        
-        try:
-            frames_data = extractor.extract_from_video(os.path.join(video_dir, file.name))
-            
-            body_pose_exclude = {9, 10, 11, 22, 23, 24, 12, 13, 14, 19, 20, 21}
-            all_frames = []
-            
-            for frame_data in frames_data:
-                people = frame_data.get('people', [])
-                if not people:
-                    all_frames.append(np.zeros((55, 2), dtype=np.float32))
-                    continue
-                
-                p = people[0]
-                body  = p.get('pose_keypoints_2d', [])
-                left  = p.get('hand_left_keypoints_2d', [])
-                right = p.get('hand_right_keypoints_2d', [])
-                
-                combined = list(body) + list(left) + list(right)
-                num_landmarks = len(combined) // 3
-                
-                x_list, y_list = [], []
-                for j in range(num_landmarks):
-                    if j < 25 and j in body_pose_exclude:
-                        continue
-                    x_list.append(combined[j*3])
-                    y_list.append(combined[j*3 + 1])
-                
-                # pad/truncate to 55
-                while len(x_list) < 55:
-                    x_list.append(0.0)
-                    y_list.append(0.0)
-                x_list = x_list[:55]
-                y_list = y_list[:55]
-                
-                # store raw 256px coords - normalize later in _load_poses
-                frame_xy = np.stack([x_list, y_list], axis=1).astype(np.float32)  # [55, 2]
-                all_frames.append(frame_xy)
-            
-            # save as [T, 55, 2]
-            video_array = np.stack(all_frames, axis=0)
-            np.save(out_path, video_array)
-            print(f"Video {file.name} -> shape {video_array.shape} saved.")
-        
-        except Exception as e:
-            print(f"Failed on {file.name}: {e}")
-            continue
-# create_pose_npy("/u50/chandd9/capstone/videos", "/u50/chandd9/downloads/tgcn_npy")
 
 def create_pose_npy2(video_dir, output_dir, split_file=None):
     """
     Processes all videos and saves per-video numpy arrays.
     Each .npy file contains shape [T, 55, 2] - T frames, 55 keypoints, xy coords (unnormalized)
+    (deprecated - method not used in final implementation, but kept for reference)
     """
     extractor = PoseExtractor()
     
@@ -541,6 +463,20 @@ def create_pose_npy2(video_dir, output_dir, split_file=None):
         except Exception as e:
             print(f"Failed on {file.name}: {e}")
             continue
+
+# Testing code - run this to test the pose extractor and model setup on a single video
+# test_run()
+
+# idx_to_class, class_to_idx = generate_class_integer_mappings("/u50/quyumr/rtsl/backend/app/splits/300", mappings_exist=False, json_path="/u50/quyumr/rtsl/backend/app/splits/asl300.json")
+# print(idx_to_class[1845])
+# exit()
+
+# process_all_vids("/u50/quyumr/archive/videos", "/u50/quyumr/archive/asl-live-tl-features") 
+# process_all_vids("/u50/chandd9/downloads/ASL_Citizen/videos", "/u50/chandd9/downloads/asl_cit_pt_inter_1000", split_file="/u50/chandd9/capstone/rtsl/backend/app/asl_citizen/asl_citizens1000.json")
+
+# creating 26 alphabet
+# process_all_vids("/u50/chandd9/capstone/videos", "/u50/chandd9/downloads/wlasl_pt_26", split_file="/u50/chandd9/capstone/rtsl/backend/data_splits/26/data.json")
+
 # create_pose_npy2("/u50/chandd9/downloads/ASL_Citizen/videos", "/u50/chandd9/downloads/asl_cit_all_pt")
 
 # checkpoint_path = "/home/pourquoi/repos/rtsl/backend/app/checkpoints/asl1000/pytorch_model.bin"

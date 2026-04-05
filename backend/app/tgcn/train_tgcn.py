@@ -1,27 +1,23 @@
 import logging
 import os
-from sys import exit
+# from sys import exit
 
 import numpy as np
 import torch
 import torch.optim as optim
-from torch.utils.data import Dataset
+# from torch.utils.data import Dataset
 
 import utils
 from configs import Config
 from tgcn_model import GCN_muti_att
 from sign_dataset import Sign_Dataset
 from train_utils import train, validation
-# from sign_dataset_npy import Sign_Dataset
-# from train_utils_npy import train, validation
 
 import itertools
-from copy import deepcopy
 import matplotlib.pyplot as plt
-import string
 import csv
 
-from sklearn.metrics import recall_score, classification_report
+from sklearn.metrics import recall_score
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
@@ -123,7 +119,7 @@ def normal_run(split_file, pose_data_root, configs, save_model_to=None, labels_t
             best_epoch_num = epoch
             early_stop_counter = 0  # reset counter on improvement
 
-            torch.save(model.state_dict(), f"splits/{subset.replace('asl','')}/{best_epoch_num}_{best_test_acc:.4f}.pth")
+            torch.save(model.state_dict(), f"splits/{configs.subset.replace('asl','')}/{best_epoch_num}_{best_test_acc:.4f}.pth")
             print(f"New best model saved: epoch={best_epoch_num}, val_acc={best_test_acc:.4f}")
         else:
             early_stop_counter += 1
@@ -142,7 +138,7 @@ def normal_run(split_file, pose_data_root, configs, save_model_to=None, labels_t
     utils.plot_confusion_matrix(val_gts, val_preds, classes=class_names, normalize=False, save_to='outputs/val-conf-mat')
 
     # print test results
-    best_model_path = f"splits/{subset.replace('asl','')}/{best_epoch_num}_{best_test_acc:.4f}.pth"
+    best_model_path = f"splits/{configs.subset.replace('asl','')}/{best_epoch_num}_{best_test_acc:.4f}.pth"
     model.load_state_dict(torch.load(best_model_path, weights_only=False))
     print(f"Loaded best model from: {best_model_path}")
 
@@ -442,12 +438,6 @@ def train_and_plot_subsets(subset_configs):
                  color=colors.get(subset_size, None),
                  linewidth=2)
 
-        # plt.annotate(f'{best_score:.1f}%',
-        #              xy=(best_epoch + 1, best_score),
-        #              xytext=(best_epoch + 3, best_score + 1),
-        #              fontsize=9,
-        #              color=colors.get(subset_size, 'black'))
-
     plt.xlabel('Epoch', fontsize=13)
     plt.ylabel('Validation Accuracy (%)', fontsize=13)
     plt.title('Validation Accuracy vs Epochs by Vocabulary Size', fontsize=15)
@@ -486,30 +476,11 @@ def train_and_plot_subsets(subset_configs):
 if __name__ == "__main__":
     root = '/u50/chandd9/capstone/rtsl/backend/app/' # My path of the project root directory
 
-    subset = 'asl100' # using asl100 subset first.
-
-    # split_file = os.path.join(root, 'splits/{}.json'.format(subset))
-    split_file = "/u50/chandd9/capstone/rtsl/backend/app/asl_citizen/asl_citizens100.json"
-    # split_file = "/u50/chandd9/capstone/rtsl/backend/data_splits/26/data.json"
-    # split_file = "/u50/chandd9/capstone/rtsl/backend/app/splits/asl100.json"
-    # pose_data_root = "/u50/quyumr/archive/asl-live-tl-features"
-    # pose_data_root = "/u50/chandd9/downloads/wlasl_pt_26"
-    pose_data_root = "/u50/chandd9/downloads/asl_cit_pt_inter_100"
-    # pose_data_root = "/u50/chandd9/downloads/tgcn_data"
     config_file = os.path.join(root, 'config3.ini')
     configs = Config(config_file)
 
-    # print('outputs/{}.log'.format(os.path.basename(config_file)[:-4]))
     logging.basicConfig(filename='outputs/{}.log'.format(os.path.basename(config_file)[:-4]), level=logging.DEBUG, filemode='w+')
 
-    # letters_to_include = list(string.ascii_lowercase)
-
-    # print(f"Filtering to labels: {letters_to_include}")
-    # exit(1)
-
     logging.info('Calling main.run()')
-    # normal_run(split_file=split_file, configs=configs, pose_data_root=pose_data_root, labels_to_include=["HELLO", "HOW", "YOU", "SAME", "RIGHT", "TELL", "ME"])
-    normal_run(split_file=split_file, configs=configs, pose_data_root=pose_data_root, labels_to_include=["YES", "NO", "HELP", "EAT", "DRINK", "WANT", "FINISH", "GO", "WHAT", "WHO"])
-    # normal_run(split_file=split_file, configs=configs, pose_data_root=pose_data_root)    
+    normal_run(split_file=configs.split_file, configs=configs, pose_data_root=configs.pose_data_root, labels_to_include=["YES", "NO", "HELP", "EAT", "DRINK", "WANT", "FINISH", "GO", "WHAT", "WHO"])
     logging.info('Finished main.run()')
-    # utils.plot_curves()
