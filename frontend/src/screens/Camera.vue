@@ -8,6 +8,7 @@ import Sidebar from "@/components/Sidebar.vue";
 import ChatHistoryButton from "@/components/ChatHistoryButton.vue";
 import PhoneSidebarButton from "@/components/PhoneSidebarButton.vue";
 import KeypointTransceiver from "@/components/KeypointTransceiver.vue";
+import SelectModelButton from "@/components/SelectModelButton.vue";
 
 // Track screen width
 const screenWidth = ref(window.innerWidth);
@@ -74,7 +75,12 @@ watch(translatedSentence, () => {
             </div>
           </div>
 
-          <ChatHistoryButton :translations="translationHistory" />
+          <div class="absolute! top-[2%] right-[5%] lg:right-[2%]">
+            <div class="flex gap-4">
+              <SelectModelButton />
+              <ChatHistoryButton :translations="translationHistory" />
+            </div>
+          </div>
           <PhoneSidebarButton v-if="!isDesktop" />
 
           <div class="button-container">

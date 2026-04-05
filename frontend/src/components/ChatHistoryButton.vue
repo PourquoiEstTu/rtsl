@@ -30,7 +30,7 @@ const visible = ref(false);
       <div v-else>Translations from this session will appear here</div>
     </div>
   </Drawer>
-  <Button class="button rounded-md w-10! absolute! top-[2%] right-[5%] lg:right-[2%]" @click="visible = true">
+  <Button class="button rounded-md w-10!" @click="visible = true">
     <ChatIcon />
   </Button>
 </template>

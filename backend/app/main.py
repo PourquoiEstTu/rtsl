@@ -51,6 +51,11 @@ async def websocket_endpoint(websocket: WebSocket):
         # print(gloss_sequence)
         received = await websocket.receive_json()
 
+        if "model" in received:
+            selected_model = received["model"]
+            # Guarav does something here
+            continue
+
         pose_landmarks = []
         if len(received["pose"]["landmarks"]) > 0:
             pose_landmarks = received["pose"]["landmarks"][0]
