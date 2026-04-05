@@ -5,6 +5,7 @@ import type { PluginOption } from "vite";
 import mkcert from "vite-plugin-mkcert";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,6 +13,18 @@ export default defineConfig({
     vue(),
     mkcert(),
     tailwindcss(),
+    viteStaticCopy({
+      targets: [
+        {
+          src: 'src/extension/manifest.json',
+          dest: ''
+        },
+        {
+          src: 'src/extension/background/service-worker.ts',
+          dest: 'background'
+        }
+      ]
+    }),
     VitePWA({
       registerType: "autoUpdate",
       injectRegister: false,
@@ -53,5 +66,15 @@ export default defineConfig({
   },
   resolve: {
     alias: [{ find: "@", replacement: path.resolve(__dirname, "./src") }],
+  },
+  build: {
+    rollupOptions: {
+      input: {
+        index: path.resolve(__dirname, 'index.html'),
+        popup: path.resolve(__dirname, 'src/extension/popup.html'),
+        translator: path.resolve(__dirname, 'src/extension/translator.html'),
+        serviceWorker: path.resolve(__dirname, 'src/extension/background/service-worker.ts'),
+      }
+    }
   },
 });
