@@ -9,7 +9,6 @@ from sys import exit
 import torch
 import configparser
 
-# Add TGCN code to path
 ROOT = "/u50/chandd9/capstone/rtsl/backend/app"
 
 from tgcn_model import GCN_muti_att
@@ -178,7 +177,6 @@ def convert_to_onnx(model_name, checkpoint_path, config_path, output_dir = ROOT)
 
 
 if __name__ == '__main__':
-    # Convert ASL100 model (active)
     # 100 and 2000 class models' config and pytorch bin file don't exist because they 
     #   were taken straight from the reference repo
     # success = convert_to_onnx('asl100', f"{ROOT}/splits/100/pytorch_model100.bin", f"{ROOT}/splits/100/asl100.ini")

@@ -27,6 +27,14 @@ class Config:
         self.hidden_size = int(gcn_config['HIDDEN_SIZE'])
         self.num_stages = int(gcn_config['NUM_STAGES'])
 
+        # paths
+        path_config = config['PATHS']
+        self.root = path_config['ROOT']
+        self.split_file = path_config['SPLIT_FILE']
+        self.pose_data_root = path_config['POSE_DATA_ROOT']
+        self.subset = path_config['SUBSET']
+
+
     def __str__(self):
         return 'bs={}_ns={}_drop={}_lr={}_eps={}_wd={}'.format(
             self.batch_size, self.num_samples, self.drop_p, self.init_lr, self.adam_eps, self.adam_weight_decay
