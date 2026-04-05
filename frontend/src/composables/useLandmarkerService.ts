@@ -19,7 +19,9 @@ export default function useLandmarkerService() {
     // Use extension URL if available, otherwise fallback to your current web app path
     const wasmPath = isExtension ? chrome.runtime.getURL("/wasm") : "/wasm";
     const modelPath = (landmarkerType: "hand" | "pose") =>
-      isExtension ? chrome.runtime.getURL("/models/hand_landmarker.task") : `/models/${landmarkerType}_landmarker.task`;
+      isExtension
+        ? chrome.runtime.getURL(`/models/${landmarkerType}_landmarker.task`)
+        : `/models/${landmarkerType}_landmarker.task`;
 
     const vision = await FilesetResolver.forVisionTasks(wasmPath);
 

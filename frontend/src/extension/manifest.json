@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "RTSL Translator",
+  "version": "0.1.0",
+  "description": "Screen-capture based ASL keypoint detection",
+  "permissions": ["tabs"],
+  "host_permissions": ["https://*/*", "http://*/*", "wss://130.113.255.255/*"],
+  "background": {
+    "service_worker": "background/service-worker.ts",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "src/extension/popup.html",
+    "default_title": "RTSL Translator"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self';"
+  }
+}
