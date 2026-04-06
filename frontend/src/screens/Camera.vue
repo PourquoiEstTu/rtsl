@@ -9,6 +9,7 @@ import ChatHistoryButton from "@/components/ChatHistoryButton.vue";
 import PhoneSidebarButton from "@/components/PhoneSidebarButton.vue";
 import KeypointTransceiver from "@/components/KeypointTransceiver.vue";
 import SelectModelButton from "@/components/SelectModelButton.vue";
+import { textToSpeech } from "@/utils/tts";
 
 // Track screen width
 const screenWidth = ref(window.innerWidth);
@@ -39,8 +40,15 @@ function onNewWord(word: string) {
   wordTimeout = setTimeout(() => (translatedWord.value = ""), 1500);
 }
 
-function onNewSentence(sentence: string) {
+async function onNewSentence(sentence: string) {
   translatedSentence.value = sentence;
+
+  const audio = await textToSpeech(sentence, {
+    engine: "neural",
+    language: "en-US",
+  });
+
+  audio.play();
 }
 
 watch(translatedSentence, () => {
