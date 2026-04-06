@@ -1,3 +1,6 @@
+# really similar to pose_extractor but doesn't require mediapipe library
+# used in main.py
+
 def get_xyc(keypoint):
     x = keypoint["x"] * 256.0
     y = keypoint["y"]* 256.0

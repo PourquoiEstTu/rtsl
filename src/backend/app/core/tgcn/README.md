@@ -16,5 +16,6 @@ Files here are organized as follows:
 - **utils.py**: Contains other helper functions used throughout the files. 
 - **convert_to_onnx.py**: Contains code to construct onnx files from binary models.  
 - **configs.py**: Contains functions to read configs from  
-- **pose_extractor.py**: 
-- **sign_dataset.py**: Contains code and classes fro storing dataset frames and using within training.
+- **pose_extractor.py**: Contains code to format the raw mediapipe keypoints into a well organized format of features
+- **formatter.py**: Contains code used in main.py to format the raw mediapipe into our format (based on pose_extractor.py)
+- **sign_dataset.py**: Contains code and classes from storing dataset frames and using within training.

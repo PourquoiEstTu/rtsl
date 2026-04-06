@@ -9,13 +9,13 @@ from transformers import (
 )
 
 
-from .configs import Gloss_to_Sentence_Config
-from .transformer import create_model
+from .utils.config import Config
+from .models.transformer2 import create_model
 
 class Gloss_to_Sentence_Model:
     
     def __init__(self, ):
-        config = Gloss_to_Sentence_Config()
+        config = Config()
         self.model = create_model(config.model.model_name)        
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.tokenizer = AutoTokenizer.from_pretrained(config.model.model_name)

@@ -2,12 +2,12 @@ import json
 import torch
 import onnxruntime
 
-from .configs import Config
-from .tgcn_model import GCN_muti_att
+from .tgcn.configs import Config
+from .tgcn.tgcn_model import GCN_muti_att
 
 def get_model(parent_dir, num_classes):
-    checkpoint_path = f"{parent_dir}/rtsl/backend/models/checkpoints/asl{num_classes}/pytorch_model.bin"
-    config_path = f"{parent_dir}/rtsl/backend/models/checkpoints/asl{num_classes}/config.ini"
+    checkpoint_path = f"{parent_dir}/rtsl/src/backend/models/checkpoints/asl{num_classes}/pytorch_model.bin"
+    config_path = f"{parent_dir}/rtsl/src/backend/models/checkpoints/asl{num_classes}/config.ini"
     config = Config(config_path)
     
     # initalize model
@@ -28,7 +28,7 @@ def get_model(parent_dir, num_classes):
     return model
 
 def get_onnx_model(parent_dir, num_classes):
-    onnx_path = f"{parent_dir}/rtsl/backend/models/checkpoints/asl{num_classes}/asl{num_classes}.onnx"
+    onnx_path = f"{parent_dir}/rtsl/src/backend/models/checkpoints/asl{num_classes}/asl{num_classes}.onnx"
     session_options = onnxruntime.SessionOptions()
     session_options.graph_optimization_level = onnxruntime.GraphOptimizationLevel.ORT_ENABLE_ALL
     
@@ -37,7 +37,7 @@ def get_onnx_model(parent_dir, num_classes):
     return onnx_model
 
 def get_labels(parent_dir, num_classes):
-    labels_path = f"{parent_dir}/rtsl/backend/data_splits/{num_classes}/class_to_idx.json"
+    labels_path = f"{parent_dir}/rtsl/src/backend/data_splits/{num_classes}/class_to_idx.json"
     with open(labels_path, 'r') as f:
         labels = [w for w in json.load(f)]
     return labels
