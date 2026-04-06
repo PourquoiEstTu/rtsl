@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";
-import { useWebSocket } from "@vueuse/core";
+import { useLocalStorage, useWebSocket } from "@vueuse/core";
 import useLandmarkerService from "@/composables/useLandmarkerService";
 
 const landmarkerService = useLandmarkerService();
+const selectedModel = useLocalStorage("model", "Showcase");
 const { status, data, send, open, close } = useWebSocket("wss://rtsl.cas.mcmaster.ca:8000/ws");
 
 const emit = defineEmits(["newWord", "newSentence"]);
@@ -81,6 +82,7 @@ onMounted(async () => {
         JSON.stringify({
           hand: handLandmarkerResults,
           pose: poseLandmarkerResults,
+          model: selectedModel.value,
         }),
       );
     }
