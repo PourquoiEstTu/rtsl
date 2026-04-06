@@ -45,6 +45,8 @@ function onNewSentence(sentence: string) {
 watch(translatedSentence, () => {
   translationHistory.value.push(translatedSentence.value);
 });
+
+const keypointsOn = ref(false);
 </script>
 
 <template>
@@ -63,7 +65,7 @@ watch(translatedSentence, () => {
     <main>
       <div class="outer-container lg:p-2!">
         <div class="camera-panel h-full! lg:rounded-t-4xl">
-          <KeypointTransceiver @new-word="onNewWord" @new-sentence="onNewSentence" />
+          <KeypointTransceiver @new-word="onNewWord" @new-sentence="onNewSentence" :is-on="keypointsOn" />
           <div class="background-gradient"></div>
 
           <div class="relative w-full h-full">
@@ -78,7 +80,7 @@ watch(translatedSentence, () => {
           <PhoneSidebarButton v-if="!isDesktop" />
 
           <div class="button-container">
-            <Button class="button border-5! rounded-full!" />
+            <Button @click="keypointsOn = !keypointsOn" class="button border-5! rounded-full!" />
           </div>
         </div>
         <TranslationBox class="translation-box" :translation="translatedSentence" />
