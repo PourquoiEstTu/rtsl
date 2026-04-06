@@ -4,7 +4,7 @@ import ModelIcon from "@/components/ModelIcon.vue";
 import Dialog from "@/volt/Dialog.vue";
 import Listbox from "@/volt/Listbox.vue";
 import { ref } from "vue";
-import { useWebSocket } from "@vueuse/core";
+import { useLocalStorage } from "@vueuse/core";
 
 const visible = ref(false);
 
@@ -21,15 +21,12 @@ const MODEL_OPTIONS = [
 ] as const;
 type ModelOption = (typeof MODEL_OPTIONS)[number];
 
-const selectedModel = ref<ModelOption>("Showcase");
+const selectedModel = useLocalStorage<ModelOption>("model", "Showcase");
 const modelOptions = ref<ModelOption[]>([...MODEL_OPTIONS]);
 
-const { send } = useWebSocket("wss://rtsl.cas.mcmaster.ca:8000/ws");
-
-function onChange(value: ModelOption | null) {
-  if (value === null || selectedModel.value === value) return;
-  selectedModel.value = value;
-  send(JSON.stringify({ model: value }));
+function onChange(model: ModelOption | null) {
+  if (model === null || selectedModel.value === model) return;
+  selectedModel.value = model;
 }
 </script>
 
@@ -44,7 +41,12 @@ function onChange(value: ModelOption | null) {
         pt:listContainer:class="max-h-none!"
         pt:option:class="py-2! px-4! select-none!"
         :model-value="selectedModel"
-        @update:modelValue="onChange"
+        @update:modelValue="
+          (model: ModelOption) => {
+            onChange(model);
+            visible = false;
+          }
+        "
         :options="modelOptions"
       />
     </div>
