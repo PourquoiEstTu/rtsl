@@ -66,6 +66,42 @@ describe("Home.vue", () => {
     expect(pushMock).toHaveBeenCalledWith("/about");
   });
 
+  it("Navigates to the web extension download page when the extension card is clicked", async () => {
+    window.innerWidth = 1200;
+
+    const originalLocation = window.location;
+
+    Object.defineProperty(window, "location", {
+      writable: true,
+      value: {
+        href: "",
+      },
+    });
+
+    const wrapper = mount(Home, {
+      global: {
+        stubs: {
+          ExtensionIcon: true,
+        },
+      },
+    });
+
+    const extensionCard = wrapper.find('[data-testid="plugin-card"]');
+
+    expect(extensionCard.exists()).toBe(true);
+
+    await extensionCard.trigger("click");
+
+    expect(window.location.href).toBe(
+      "https://github.com/PourquoiEstTu/rtsl/releases/tag/v0.1.0"
+    );
+
+    Object.defineProperty(window, "location", {
+      writable: true,
+      value: originalLocation,
+    });
+  });
+
   it("Updates the cards to add / remove 'Web Extension' when window resizes", async () => {
     // Case where the extension card is removed
     window.innerWidth = 500;
