@@ -4,6 +4,8 @@ This folder contains all of the code used to develop our front end and the integ
 
 Within the "src" folder, the "components" folder consists of some of the key components used in modeling the front end. This folder has a respective tests subfolder as well. The "screens" folder consists of the main screens the user will see, which includes the Home Page, Translator page, and About Us. This folder also has a subfolder called "style" for CSS files for each screen, and a "tests" subfolder for unit tests.
 
+All code related to the web extension version of RTSL can be found in the "extension" folder within "src".
+
 If running the front end locally, run "npm run dev" in the /frontend folder. The same applies for "npm run test"
 
 ## What this folder is for
