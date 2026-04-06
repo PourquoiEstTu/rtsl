@@ -41,7 +41,12 @@ function onChange(model: ModelOption | null) {
         pt:listContainer:class="max-h-none!"
         pt:option:class="py-2! px-4! select-none!"
         :model-value="selectedModel"
-        @update:modelValue="onChange"
+        @update:modelValue="
+          (model: ModelOption) => {
+            onChange(model);
+            visible = false;
+          }
+        "
         :options="modelOptions"
       />
     </div>
