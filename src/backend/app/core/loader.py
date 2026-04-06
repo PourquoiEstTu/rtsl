@@ -2,8 +2,8 @@ import json
 import torch
 import onnxruntime
 
-from .configs import Config
-from .tgcn_model import GCN_muti_att
+from .tgcn.configs import Config
+from .tgcn.tgcn_model import GCN_muti_att
 
 def get_model(parent_dir, num_classes):
     checkpoint_path = f"{parent_dir}/rtsl/src/backend/models/checkpoints/asl{num_classes}/pytorch_model.bin"
