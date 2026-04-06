@@ -463,9 +463,9 @@ def train_and_plot_subsets(subset_configs):
 
 #     subset_configs = {
 #         100:  (os.path.join(root, 'asl_citizen/asl_citizens100.json'),  config_100),
-#         300:  (os.path.join(root, 'splits/asl300.json'),  config_300),
-#         1000: (os.path.join(root, 'splits/asl1000.json'), config_1000),
-#         2000: (os.path.join(root, 'splits/asl2000.json'), config_2000),
+#         300:  (os.path.join(root, 'wlasl/asl300.json'),  config_300),
+#         1000: (os.path.join(root, 'wlasl/asl1000.json'), config_1000),
+#         2000: (os.path.join(root, 'wlasl/asl2000.json'), config_2000),
 #     }
 
 #     train_and_plot_subsets(

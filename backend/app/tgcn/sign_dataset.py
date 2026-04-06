@@ -333,7 +333,7 @@ def k_copies_fixed_length_sequential_sampling(frame_start, frame_end, num_sample
 # if __name__ == '__main__':
 #     root = '/u50/chandd9/capstone/rtsl/backend/app'
     
-#     split_file = os.path.join(root, 'splits/asl100.json')
+#     split_file = os.path.join(root, 'wlasl/asl100.json')
 #     pose_data_root = f"/u50/chandd9/downloads/tgcn_data"
     
 #     num_samples = 64

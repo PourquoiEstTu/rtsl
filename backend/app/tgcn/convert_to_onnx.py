@@ -177,12 +177,8 @@ def convert_to_onnx(model_name, checkpoint_path, config_path, output_dir = ROOT)
 
 
 if __name__ == '__main__':
-    # 100 and 2000 class models' config and pytorch bin file don't exist because they 
-    #   were taken straight from the reference repo
-    # success = convert_to_onnx('asl100', f"{ROOT}/splits/100/pytorch_model100.bin", f"{ROOT}/splits/100/asl100.ini")
-    # success = convert_to_onnx('asl300', f"{ROOT}/splits/300/pytorch_model300.bin", f"{ROOT}/splits/300/asl300.ini")
-    # success = convert_to_onnx('asl1000', f"{ROOT}/splits/1000/pytorch_model.bin", f"{ROOT}/splits/1000/asl1000.ini")
-    success = convert_to_onnx('custom', f"{ROOT}/splits/100/0_1.0000.pth", f"{ROOT}/config2.ini")
+    # 100 and 2000 class models' config and pytorch bin file don't exist because they were taken straight from the reference repo
+    success = convert_to_onnx('custom', f"{ROOT}/outputs/100/0_1.0000.pth", f"configs/config2.ini")
     # success = convert_to_onnx('asl2000', f"{ROOT}/splits/2000/pytorch_model.bin", f"{ROOT}/splits/2000/asl2000.ini")
     if success:
         print("\n" + "=" * 60)
