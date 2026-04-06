@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 
-from app.core.preprocess.workflow import extract_features, remove_zero_frames, interpolate_features
+from app.core.preprocess.workflow import extract_features, remove_zero_frames, interpolate_features, flatten_directory_in_place
 
 # Process a video into keypoints
 def test_extract_features_00335():
@@ -59,3 +59,9 @@ def test_interpolate_features_interpolation_ends():
     interpolated_data = interpolate_features(np_data, 2)
     assert interpolated_data[0][0] == 0
     assert interpolated_data[1][0] == 1
+
+# Flatten tests
+def test_flatten_directory_in_place(tmp_path):
+    remove_zero_frames("app/tests/sample_data/raw_keypoints", tmp_path)
+    output =  flatten_directory_in_place(tmp_path)
+    assert len(output) > 0
