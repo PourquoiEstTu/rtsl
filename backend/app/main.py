@@ -8,15 +8,26 @@ from core.loader import get_model, get_onnx_model, get_labels
 from core.formatter import convert_format_to_55, normalize_x_y_data
 from core.predictor import predict, onnx_predict
 from core.gloss_to_sentence import Gloss_to_Sentence_Model
-from utils.motion_analyzer import movement_score, update_ema 
+from utils.motion_analyzer import movement_score, update_ema
 
 DIR = "/home/sharmg36"
-NUM_CLASSES = 100
 MOVEMENT_THRESHOLD = 0.8
 WINDOW_SIZE = 50
 INPUT_SIZE = 55
 PAUSE_THRESHOLD = 20 # number of frames
-MODEL_TYPE = "ONNX"
+
+# maps model name (what frontend sends) to type of model and vocab size
+MODEL_INFO = {
+    "Showcase" : ("bin", 10),
+    "Self-Trained 100" : ("onyx", 100),
+    "Self-Trained 300" : ("onyx", 300),
+    "Self-Trained 1000" : ("onyx", 1000),
+    "Self-Trained 2000" : ("onyx", 2000),
+    "Pre-Trained 100" : ("bin", 100),
+    "Pre-Trained 300" : ("bin", 300),
+    "Pre-Trained 1000" : ("bin", 1000),
+    "Pre-Trained 2000" : ("bin", 2000)     
+}
 
 app = FastAPI()
 
@@ -24,19 +35,23 @@ app = FastAPI()
 async def root():
     return {"message": "Hello World"}
 
-
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
-    model =  get_onnx_model(DIR, NUM_CLASSES) if MODEL_TYPE == "ONNX" else get_model(DIR, NUM_CLASSES)
-    prediction_function = onnx_predict if MODEL_TYPE == "ONNX" else predict
-    get_model(DIR, NUM_CLASSES)
-    labels = get_labels(DIR, NUM_CLASSES)
+    # default model
+    model_name = "Showcase"
+    model_info = MODEL_INFO[model_name]
+    active_num_classes = model_info[1]
+    model =  get_model(DIR, active_num_classes)
+    prediction_function = predict
+    labels = get_labels(DIR, active_num_classes)
+    
+    # this, unlike word level model, never changes
     gloss_to_sentence = Gloss_to_Sentence_Model()
     
     processed = []
     ema_score = None
-    gloss_counter = 0 #TODO: delete this later
-    
+    gloss_counter = 0 
+
     pause_counter = 0
     last_pred = None
     gloss_sequence = [""]
@@ -46,6 +61,19 @@ async def websocket_endpoint(websocket: WebSocket):
         # print(gloss_sequence)
         received = await websocket.receive_json()
         
+        if received["model"] != model_name:
+            model_name = received["model"]
+            model_info = MODEL_INFO[received["model"]]
+            active_num_classes = model_info[1]
+            if (model_info[0] == "bin"):
+                model = get_model(DIR, active_num_classes)
+                prediction_function = predict
+            else:
+                model = get_onnx_model(DIR, active_num_classes)
+                prediction_function = onnx_predict
+            labels = get_labels(DIR, active_num_classes)
+            continue
+                        
         pose_landmarks = []
         if len(received["pose"]["landmarks"]) > 0:
             pose_landmarks = received["pose"]["landmarks"][0]
@@ -104,7 +132,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 
             # only predict if hands in frame     
             if np.sum(left) + np.sum(right) != 0:
-                if MODEL_TYPE != "ONNX":
+                if model_info[0] != "onyx":
                     input_data = torch.from_numpy(input_data)
                 current_pred = prediction_function(model, labels, input_data).upper()
                 

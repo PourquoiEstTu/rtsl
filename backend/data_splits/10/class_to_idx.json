@@ -1,0 +1,12 @@
+{
+  "drink": 0,
+  "eat": 1,
+  "finish": 2,
+  "go": 3,
+  "help": 4,
+  "no": 5,
+  "want": 6,
+  "what": 7,
+  "who": 8, 
+  "yes": 9
+}

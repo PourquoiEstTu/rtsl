@@ -9,6 +9,7 @@ rtsl/
 
 # models / data
 *.onnx
+*.onnx.data
 *.pt
 /data/
 
@@ -60,3 +61,5 @@ events.out.tfevents.*
 
 # Logs
 landmarks.json
+
+dist/

@@ -1,28 +1,39 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, watch } from "vue";
-import { useWebSocket } from "@vueuse/core";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { useLocalStorage, useWebSocket } from "@vueuse/core";
 import Toast from "@/volt/Toast.vue";
 import useLandmarkerService from "@/composables/useLandmarkerService";
 import { drawHandLandmarks, drawPoseLandmarks } from "@/utils/drawingUtils";
 import { useToast } from "primevue/usetoast";
 
+const props = defineProps({
+  isOn: {
+    type: Boolean,
+    required: true,
+  },
+});
+
+const isOnComputed = computed(() => props.isOn);
+
 const landmarkerService = useLandmarkerService();
 const toast = useToast();
 const { status, data, send, open, close } = useWebSocket("wss://rtsl.cas.mcmaster.ca:8000/ws");
 
-const emit = defineEmits(["newSentence"]);
+const emit = defineEmits(["newWord", "newSentence"]);
+
+const selectedModel = useLocalStorage("model", "Showcase");
 
 watch(data, (received: string) => {
   if (!received) return;
-
   const newData: { word: string; sentence: string } = JSON.parse(received);
-  console.log("Received:", newData.word); // todo: remove temp log
 
-  if (newData.sentence) emit("newSentence", newData.sentence);
+  if (newData.word) {
+    emit("newWord", newData.word);
+  }
+  if (newData.sentence) {
+    emit("newSentence", newData.sentence);
+  }
 });
-
-// Check if we are running inside a Chrome Extension
-const isExtension = typeof chrome !== "undefined" && !!chrome.runtime?.id;
 
 const videoEl = ref<HTMLVideoElement | null>(null);
 const canvasEl = ref<HTMLCanvasElement | null>(null);
@@ -34,7 +45,7 @@ const CLOSE_WS_THRESHOLD_MS = 15000;
 const keepWebsocketClosed = ref(false);
 
 watch(status, (newStatus) => {
-  if (!keepWebsocketClosed && newStatus === "CLOSED") {
+  if (!keepWebsocketClosed.value && newStatus === "CLOSED") {
     console.log("Reopening WS connection.");
     open();
   }
@@ -52,7 +63,7 @@ onMounted(async () => {
     return;
   }
 
-  await landmarkerService.init(videoEl, isExtension);
+  await landmarkerService.init(videoEl, false);
 
   const canvasCtx = canvasEl.value.getContext("2d");
   if (!canvasCtx) {
@@ -62,6 +73,12 @@ onMounted(async () => {
 
   const predictWebcam = () => {
     if (!videoEl.value || !canvasEl.value) return;
+
+    if (!isOnComputed.value) {
+      canvasCtx.clearRect(0, 0, canvasEl.value.width, canvasEl.value.height);
+      landmarkerService.animationFrameId.value = window.requestAnimationFrame(predictWebcam);
+      return;
+    }
 
     const videoWidth = videoEl.value.videoWidth;
     const videoHeight = videoEl.value.videoHeight;
@@ -78,8 +95,9 @@ onMounted(async () => {
       hasShownMissingToast = false;
 
       // Reopen WS if it was closed due to inactivity
-      if (keepWebsocketClosed && status.value === "CLOSED") {
+      if (keepWebsocketClosed.value && status.value === "CLOSED") {
         keepWebsocketClosed.value = false;
+        console.log("Reopening WS connection.");
         open();
       }
 
@@ -87,6 +105,7 @@ onMounted(async () => {
         JSON.stringify({
           hand: handLandmarkerResults,
           pose: poseLandmarkerResults,
+          model: selectedModel.value,
         }),
       );
     }
@@ -105,6 +124,7 @@ onMounted(async () => {
     // Close WS connection no landmarks in a long time
     if (now - lastSeenTime > CLOSE_WS_THRESHOLD_MS && status.value === "OPEN") {
       keepWebsocketClosed.value = true;
+      console.log("Closing WS connection.");
       close();
     }
 
@@ -124,7 +144,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Toast v-if="!isExtension" position="top-center" />
-  <video v-show="!isExtension" ref="videoEl" autoplay playsinline />
-  <canvas v-show="!isExtension" ref="canvasEl" class="absolute w-full object-cover h-full" />
+  <Toast position="top-center" />
+  <video ref="videoEl" autoplay playsinline />
+  <canvas ref="canvasEl" class="absolute w-full object-cover h-full" />
 </template>

@@ -52,8 +52,8 @@ main {
   position: relative; /* relative */
   width: 100%; /* w-full */
   height: 100vh; /* h-[80vh] */
-  backdrop-filter: blur(12px); /* backdrop-blur-md */
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1); /* shadow-[...] */
+  /* backdrop-filter: blur(12px); /* backdrop-blur-md */
+  /* box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1); /* shadow-[...] */
   overflow: hidden; /* overflow-hidden */
   display: flex; /* flex */
   flex-direction: column;
@@ -154,7 +154,13 @@ main {
   } /* text-4xl */
 }
 
-@media (min-width: 768px) {
+/* @media (min-width: 768px) {
+  main {
+    margin-left: 0;
+  }
+} */
+
+@media (max-width: 1023px) {
   main {
     margin-left: 0;
   }
