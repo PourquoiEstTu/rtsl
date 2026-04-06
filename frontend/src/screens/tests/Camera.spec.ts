@@ -3,6 +3,7 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import ToastService from "primevue/toastservice";
 import Camera from "../Camera.vue";
 import { nextTick } from "vue";
+import { PrimeVue } from "@primevue/core";
 
 function setScreenWidth(width: number) {
   Object.defineProperty(window, "innerWidth", {
@@ -18,7 +19,7 @@ describe("Rendering Camera Components", () => {
 
     const wrapper = mount(Camera, {
       global: {
-        plugins: [ToastService],
+        plugins: [ToastService, PrimeVue],
         stubs: {
           Sidebar: true,
           Button: true,
@@ -26,6 +27,7 @@ describe("Rendering Camera Components", () => {
           ChatHistoryButton: true,
           PhoneSidebarButton: true,
           KeypointTransceiver: true,
+          SelectModelButton: true,
         },
       },
     });
@@ -98,12 +100,13 @@ describe("Camera button functionality", () => {
   function mountCamera() {
     return mount(Camera, {
       global: {
-        plugins: [ToastService],
+        plugins: [ToastService, PrimeVue],
         stubs: {
           Sidebar: true,
           TranslationBox: true,
           ChatHistoryButton: true,
           PhoneSidebarButton: true,
+          SelectModelButton: true,
 
           Button: {
             emits: ["click"],
@@ -187,6 +190,7 @@ describe("Camera recording button", () => {
           TranslationBox: true,
           ChatHistoryButton: true,
           PhoneSidebarButton: true,
+          SelectModelButton: true,
 
           Button: {
             emits: ["click"],
