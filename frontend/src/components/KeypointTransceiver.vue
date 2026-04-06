@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
-import { useWebSocket } from "@vueuse/core";
+import { useLocalStorage, useWebSocket } from "@vueuse/core";
 import Toast from "@/volt/Toast.vue";
 import useLandmarkerService from "@/composables/useLandmarkerService";
 import { drawHandLandmarks, drawPoseLandmarks } from "@/utils/drawingUtils";
@@ -20,6 +20,8 @@ const toast = useToast();
 const { status, data, send, open, close } = useWebSocket("wss://rtsl.cas.mcmaster.ca:8000/ws");
 
 const emit = defineEmits(["newWord", "newSentence"]);
+
+const selectedModel = useLocalStorage("model", "Showcase");
 
 watch(data, (received: string) => {
   if (!received) return;
@@ -103,6 +105,7 @@ onMounted(async () => {
         JSON.stringify({
           hand: handLandmarkerResults,
           pose: poseLandmarkerResults,
+          model: selectedModel.value,
         }),
       );
     }
