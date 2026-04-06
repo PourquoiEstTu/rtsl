@@ -9,8 +9,8 @@ from transformers import (
 )
 
 
-from .transformers.utils.config import Config
-from .transformer import create_model
+from .utils.config import Config
+from .models.transformer2 import create_model
 
 class Gloss_to_Sentence_Model:
     

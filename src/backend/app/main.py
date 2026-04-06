@@ -7,7 +7,7 @@ import torch
 from core.loader import get_model, get_onnx_model, get_labels
 from core.predictor import predict, onnx_predict
 from core.tgcn.formatter import convert_format_to_55, normalize_x_y_data
-from core.gloss_to_sentence import Gloss_to_Sentence_Model
+from core.transformers.gloss_to_sentence import Gloss_to_Sentence_Model
 from core.utils.motion_analyzer import movement_score, update_ema
 
 DIR = "/home/sharmg36"
