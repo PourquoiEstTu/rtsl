@@ -18,7 +18,7 @@ vi.mock("@vueuse/core", () => ({
     open: mockOpen,
     close: mockClose,
   }),
-  useLocalStorage: vi.fn((key, initialValue) => ({
+  useLocalStorage: vi.fn((_key, initialValue) => ({
     value: initialValue,
   })),
 }));
