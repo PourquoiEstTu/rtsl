@@ -62,4 +62,6 @@ events.out.tfevents.*
 # Logs
 landmarks.json
 
+# misc
+backend/app/local
 dist/

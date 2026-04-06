@@ -1,0 +1,3243 @@
+[
+    {
+        "gloss": "a",
+        "instances": [
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 21,
+                "frame_start": 1,
+                "instance_id": 0,
+                "signer_id": 9,
+                "source": "asl5200",
+                "split": "val",
+                "url": "",
+                "variation_id": 0,
+                "video_id": "00295"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 65,
+                "frame_start": 1,
+                "instance_id": 1,
+                "signer_id": 90,
+                "source": "aslsignbank",
+                "split": "test",
+                "url": "https://aslsignbank.haskins.yale.edu/dictionary/protected_media/glossvideo/LE/LETTER-A-493.mp4",
+                "variation_id": 0,
+                "video_id": "66039"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 107,
+                "frame_start": 1,
+                "instance_id": 2,
+                "signer_id": 21,
+                "source": "asldeafined",
+                "split": "train",
+                "url": "https://www.asldeafined.com/media/vocabulary/1528809789.5467.mp4",
+                "variation_id": 0,
+                "video_id": "01610"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 43,
+                "frame_start": 1,
+                "instance_id": 3,
+                "signer_id": 20,
+                "source": "handspeak",
+                "split": "train",
+                "url": "https://www.handspeak.com/word/a/a-abc.mp4",
+                "variation_id": 0,
+                "video_id": "01611"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 27,
+                "frame_start": 1,
+                "instance_id": 4,
+                "signer_id": 11,
+                "source": "signingsavvy",
+                "split": "train",
+                "url": "https://www.signingsavvy.com/signs/mp4/10/10000.mp4",
+                "variation_id": 0,
+                "video_id": "01612"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 70,
+                "frame_start": 1,
+                "instance_id": 5,
+                "signer_id": 5,
+                "source": "aslu",
+                "split": "val",
+                "url": "https://www.youtube.com/watch?v=9qsBKrkvpms",
+                "variation_id": 0,
+                "video_id": "01613"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 57,
+                "frame_start": 1,
+                "instance_id": 6,
+                "signer_id": 30,
+                "source": "aslpro",
+                "split": "train",
+                "url": "http://www.aslpro.com/main/a/a.swf",
+                "variation_id": 0,
+                "video_id": "01614"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 72,
+                "frame_start": 1,
+                "instance_id": 7,
+                "signer_id": 12,
+                "source": "aslsearch",
+                "split": "train",
+                "url": "http://www.aslsearch.com/signs/videos/a.mp4",
+                "variation_id": 0,
+                "video_id": "01615"
+            }
+        ]
+    },
+    {
+        "gloss": "b",
+        "instances": [
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 50,
+                "frame_start": 1,
+                "instance_id": 1,
+                "signer_id": 96,
+                "source": "aslsignbank",
+                "split": "val",
+                "url": "https://aslsignbank.haskins.yale.edu/dictionary/protected_media/glossvideo/LE/LETTER-B-1674.mp4",
+                "variation_id": 0,
+                "video_id": "66040"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 98,
+                "frame_start": 1,
+                "instance_id": 2,
+                "signer_id": 21,
+                "source": "asldeafined",
+                "split": "test",
+                "url": "https://www.asldeafined.com/media/vocabulary/1528809836.7505.mp4",
+                "variation_id": 0,
+                "video_id": "06120"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 54,
+                "frame_start": 1,
+                "instance_id": 3,
+                "signer_id": 9,
+                "source": "asl5200",
+                "split": "train",
+                "url": "",
+                "variation_id": 0,
+                "video_id": "04466"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 38,
+                "frame_start": 1,
+                "instance_id": 4,
+                "signer_id": 20,
+                "source": "handspeak",
+                "split": "train",
+                "url": "https://www.handspeak.com/word/b/b-abc.mp4",
+                "variation_id": 0,
+                "video_id": "06121"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 21,
+                "frame_start": 1,
+                "instance_id": 5,
+                "signer_id": 9,
+                "source": "asl5200",
+                "split": "train",
+                "url": "",
+                "variation_id": 0,
+                "video_id": "04467"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 27,
+                "frame_start": 1,
+                "instance_id": 6,
+                "signer_id": 11,
+                "source": "signingsavvy",
+                "split": "val",
+                "url": "https://www.signingsavvy.com/signs/mp4/10/10001.mp4",
+                "variation_id": 0,
+                "video_id": "06122"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 56,
+                "frame_start": 1,
+                "instance_id": 7,
+                "signer_id": 30,
+                "source": "aslpro",
+                "split": "train",
+                "url": "http://www.aslpro.com//main/b/b.swf",
+                "variation_id": 0,
+                "video_id": "06123"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 89,
+                "frame_start": 1,
+                "instance_id": 8,
+                "signer_id": 12,
+                "source": "aslsearch",
+                "split": "train",
+                "url": "http://www.aslsearch.com/signs/videos/b.mp4",
+                "variation_id": 0,
+                "video_id": "06124"
+            }
+        ]
+    },
+    {
+        "gloss": "c",
+        "instances": [
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 48,
+                "frame_start": 1,
+                "instance_id": 1,
+                "signer_id": 96,
+                "source": "aslsignbank",
+                "split": "test",
+                "url": "https://aslsignbank.haskins.yale.edu/dictionary/protected_media/glossvideo/LE/LETTER-C-1673.mp4",
+                "variation_id": 0,
+                "video_id": "66041"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 46,
+                "frame_start": 1,
+                "instance_id": 4,
+                "signer_id": 14,
+                "source": "handspeak",
+                "split": "train",
+                "url": "https://www.handspeak.com/word/c/c-abc.mp4",
+                "variation_id": 0,
+                "video_id": "10740"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 21,
+                "frame_start": 1,
+                "instance_id": 5,
+                "signer_id": 9,
+                "source": "asl5200",
+                "split": "train",
+                "url": "",
+                "variation_id": 0,
+                "video_id": "08530"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 27,
+                "frame_start": 1,
+                "instance_id": 6,
+                "signer_id": 11,
+                "source": "signingsavvy",
+                "split": "train",
+                "url": "https://www.signingsavvy.com/signs/mp4/10/10002.mp4",
+                "variation_id": 0,
+                "video_id": "10741"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 58,
+                "frame_start": 1,
+                "instance_id": 7,
+                "signer_id": 30,
+                "source": "aslpro",
+                "split": "train",
+                "url": "http://www.aslpro.com//main/c/c.swf",
+                "variation_id": 0,
+                "video_id": "10742"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 77,
+                "frame_start": 1,
+                "instance_id": 8,
+                "signer_id": 12,
+                "source": "aslsearch",
+                "split": "val",
+                "url": "http://www.aslsearch.com/signs/videos/c.mp4",
+                "variation_id": 0,
+                "video_id": "10743"
+            }
+        ]
+    },
+    {
+        "gloss": "d",
+        "instances": [
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 58,
+                "frame_start": 1,
+                "instance_id": 1,
+                "signer_id": 90,
+                "source": "aslsignbank",
+                "split": "test",
+                "url": "https://aslsignbank.haskins.yale.edu/dictionary/protected_media/glossvideo/LE/LETTER-D-494.mp4",
+                "variation_id": 0,
+                "video_id": "66042"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 99,
+                "frame_start": 1,
+                "instance_id": 2,
+                "signer_id": 21,
+                "source": "asldeafined",
+                "split": "val",
+                "url": "https://www.asldeafined.com/media/vocabulary/1528811093.1409.mp4",
+                "variation_id": 0,
+                "video_id": "15996"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 43,
+                "frame_start": 1,
+                "instance_id": 4,
+                "signer_id": 14,
+                "source": "handspeak",
+                "split": "train",
+                "url": "https://www.handspeak.com/word/d/d-abc.mp4",
+                "variation_id": 0,
+                "video_id": "15997"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 21,
+                "frame_start": 1,
+                "instance_id": 5,
+                "signer_id": 9,
+                "source": "asl5200",
+                "split": "train",
+                "url": "",
+                "variation_id": 0,
+                "video_id": "14553"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 27,
+                "frame_start": 1,
+                "instance_id": 6,
+                "signer_id": 11,
+                "source": "signingsavvy",
+                "split": "train",
+                "url": "https://www.signingsavvy.com/signs/mp4/10/10003.mp4",
+                "variation_id": 0,
+                "video_id": "15998"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 65,
+                "frame_start": 1,
+                "instance_id": 7,
+                "signer_id": 30,
+                "source": "aslpro",
+                "split": "train",
+                "url": "http://www.aslpro.com//main/d/d.swf",
+                "variation_id": 0,
+                "video_id": "15999"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 79,
+                "frame_start": 1,
+                "instance_id": 8,
+                "signer_id": 12,
+                "source": "aslsearch",
+                "split": "train",
+                "url": "http://www.aslsearch.com/signs/videos/d.mp4",
+                "variation_id": 0,
+                "video_id": "16000"
+            }
+        ]
+    },
+    {
+        "gloss": "e",
+        "instances": [
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 21,
+                "frame_start": 1,
+                "instance_id": 0,
+                "signer_id": 9,
+                "source": "asl5200",
+                "split": "test",
+                "url": "",
+                "variation_id": 0,
+                "video_id": "18107"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 51,
+                "frame_start": 1,
+                "instance_id": 1,
+                "signer_id": 96,
+                "source": "aslsignbank",
+                "split": "val",
+                "url": "https://aslsignbank.haskins.yale.edu/dictionary/protected_media/glossvideo/LE/LETTER-E-1672.mp4",
+                "variation_id": 0,
+                "video_id": "66043"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 128,
+                "frame_start": 1,
+                "instance_id": 2,
+                "signer_id": 21,
+                "source": "asldeafined",
+                "split": "train",
+                "url": "https://www.asldeafined.com/media/vocabulary/1528811066.6785.mp4",
+                "variation_id": 0,
+                "video_id": "18533"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 38,
+                "frame_start": 1,
+                "instance_id": 3,
+                "signer_id": 20,
+                "source": "handspeak",
+                "split": "train",
+                "url": "https://www.handspeak.com/word/e/e-abc.mp4",
+                "variation_id": 0,
+                "video_id": "18534"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 27,
+                "frame_start": 1,
+                "instance_id": 4,
+                "signer_id": 11,
+                "source": "signingsavvy",
+                "split": "train",
+                "url": "https://www.signingsavvy.com/signs/mp4/10/10004.mp4",
+                "variation_id": 0,
+                "video_id": "18535"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 68,
+                "frame_start": 1,
+                "instance_id": 5,
+                "signer_id": 30,
+                "source": "aslpro",
+                "split": "train",
+                "url": "http://www.aslpro.com//main/e/e.swf",
+                "variation_id": 0,
+                "video_id": "18536"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 80,
+                "frame_start": 1,
+                "instance_id": 6,
+                "signer_id": 12,
+                "source": "aslsearch",
+                "split": "train",
+                "url": "http://www.aslsearch.com/signs/videos/e.mp4",
+                "variation_id": 0,
+                "video_id": "18537"
+            }
+        ]
+    },
+    {
+        "gloss": "f",
+        "instances": [
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 21,
+                "frame_start": 1,
+                "instance_id": 0,
+                "signer_id": 9,
+                "source": "asl5200",
+                "split": "test",
+                "url": "",
+                "variation_id": 0,
+                "video_id": "20670"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 47,
+                "frame_start": 1,
+                "instance_id": 1,
+                "signer_id": 96,
+                "source": "aslsignbank",
+                "split": "val",
+                "url": "https://aslsignbank.haskins.yale.edu/dictionary/protected_media/glossvideo/LE/LETTER-F-1671.mp4",
+                "variation_id": 0,
+                "video_id": "66044"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 114,
+                "frame_start": 1,
+                "instance_id": 2,
+                "signer_id": 21,
+                "source": "asldeafined",
+                "split": "train",
+                "url": "https://www.asldeafined.com/media/vocabulary/1528811116.918.mp4",
+                "variation_id": 0,
+                "video_id": "21568"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 47,
+                "frame_start": 1,
+                "instance_id": 3,
+                "signer_id": 20,
+                "source": "handspeak",
+                "split": "train",
+                "url": "https://www.handspeak.com/word/f/f-abc.mp4",
+                "variation_id": 0,
+                "video_id": "21569"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 27,
+                "frame_start": 1,
+                "instance_id": 4,
+                "signer_id": 11,
+                "source": "signingsavvy",
+                "split": "train",
+                "url": "https://www.signingsavvy.com/signs/mp4/10/10005.mp4",
+                "variation_id": 0,
+                "video_id": "21570"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 68,
+                "frame_start": 1,
+                "instance_id": 5,
+                "signer_id": 30,
+                "source": "aslpro",
+                "split": "train",
+                "url": "http://www.aslpro.com//main/f/f.swf",
+                "variation_id": 0,
+                "video_id": "21571"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 74,
+                "frame_start": 1,
+                "instance_id": 6,
+                "signer_id": 41,
+                "source": "aslsearch",
+                "split": "train",
+                "url": "http://www.aslsearch.com/signs/videos/f.mp4",
+                "variation_id": 0,
+                "video_id": "21572"
+            }
+        ]
+    },
+    {
+        "gloss": "g",
+        "instances": [
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 21,
+                "frame_start": 1,
+                "instance_id": 0,
+                "signer_id": 9,
+                "source": "asl5200",
+                "split": "test",
+                "url": "",
+                "variation_id": 0,
+                "video_id": "23959"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 49,
+                "frame_start": 1,
+                "instance_id": 1,
+                "signer_id": 96,
+                "source": "aslsignbank",
+                "split": "val",
+                "url": "https://aslsignbank.haskins.yale.edu/dictionary/protected_media/glossvideo/LE/LETTER-G-1670.mp4",
+                "variation_id": 0,
+                "video_id": "66045"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 94,
+                "frame_start": 1,
+                "instance_id": 2,
+                "signer_id": 21,
+                "source": "asldeafined",
+                "split": "train",
+                "url": "https://www.asldeafined.com/media/vocabulary/1528811214.4928.mp4",
+                "variation_id": 0,
+                "video_id": "24523"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 39,
+                "frame_start": 1,
+                "instance_id": 3,
+                "signer_id": 20,
+                "source": "handspeak",
+                "split": "train",
+                "url": "https://www.handspeak.com/word/g/g-abc.mp4",
+                "variation_id": 0,
+                "video_id": "24524"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 27,
+                "frame_start": 1,
+                "instance_id": 4,
+                "signer_id": 11,
+                "source": "signingsavvy",
+                "split": "train",
+                "url": "https://www.signingsavvy.com/signs/mp4/10/10006.mp4",
+                "variation_id": 0,
+                "video_id": "24525"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 63,
+                "frame_start": 1,
+                "instance_id": 5,
+                "signer_id": 30,
+                "source": "aslpro",
+                "split": "train",
+                "url": "http://www.aslpro.com//main/g/g.swf",
+                "variation_id": 0,
+                "video_id": "24526"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 67,
+                "frame_start": 1,
+                "instance_id": 6,
+                "signer_id": 12,
+                "source": "aslsearch",
+                "split": "train",
+                "url": "http://www.aslsearch.com/signs/videos/g.mp4",
+                "variation_id": 0,
+                "video_id": "24527"
+            }
+        ]
+    },
+    {
+        "gloss": "h",
+        "instances": [
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 21,
+                "frame_start": 1,
+                "instance_id": 0,
+                "signer_id": 9,
+                "source": "asl5200",
+                "split": "test",
+                "url": "",
+                "variation_id": 0,
+                "video_id": "26074"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 27,
+                "frame_start": 1,
+                "instance_id": 1,
+                "signer_id": 11,
+                "source": "signingsavvy",
+                "split": "val",
+                "url": "https://www.signingsavvy.com/signs/mp4/10/10007.mp4",
+                "variation_id": 0,
+                "video_id": "27357"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 43,
+                "frame_start": 1,
+                "instance_id": 2,
+                "signer_id": 96,
+                "source": "aslsignbank",
+                "split": "train",
+                "url": "https://aslsignbank.haskins.yale.edu/dictionary/protected_media/glossvideo/LE/LETTER-H-1669.mp4",
+                "variation_id": 0,
+                "video_id": "66046"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 59,
+                "frame_start": 1,
+                "instance_id": 3,
+                "signer_id": 30,
+                "source": "aslpro",
+                "split": "train",
+                "url": "http://www.aslpro.com//main/h/h.swf",
+                "variation_id": 0,
+                "video_id": "27358"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 107,
+                "frame_start": 1,
+                "instance_id": 4,
+                "signer_id": 21,
+                "source": "asldeafined",
+                "split": "train",
+                "url": "https://www.asldeafined.com/media/vocabulary/1528811271.9748.mp4",
+                "variation_id": 0,
+                "video_id": "27355"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 66,
+                "frame_start": 1,
+                "instance_id": 5,
+                "signer_id": 12,
+                "source": "aslsearch",
+                "split": "train",
+                "url": "http://www.aslsearch.com/signs/videos/h.mp4",
+                "variation_id": 0,
+                "video_id": "27359"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 44,
+                "frame_start": 1,
+                "instance_id": 6,
+                "signer_id": 20,
+                "source": "handspeak",
+                "split": "train",
+                "url": "https://www.handspeak.com/word/h/h-abc.mp4",
+                "variation_id": 0,
+                "video_id": "27356"
+            }
+        ]
+    },
+    {
+        "gloss": "i",
+        "instances": [
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 21,
+                "frame_start": 1,
+                "instance_id": 0,
+                "signer_id": 9,
+                "source": "asl5200",
+                "split": "test",
+                "url": "",
+                "variation_id": 0,
+                "video_id": "28557"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 68,
+                "frame_start": 1,
+                "instance_id": 2,
+                "signer_id": 90,
+                "source": "aslsignbank",
+                "split": "val",
+                "url": "https://aslsignbank.haskins.yale.edu/dictionary/protected_media/glossvideo/LE/LETTER-I-495.mp4",
+                "variation_id": 0,
+                "video_id": "66047"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 98,
+                "frame_start": 1,
+                "instance_id": 3,
+                "signer_id": 21,
+                "source": "asldeafined",
+                "split": "train",
+                "url": "https://www.asldeafined.com/media/vocabulary/1528811446.7425.mp4",
+                "variation_id": 0,
+                "video_id": "28789"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 46,
+                "frame_start": 1,
+                "instance_id": 4,
+                "signer_id": 20,
+                "source": "handspeak",
+                "split": "train",
+                "url": "https://www.handspeak.com/word/i/i-abc.mp4",
+                "variation_id": 0,
+                "video_id": "28790"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 27,
+                "frame_start": 1,
+                "instance_id": 5,
+                "signer_id": 11,
+                "source": "signingsavvy",
+                "split": "train",
+                "url": "https://www.signingsavvy.com/signs/mp4/10/10008.mp4",
+                "variation_id": 0,
+                "video_id": "28791"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 63,
+                "frame_start": 1,
+                "instance_id": 7,
+                "signer_id": 30,
+                "source": "aslpro",
+                "split": "train",
+                "url": "http://www.aslpro.com//main/i/i.swf",
+                "variation_id": 0,
+                "video_id": "28793"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 90,
+                "frame_start": 1,
+                "instance_id": 8,
+                "signer_id": 41,
+                "source": "aslsearch",
+                "split": "train",
+                "url": "http://www.aslsearch.com/signs/videos/i2.mp4",
+                "variation_id": 0,
+                "video_id": "28794"
+            }
+        ]
+    },
+    {
+        "gloss": "j",
+        "instances": [
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 29,
+                "frame_start": 1,
+                "instance_id": 0,
+                "signer_id": 9,
+                "source": "asl5200",
+                "split": "test",
+                "url": "",
+                "variation_id": 0,
+                "video_id": "30820"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 48,
+                "frame_start": 1,
+                "instance_id": 1,
+                "signer_id": 96,
+                "source": "aslsignbank",
+                "split": "val",
+                "url": "https://aslsignbank.haskins.yale.edu/dictionary/protected_media/glossvideo/LE/LETTER-J-1668.mp4",
+                "variation_id": 0,
+                "video_id": "66048"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 121,
+                "frame_start": 1,
+                "instance_id": 2,
+                "signer_id": 21,
+                "source": "asldeafined",
+                "split": "train",
+                "url": "https://www.asldeafined.com/media/vocabulary/1528811480.114.mp4",
+                "variation_id": 0,
+                "video_id": "31100"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 40,
+                "frame_start": 1,
+                "instance_id": 3,
+                "signer_id": 20,
+                "source": "handspeak",
+                "split": "train",
+                "url": "https://www.handspeak.com/word/j/j-abc.mp4",
+                "variation_id": 0,
+                "video_id": "31101"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 53,
+                "frame_start": 1,
+                "instance_id": 4,
+                "signer_id": 11,
+                "source": "signingsavvy",
+                "split": "train",
+                "url": "https://www.signingsavvy.com/signs/mp4/10/10009.mp4",
+                "variation_id": 0,
+                "video_id": "31102"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 64,
+                "frame_start": 1,
+                "instance_id": 5,
+                "signer_id": 30,
+                "source": "aslpro",
+                "split": "train",
+                "url": "http://www.aslpro.com//main/j/j.swf",
+                "variation_id": 0,
+                "video_id": "31103"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 62,
+                "frame_start": 1,
+                "instance_id": 6,
+                "signer_id": 12,
+                "source": "aslsearch",
+                "split": "train",
+                "url": "http://www.aslsearch.com/signs/videos/j.mp4",
+                "variation_id": 0,
+                "video_id": "31104"
+            }
+        ]
+    },
+    {
+        "gloss": "k",
+        "instances": [
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 21,
+                "frame_start": 1,
+                "instance_id": 0,
+                "signer_id": 9,
+                "source": "asl5200",
+                "split": "test",
+                "url": "",
+                "variation_id": 0,
+                "video_id": "31436"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 51,
+                "frame_start": 1,
+                "instance_id": 1,
+                "signer_id": 96,
+                "source": "aslsignbank",
+                "split": "val",
+                "url": "https://aslsignbank.haskins.yale.edu/dictionary/protected_media/glossvideo/LE/LETTER-K-1667.mp4",
+                "variation_id": 0,
+                "video_id": "66049"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 81,
+                "frame_start": 1,
+                "instance_id": 2,
+                "signer_id": 21,
+                "source": "asldeafined",
+                "split": "train",
+                "url": "https://www.asldeafined.com/media/vocabulary/1528811506.2355.mp4",
+                "variation_id": 0,
+                "video_id": "31583"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 47,
+                "frame_start": 1,
+                "instance_id": 3,
+                "signer_id": 20,
+                "source": "handspeak",
+                "split": "train",
+                "url": "https://www.handspeak.com/word/k/k-abc.mp4",
+                "variation_id": 0,
+                "video_id": "31584"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 27,
+                "frame_start": 1,
+                "instance_id": 4,
+                "signer_id": 11,
+                "source": "signingsavvy",
+                "split": "train",
+                "url": "https://www.signingsavvy.com/signs/mp4/10/10010.mp4",
+                "variation_id": 0,
+                "video_id": "31585"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 61,
+                "frame_start": 1,
+                "instance_id": 5,
+                "signer_id": 87,
+                "source": "aslpro",
+                "split": "train",
+                "url": "http://www.aslpro.com//main/k/k.swf",
+                "variation_id": 0,
+                "video_id": "31586"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 75,
+                "frame_start": 1,
+                "instance_id": 6,
+                "signer_id": 12,
+                "source": "aslsearch",
+                "split": "train",
+                "url": "http://www.aslsearch.com/signs/videos/k.mp4",
+                "variation_id": 0,
+                "video_id": "31587"
+            }
+        ]
+    },
+    {
+        "gloss": "l",
+        "instances": [
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 21,
+                "frame_start": 1,
+                "instance_id": 0,
+                "signer_id": 9,
+                "source": "asl5200",
+                "split": "test",
+                "url": "",
+                "variation_id": 0,
+                "video_id": "31971"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 46,
+                "frame_start": 1,
+                "instance_id": 1,
+                "signer_id": 96,
+                "source": "aslsignbank",
+                "split": "train",
+                "url": "https://aslsignbank.haskins.yale.edu/dictionary/protected_media/glossvideo/LE/LETTER-L-1666.mp4",
+                "variation_id": 0,
+                "video_id": "66050"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 105,
+                "frame_start": 1,
+                "instance_id": 2,
+                "signer_id": 21,
+                "source": "asldeafined",
+                "split": "train",
+                "url": "https://www.asldeafined.com/media/vocabulary/1528811530.115.mp4",
+                "variation_id": 0,
+                "video_id": "32994"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 40,
+                "frame_start": 1,
+                "instance_id": 4,
+                "signer_id": 20,
+                "source": "signingsavvy",
+                "split": "train",
+                "url": "https://www.signingsavvy.com/signs/mp4/10/10011.mp4",
+                "variation_id": 0,
+                "video_id": "32996"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 58,
+                "frame_start": 1,
+                "instance_id": 5,
+                "signer_id": 30,
+                "source": "aslpro",
+                "split": "train",
+                "url": "http://www.aslpro.com//main/l/l.swf",
+                "variation_id": 0,
+                "video_id": "32997"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 79,
+                "frame_start": 1,
+                "instance_id": 6,
+                "signer_id": 12,
+                "source": "aslsearch",
+                "split": "val",
+                "url": "http://www.aslsearch.com/signs/videos/l.mp4",
+                "variation_id": 0,
+                "video_id": "32998"
+            }
+        ]
+    },
+    {
+        "gloss": "m",
+        "instances": [
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 21,
+                "frame_start": 1,
+                "instance_id": 0,
+                "signer_id": 9,
+                "source": "asl5200",
+                "split": "test",
+                "url": "",
+                "variation_id": 0,
+                "video_id": "34336"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 54,
+                "frame_start": 1,
+                "instance_id": 1,
+                "signer_id": 96,
+                "source": "aslsignbank",
+                "split": "val",
+                "url": "https://aslsignbank.haskins.yale.edu/dictionary/protected_media/glossvideo/LE/LETTER-M-1665.mp4",
+                "variation_id": 0,
+                "video_id": "66051"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 110,
+                "frame_start": 1,
+                "instance_id": 2,
+                "signer_id": 21,
+                "source": "asldeafined",
+                "split": "train",
+                "url": "https://www.asldeafined.com/media/vocabulary/1528811613.4355.mp4",
+                "variation_id": 0,
+                "video_id": "35897"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 42,
+                "frame_start": 1,
+                "instance_id": 3,
+                "signer_id": 20,
+                "source": "handspeak",
+                "split": "train",
+                "url": "https://www.handspeak.com/word/m/m-abc.mp4",
+                "variation_id": 0,
+                "video_id": "35898"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 27,
+                "frame_start": 1,
+                "instance_id": 4,
+                "signer_id": 11,
+                "source": "signingsavvy",
+                "split": "train",
+                "url": "https://www.signingsavvy.com/signs/mp4/10/10012.mp4",
+                "variation_id": 0,
+                "video_id": "35899"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 59,
+                "frame_start": 1,
+                "instance_id": 5,
+                "signer_id": 87,
+                "source": "aslpro",
+                "split": "train",
+                "url": "http://www.aslpro.com//main/m/m.swf",
+                "variation_id": 0,
+                "video_id": "35900"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 71,
+                "frame_start": 1,
+                "instance_id": 6,
+                "signer_id": 41,
+                "source": "aslsearch",
+                "split": "train",
+                "url": "http://www.aslsearch.com/signs/videos/m.mp4",
+                "variation_id": 0,
+                "video_id": "35901"
+            }
+        ]
+    },
+    {
+        "gloss": "n",
+        "instances": [
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 21,
+                "frame_start": 1,
+                "instance_id": 0,
+                "signer_id": 9,
+                "source": "asl5200",
+                "split": "test",
+                "url": "",
+                "variation_id": 0,
+                "video_id": "37512"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 55,
+                "frame_start": 1,
+                "instance_id": 1,
+                "signer_id": 96,
+                "source": "aslsignbank",
+                "split": "val",
+                "url": "https://aslsignbank.haskins.yale.edu/dictionary/protected_media/glossvideo/LE/LETTER-N-1664.mp4",
+                "variation_id": 0,
+                "video_id": "66052"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 107,
+                "frame_start": 1,
+                "instance_id": 2,
+                "signer_id": 21,
+                "source": "asldeafined",
+                "split": "train",
+                "url": "https://www.asldeafined.com/media/vocabulary/1528811743.8237.mp4",
+                "variation_id": 0,
+                "video_id": "38265"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 44,
+                "frame_start": 1,
+                "instance_id": 3,
+                "signer_id": 20,
+                "source": "handspeak",
+                "split": "train",
+                "url": "https://www.handspeak.com/word/n/n-abc.mp4",
+                "variation_id": 0,
+                "video_id": "38266"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 27,
+                "frame_start": 1,
+                "instance_id": 4,
+                "signer_id": 11,
+                "source": "signingsavvy",
+                "split": "train",
+                "url": "https://www.signingsavvy.com/signs/mp4/10/10013.mp4",
+                "variation_id": 0,
+                "video_id": "38267"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 59,
+                "frame_start": 1,
+                "instance_id": 5,
+                "signer_id": 30,
+                "source": "aslpro",
+                "split": "train",
+                "url": "http://www.aslpro.com//main/n/n.swf",
+                "variation_id": 0,
+                "video_id": "38268"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 65,
+                "frame_start": 1,
+                "instance_id": 6,
+                "signer_id": 12,
+                "source": "aslsearch",
+                "split": "train",
+                "url": "http://www.aslsearch.com/signs/videos/n.mp4",
+                "variation_id": 0,
+                "video_id": "38269"
+            }
+        ]
+    },
+    {
+        "gloss": "o",
+        "instances": [
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 21,
+                "frame_start": 1,
+                "instance_id": 0,
+                "signer_id": 9,
+                "source": "asl5200",
+                "split": "test",
+                "url": "",
+                "variation_id": 0,
+                "video_id": "39147"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 50,
+                "frame_start": 1,
+                "instance_id": 1,
+                "signer_id": 96,
+                "source": "aslsignbank",
+                "split": "val",
+                "url": "https://aslsignbank.haskins.yale.edu/dictionary/protected_media/glossvideo/LE/LETTER-O-1663.mp4",
+                "variation_id": 0,
+                "video_id": "66053"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 105,
+                "frame_start": 1,
+                "instance_id": 2,
+                "signer_id": 21,
+                "source": "asldeafined",
+                "split": "train",
+                "url": "https://www.asldeafined.com/media/vocabulary/1528811854.2948.mp4",
+                "variation_id": 0,
+                "video_id": "39553"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 43,
+                "frame_start": 1,
+                "instance_id": 3,
+                "signer_id": 14,
+                "source": "handspeak",
+                "split": "train",
+                "url": "https://www.handspeak.com/word/o/o-abc.mp4",
+                "variation_id": 0,
+                "video_id": "39554"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 27,
+                "frame_start": 1,
+                "instance_id": 4,
+                "signer_id": 11,
+                "source": "signingsavvy",
+                "split": "train",
+                "url": "https://www.signingsavvy.com/signs/mp4/10/10014.mp4",
+                "variation_id": 0,
+                "video_id": "39555"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 64,
+                "frame_start": 1,
+                "instance_id": 5,
+                "signer_id": 30,
+                "source": "aslpro",
+                "split": "train",
+                "url": "http://www.aslpro.com//main/o/o.swf",
+                "variation_id": 0,
+                "video_id": "39556"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 67,
+                "frame_start": 1,
+                "instance_id": 6,
+                "signer_id": 12,
+                "source": "aslsearch",
+                "split": "train",
+                "url": "http://www.aslsearch.com/signs/videos/o.mp4",
+                "variation_id": 0,
+                "video_id": "39557"
+            }
+        ]
+    },
+    {
+        "gloss": "p",
+        "instances": [
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 21,
+                "frame_start": 1,
+                "instance_id": 0,
+                "signer_id": 9,
+                "source": "asl5200",
+                "split": "val",
+                "url": "",
+                "variation_id": 0,
+                "video_id": "40701"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 47,
+                "frame_start": 1,
+                "instance_id": 1,
+                "signer_id": 96,
+                "source": "aslsignbank",
+                "split": "test",
+                "url": "https://aslsignbank.haskins.yale.edu/dictionary/protected_media/glossvideo/LE/LETTER-P-1662.mp4",
+                "variation_id": 0,
+                "video_id": "66054"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 107,
+                "frame_start": 1,
+                "instance_id": 2,
+                "signer_id": 21,
+                "source": "asldeafined",
+                "split": "train",
+                "url": "https://www.asldeafined.com/media/vocabulary/1528811887.8913.mp4",
+                "variation_id": 0,
+                "video_id": "42511"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 43,
+                "frame_start": 1,
+                "instance_id": 3,
+                "signer_id": 14,
+                "source": "handspeak",
+                "split": "train",
+                "url": "https://www.handspeak.com/word/p/p-abc.mp4",
+                "variation_id": 0,
+                "video_id": "42512"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 27,
+                "frame_start": 1,
+                "instance_id": 4,
+                "signer_id": 11,
+                "source": "signingsavvy",
+                "split": "train",
+                "url": "https://www.signingsavvy.com/signs/mp4/10/10015.mp4",
+                "variation_id": 0,
+                "video_id": "42513"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 72,
+                "frame_start": 1,
+                "instance_id": 5,
+                "signer_id": 5,
+                "source": "aslu",
+                "split": "val",
+                "url": "https://www.youtube.com/watch?v=CFmAgNcvOeM",
+                "variation_id": 0,
+                "video_id": "42514"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 62,
+                "frame_start": 1,
+                "instance_id": 6,
+                "signer_id": 30,
+                "source": "aslpro",
+                "split": "train",
+                "url": "http://www.aslpro.com//main/p/p.swf",
+                "variation_id": 0,
+                "video_id": "42515"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 68,
+                "frame_start": 1,
+                "instance_id": 7,
+                "signer_id": 12,
+                "source": "aslsearch",
+                "split": "train",
+                "url": "http://www.aslsearch.com/signs/videos/p.mp4",
+                "variation_id": 0,
+                "video_id": "42516"
+            }
+        ]
+    },
+    {
+        "gloss": "q",
+        "instances": [
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 21,
+                "frame_start": 1,
+                "instance_id": 0,
+                "signer_id": 9,
+                "source": "asl5200",
+                "split": "test",
+                "url": "",
+                "variation_id": 0,
+                "video_id": "45595"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 46,
+                "frame_start": 1,
+                "instance_id": 1,
+                "signer_id": 96,
+                "source": "aslsignbank",
+                "split": "val",
+                "url": "https://aslsignbank.haskins.yale.edu/dictionary/protected_media/glossvideo/LE/LETTER-Q-1661.mp4",
+                "variation_id": 0,
+                "video_id": "66055"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 120,
+                "frame_start": 1,
+                "instance_id": 2,
+                "signer_id": 21,
+                "source": "asldeafined",
+                "split": "train",
+                "url": "https://www.asldeafined.com/media/vocabulary/1528812058.7327.mp4",
+                "variation_id": 0,
+                "video_id": "45597"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 45,
+                "frame_start": 1,
+                "instance_id": 3,
+                "signer_id": 14,
+                "source": "handspeak",
+                "split": "train",
+                "url": "https://www.handspeak.com/word/q/q-abc.mp4",
+                "variation_id": 0,
+                "video_id": "45598"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 27,
+                "frame_start": 1,
+                "instance_id": 4,
+                "signer_id": 11,
+                "source": "signingsavvy",
+                "split": "train",
+                "url": "https://www.signingsavvy.com/signs/mp4/10/10016.mp4",
+                "variation_id": 0,
+                "video_id": "45599"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 63,
+                "frame_start": 1,
+                "instance_id": 5,
+                "signer_id": 30,
+                "source": "aslpro",
+                "split": "train",
+                "url": "http://www.aslpro.com//main/q/q.swf",
+                "variation_id": 0,
+                "video_id": "45600"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 92,
+                "frame_start": 1,
+                "instance_id": 6,
+                "signer_id": 12,
+                "source": "aslsearch",
+                "split": "train",
+                "url": "http://www.aslsearch.com/signs/videos/q.mp4",
+                "variation_id": 0,
+                "video_id": "45601"
+            }
+        ]
+    },
+    {
+        "gloss": "r",
+        "instances": [
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 21,
+                "frame_start": 1,
+                "instance_id": 0,
+                "signer_id": 9,
+                "source": "asl5200",
+                "split": "test",
+                "url": "",
+                "variation_id": 0,
+                "video_id": "45829"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 50,
+                "frame_start": 1,
+                "instance_id": 1,
+                "signer_id": 96,
+                "source": "aslsignbank",
+                "split": "val",
+                "url": "https://aslsignbank.haskins.yale.edu/dictionary/protected_media/glossvideo/LE/LETTER-R-1660.mp4",
+                "variation_id": 0,
+                "video_id": "66056"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 88,
+                "frame_start": 1,
+                "instance_id": 2,
+                "signer_id": 21,
+                "source": "asldeafined",
+                "split": "train",
+                "url": "https://www.asldeafined.com/media/vocabulary/1528812224.3051.mp4",
+                "variation_id": 0,
+                "video_id": "47983"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 43,
+                "frame_start": 1,
+                "instance_id": 3,
+                "signer_id": 14,
+                "source": "handspeak",
+                "split": "train",
+                "url": "https://www.handspeak.com/word/r/r-abc.mp4",
+                "variation_id": 0,
+                "video_id": "47984"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 27,
+                "frame_start": 1,
+                "instance_id": 4,
+                "signer_id": 11,
+                "source": "signingsavvy",
+                "split": "train",
+                "url": "https://www.signingsavvy.com/signs/mp4/10/10017.mp4",
+                "variation_id": 0,
+                "video_id": "47985"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 61,
+                "frame_start": 1,
+                "instance_id": 5,
+                "signer_id": 30,
+                "source": "aslpro",
+                "split": "train",
+                "url": "http://www.aslpro.com//main/r/r.swf",
+                "variation_id": 0,
+                "video_id": "47986"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 61,
+                "frame_start": 1,
+                "instance_id": 6,
+                "signer_id": 12,
+                "source": "aslsearch",
+                "split": "train",
+                "url": "http://www.aslsearch.com/signs/videos/r.mp4",
+                "variation_id": 0,
+                "video_id": "47987"
+            }
+        ]
+    },
+    {
+        "gloss": "s",
+        "instances": [
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 21,
+                "frame_start": 1,
+                "instance_id": 0,
+                "signer_id": 9,
+                "source": "asl5200",
+                "split": "test",
+                "url": "",
+                "variation_id": 0,
+                "video_id": "48933"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 49,
+                "frame_start": 1,
+                "instance_id": 1,
+                "signer_id": 96,
+                "source": "aslsignbank",
+                "split": "val",
+                "url": "https://aslsignbank.haskins.yale.edu/dictionary/protected_media/glossvideo/LE/LETTER-S-1659.mp4",
+                "variation_id": 0,
+                "video_id": "66057"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 97,
+                "frame_start": 1,
+                "instance_id": 2,
+                "signer_id": 21,
+                "source": "asldeafined",
+                "split": "train",
+                "url": "https://www.asldeafined.com/media/vocabulary/1528812514.7122.mp4",
+                "variation_id": 0,
+                "video_id": "51426"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 38,
+                "frame_start": 1,
+                "instance_id": 3,
+                "signer_id": 14,
+                "source": "handspeak",
+                "split": "train",
+                "url": "https://www.handspeak.com/word/s/s-abc.mp4",
+                "variation_id": 0,
+                "video_id": "51427"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 27,
+                "frame_start": 1,
+                "instance_id": 4,
+                "signer_id": 11,
+                "source": "signingsavvy",
+                "split": "train",
+                "url": "https://www.signingsavvy.com/signs/mp4/10/10018.mp4",
+                "variation_id": 0,
+                "video_id": "51428"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 68,
+                "frame_start": 1,
+                "instance_id": 5,
+                "signer_id": 30,
+                "source": "aslpro",
+                "split": "train",
+                "url": "http://www.aslpro.com//main/s/s.swf",
+                "variation_id": 0,
+                "video_id": "51429"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 89,
+                "frame_start": 1,
+                "instance_id": 6,
+                "signer_id": 12,
+                "source": "aslsearch",
+                "split": "train",
+                "url": "http://www.aslsearch.com/signs/videos/s.mp4",
+                "variation_id": 0,
+                "video_id": "51430"
+            }
+        ]
+    },
+    {
+        "gloss": "t",
+        "instances": [
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 21,
+                "frame_start": 1,
+                "instance_id": 0,
+                "signer_id": 9,
+                "source": "asl5200",
+                "split": "test",
+                "url": "",
+                "variation_id": 0,
+                "video_id": "56546"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 46,
+                "frame_start": 1,
+                "instance_id": 1,
+                "signer_id": 96,
+                "source": "aslsignbank",
+                "split": "val",
+                "url": "https://aslsignbank.haskins.yale.edu/dictionary/protected_media/glossvideo/LE/LETTER-T-1658.mp4",
+                "variation_id": 0,
+                "video_id": "66058"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 95,
+                "frame_start": 1,
+                "instance_id": 2,
+                "signer_id": 21,
+                "source": "asldeafined",
+                "split": "train",
+                "url": "https://www.asldeafined.com/media/vocabulary/1528812851.4394.mp4",
+                "variation_id": 0,
+                "video_id": "58323"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 42,
+                "frame_start": 1,
+                "instance_id": 3,
+                "signer_id": 14,
+                "source": "handspeak",
+                "split": "train",
+                "url": "https://www.handspeak.com/word/t/t-abc.mp4",
+                "variation_id": 0,
+                "video_id": "58324"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 27,
+                "frame_start": 1,
+                "instance_id": 4,
+                "signer_id": 11,
+                "source": "signingsavvy",
+                "split": "train",
+                "url": "https://www.signingsavvy.com/signs/mp4/10/10019.mp4",
+                "variation_id": 0,
+                "video_id": "58325"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 59,
+                "frame_start": 1,
+                "instance_id": 5,
+                "signer_id": 30,
+                "source": "aslpro",
+                "split": "train",
+                "url": "http://www.aslpro.com//main/t/t.swf",
+                "variation_id": 0,
+                "video_id": "58326"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 76,
+                "frame_start": 1,
+                "instance_id": 6,
+                "signer_id": 12,
+                "source": "aslsearch",
+                "split": "train",
+                "url": "http://www.aslsearch.com/signs/videos/t.mp4",
+                "variation_id": 0,
+                "video_id": "58327"
+            }
+        ]
+    },
+    {
+        "gloss": "u",
+        "instances": [
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 21,
+                "frame_start": 1,
+                "instance_id": 0,
+                "signer_id": 9,
+                "source": "asl5200",
+                "split": "test",
+                "url": "",
+                "variation_id": 0,
+                "video_id": "60338"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 45,
+                "frame_start": 1,
+                "instance_id": 1,
+                "signer_id": 96,
+                "source": "aslsignbank",
+                "split": "val",
+                "url": "https://aslsignbank.haskins.yale.edu/dictionary/protected_media/glossvideo/LE/LETTER-U-1657.mp4",
+                "variation_id": 0,
+                "video_id": "66059"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 102,
+                "frame_start": 1,
+                "instance_id": 2,
+                "signer_id": 21,
+                "source": "asldeafined",
+                "split": "train",
+                "url": "https://www.asldeafined.com/media/vocabulary/1528812876.3384.mp4",
+                "variation_id": 0,
+                "video_id": "60358"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 40,
+                "frame_start": 1,
+                "instance_id": 3,
+                "signer_id": 14,
+                "source": "handspeak",
+                "split": "train",
+                "url": "https://www.handspeak.com/word/u/u-abc.mp4",
+                "variation_id": 0,
+                "video_id": "60359"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 27,
+                "frame_start": 1,
+                "instance_id": 4,
+                "signer_id": 11,
+                "source": "signingsavvy",
+                "split": "train",
+                "url": "https://www.signingsavvy.com/signs/mp4/10/10020.mp4",
+                "variation_id": 0,
+                "video_id": "60360"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 57,
+                "frame_start": 1,
+                "instance_id": 5,
+                "signer_id": 30,
+                "source": "aslpro",
+                "split": "train",
+                "url": "http://www.aslpro.com//main/u/u.swf",
+                "variation_id": 0,
+                "video_id": "60361"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 75,
+                "frame_start": 1,
+                "instance_id": 6,
+                "signer_id": 12,
+                "source": "aslsearch",
+                "split": "train",
+                "url": "http://www.aslsearch.com/signs/videos/u.mp4",
+                "variation_id": 0,
+                "video_id": "60362"
+            }
+        ]
+    },
+    {
+        "gloss": "v",
+        "instances": [
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 21,
+                "frame_start": 1,
+                "instance_id": 0,
+                "signer_id": 9,
+                "source": "asl5200",
+                "split": "test",
+                "url": "",
+                "variation_id": 0,
+                "video_id": "61130"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 47,
+                "frame_start": 1,
+                "instance_id": 1,
+                "signer_id": 96,
+                "source": "aslsignbank",
+                "split": "val",
+                "url": "https://aslsignbank.haskins.yale.edu/dictionary/protected_media/glossvideo/LE/LETTER-V-1656.mp4",
+                "variation_id": 0,
+                "video_id": "66060"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 86,
+                "frame_start": 1,
+                "instance_id": 2,
+                "signer_id": 21,
+                "source": "asldeafined",
+                "split": "train",
+                "url": "https://www.asldeafined.com/media/vocabulary/1528812899.1086.mp4",
+                "variation_id": 0,
+                "video_id": "61561"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 42,
+                "frame_start": 1,
+                "instance_id": 3,
+                "signer_id": 14,
+                "source": "handspeak",
+                "split": "train",
+                "url": "https://www.handspeak.com/word/v/v-abc.mp4",
+                "variation_id": 0,
+                "video_id": "61562"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 27,
+                "frame_start": 1,
+                "instance_id": 4,
+                "signer_id": 11,
+                "source": "signingsavvy",
+                "split": "train",
+                "url": "https://www.signingsavvy.com/signs/mp4/10/10021.mp4",
+                "variation_id": 0,
+                "video_id": "61563"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 56,
+                "frame_start": 1,
+                "instance_id": 5,
+                "signer_id": 30,
+                "source": "aslpro",
+                "split": "train",
+                "url": "http://www.aslpro.com//main/v/v.swf",
+                "variation_id": 0,
+                "video_id": "61564"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 80,
+                "frame_start": 1,
+                "instance_id": 6,
+                "signer_id": 12,
+                "source": "aslsearch",
+                "split": "train",
+                "url": "http://www.aslsearch.com/signs/videos/v.mp4",
+                "variation_id": 0,
+                "video_id": "61565"
+            }
+        ]
+    },
+    {
+        "gloss": "w",
+        "instances": [
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 21,
+                "frame_start": 1,
+                "instance_id": 0,
+                "signer_id": 9,
+                "source": "asl5200",
+                "split": "test",
+                "url": "",
+                "variation_id": 0,
+                "video_id": "62032"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 47,
+                "frame_start": 1,
+                "instance_id": 1,
+                "signer_id": 96,
+                "source": "aslsignbank",
+                "split": "val",
+                "url": "https://aslsignbank.haskins.yale.edu/dictionary/protected_media/glossvideo/LE/LETTER-W-1655.mp4",
+                "variation_id": 0,
+                "video_id": "66061"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 112,
+                "frame_start": 1,
+                "instance_id": 2,
+                "signer_id": 21,
+                "source": "asldeafined",
+                "split": "train",
+                "url": "https://www.asldeafined.com/media/vocabulary/1528812930.671.mp4",
+                "variation_id": 0,
+                "video_id": "63274"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 40,
+                "frame_start": 1,
+                "instance_id": 3,
+                "signer_id": 14,
+                "source": "handspeak",
+                "split": "train",
+                "url": "https://www.handspeak.com/word/w/w-abc.mp4",
+                "variation_id": 0,
+                "video_id": "63275"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 27,
+                "frame_start": 1,
+                "instance_id": 4,
+                "signer_id": 11,
+                "source": "signingsavvy",
+                "split": "train",
+                "url": "https://www.signingsavvy.com/signs/mp4/10/10022.mp4",
+                "variation_id": 0,
+                "video_id": "63276"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 60,
+                "frame_start": 1,
+                "instance_id": 5,
+                "signer_id": 87,
+                "source": "aslpro",
+                "split": "train",
+                "url": "http://www.aslpro.com//main/w/w.swf",
+                "variation_id": 0,
+                "video_id": "63277"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 65,
+                "frame_start": 1,
+                "instance_id": 6,
+                "signer_id": 41,
+                "source": "aslsearch",
+                "split": "train",
+                "url": "http://www.aslsearch.com/signs/videos/w.mp4",
+                "variation_id": 0,
+                "video_id": "63278"
+            }
+        ]
+    },
+    {
+        "gloss": "x",
+        "instances": [
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 21,
+                "frame_start": 1,
+                "instance_id": 0,
+                "signer_id": 9,
+                "source": "asl5200",
+                "split": "test",
+                "url": "",
+                "variation_id": 0,
+                "video_id": "64115"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 47,
+                "frame_start": 1,
+                "instance_id": 1,
+                "signer_id": 96,
+                "source": "aslsignbank",
+                "split": "val",
+                "url": "https://aslsignbank.haskins.yale.edu/dictionary/protected_media/glossvideo/LE/LETTER-X-1654.mp4",
+                "variation_id": 0,
+                "video_id": "66062"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 100,
+                "frame_start": 1,
+                "instance_id": 2,
+                "signer_id": 21,
+                "source": "asldeafined",
+                "split": "train",
+                "url": "https://www.asldeafined.com/media/vocabulary/1528812951.3975.mp4",
+                "variation_id": 0,
+                "video_id": "64125"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 43,
+                "frame_start": 1,
+                "instance_id": 3,
+                "signer_id": 14,
+                "source": "handspeak",
+                "split": "train",
+                "url": "https://www.handspeak.com/word/x/x-abc.mp4",
+                "variation_id": 0,
+                "video_id": "64126"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 27,
+                "frame_start": 1,
+                "instance_id": 4,
+                "signer_id": 11,
+                "source": "signingsavvy",
+                "split": "train",
+                "url": "https://www.signingsavvy.com/signs/mp4/10/10023.mp4",
+                "variation_id": 0,
+                "video_id": "64127"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 53,
+                "frame_start": 1,
+                "instance_id": 5,
+                "signer_id": 30,
+                "source": "aslpro",
+                "split": "train",
+                "url": "http://www.aslpro.com//main/x/x.swf",
+                "variation_id": 0,
+                "video_id": "64128"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 84,
+                "frame_start": 1,
+                "instance_id": 6,
+                "signer_id": 12,
+                "source": "aslsearch",
+                "split": "train",
+                "url": "http://www.aslsearch.com/signs/videos/x.mp4",
+                "variation_id": 0,
+                "video_id": "64129"
+            }
+        ]
+    },
+    {
+        "gloss": "y",
+        "instances": [
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 21,
+                "frame_start": 1,
+                "instance_id": 0,
+                "signer_id": 9,
+                "source": "asl5200",
+                "split": "test",
+                "url": "",
+                "variation_id": 0,
+                "video_id": "64152"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 54,
+                "frame_start": 1,
+                "instance_id": 1,
+                "signer_id": 92,
+                "source": "aslsignbank",
+                "split": "val",
+                "url": "https://aslsignbank.haskins.yale.edu/dictionary/protected_media/glossvideo/LE/LETTER-Y-1653.mp4",
+                "variation_id": 0,
+                "video_id": "66063"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 82,
+                "frame_start": 1,
+                "instance_id": 2,
+                "signer_id": 21,
+                "source": "asldeafined",
+                "split": "train",
+                "url": "https://www.asldeafined.com/media/vocabulary/1528812976.1681.mp4",
+                "variation_id": 0,
+                "video_id": "64323"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 39,
+                "frame_start": 1,
+                "instance_id": 3,
+                "signer_id": 14,
+                "source": "handspeak",
+                "split": "train",
+                "url": "https://www.handspeak.com/word/y/y-abc.mp4",
+                "variation_id": 0,
+                "video_id": "64324"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 27,
+                "frame_start": 1,
+                "instance_id": 4,
+                "signer_id": 11,
+                "source": "signingsavvy",
+                "split": "train",
+                "url": "https://www.signingsavvy.com/signs/mp4/10/10024.mp4",
+                "variation_id": 0,
+                "video_id": "64325"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 58,
+                "frame_start": 2,
+                "instance_id": 5,
+                "signer_id": 30,
+                "source": "aslpro",
+                "split": "train",
+                "url": "http://www.aslpro.com//main/y/y.swf",
+                "variation_id": 0,
+                "video_id": "64326"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 74,
+                "frame_start": 1,
+                "instance_id": 6,
+                "signer_id": 12,
+                "source": "aslsearch",
+                "split": "train",
+                "url": "http://www.aslsearch.com/signs/videos/y.mp4",
+                "variation_id": 0,
+                "video_id": "64327"
+            }
+        ]
+    },
+    {
+        "gloss": "z",
+        "instances": [
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 46,
+                "frame_start": 1,
+                "instance_id": 0,
+                "signer_id": 9,
+                "source": "asl5200",
+                "split": "test",
+                "url": "",
+                "variation_id": 0,
+                "video_id": "64518"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 50,
+                "frame_start": 1,
+                "instance_id": 1,
+                "signer_id": 96,
+                "source": "aslsignbank",
+                "split": "val",
+                "url": "https://aslsignbank.haskins.yale.edu/dictionary/protected_media/glossvideo/LE/LETTER-Z-1652.mp4",
+                "variation_id": 0,
+                "video_id": "66064"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 95,
+                "frame_start": 1,
+                "instance_id": 2,
+                "signer_id": 21,
+                "source": "asldeafined",
+                "split": "train",
+                "url": "https://www.asldeafined.com/media/vocabulary/1528813004.7144.mp4",
+                "variation_id": 0,
+                "video_id": "64557"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 47,
+                "frame_start": 1,
+                "instance_id": 3,
+                "signer_id": 14,
+                "source": "handspeak",
+                "split": "train",
+                "url": "https://www.handspeak.com/word/z/z-abc.mp4",
+                "variation_id": 0,
+                "video_id": "64558"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 45,
+                "frame_start": 1,
+                "instance_id": 4,
+                "signer_id": 11,
+                "source": "signingsavvy",
+                "split": "train",
+                "url": "https://www.signingsavvy.com/signs/mp4/10/10025.mp4",
+                "variation_id": 0,
+                "video_id": "64559"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 62,
+                "frame_start": 1,
+                "instance_id": 5,
+                "signer_id": 30,
+                "source": "aslpro",
+                "split": "train",
+                "url": "http://www.aslpro.com//main/z/z.swf",
+                "variation_id": 0,
+                "video_id": "64560"
+            },
+            {
+                "bbox": [
+                    137,
+                    16,
+                    492,
+                    480
+                ],
+                "frame_end": 78,
+                "frame_start": 1,
+                "instance_id": 6,
+                "signer_id": 12,
+                "source": "aslsearch",
+                "split": "train",
+                "url": "http://www.aslsearch.com/signs/videos/z.mp4",
+                "variation_id": 0,
+                "video_id": "64561"
+            }
+        ]
+    }
+]
