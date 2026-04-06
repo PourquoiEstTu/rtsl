@@ -1,10 +1,19 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useLocalStorage, useWebSocket } from "@vueuse/core";
 import Toast from "@/volt/Toast.vue";
 import useLandmarkerService from "@/composables/useLandmarkerService";
 import { drawHandLandmarks, drawPoseLandmarks } from "@/utils/drawingUtils";
 import { useToast } from "primevue/usetoast";
+
+const props = defineProps({
+  isOn: {
+    type: Boolean,
+    required: true,
+  },
+});
+
+const isOnComputed = computed(() => props.isOn);
 
 const landmarkerService = useLandmarkerService();
 const toast = useToast();
@@ -64,6 +73,12 @@ onMounted(async () => {
 
   const predictWebcam = () => {
     if (!videoEl.value || !canvasEl.value) return;
+
+    if (!isOnComputed.value) {
+      canvasCtx.clearRect(0, 0, canvasEl.value.width, canvasEl.value.height);
+      landmarkerService.animationFrameId.value = window.requestAnimationFrame(predictWebcam);
+      return;
+    }
 
     const videoWidth = videoEl.value.videoWidth;
     const videoHeight = videoEl.value.videoHeight;
