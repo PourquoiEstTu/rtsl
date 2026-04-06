@@ -9,6 +9,7 @@ rtsl/
 
 # models / data
 *.onnx
+*.onnx.data
 *.pt
 /data/
 
@@ -16,6 +17,7 @@ rtsl/
 .idea/
 .vscode/
 node_modules/
+dist/
 
 # C++ build
 bindings/build/
@@ -62,3 +64,4 @@ landmarks.json
 
 # misc
 backend/app/local
+dist/
