@@ -6,8 +6,11 @@ def predict(model, labels, seq):
     probabilities = torch.softmax(logits, dim=1)
     idx = torch.argmax(probabilities, dim=1).item()
     confidence = float(probabilities[0, idx])
-    # print(f"idx: {idx}, confidence: {confidence}")
-    return labels[idx]
+    #print(f"{labels[idx]}, {confidence}")
+    if confidence > 0.5:
+        return labels[idx]
+    else:
+        return ""
 
 def onnx_predict(model, labels, seq):
     input_name = model.get_inputs()[0].name
@@ -18,4 +21,8 @@ def onnx_predict(model, labels, seq):
     probabilities = exp_logits / np.sum(exp_logits, axis=1, keepdims=True)
     idx = np.argmax(probabilities, axis=1)[0]
     confidence = float(probabilities[0, idx])
-    return labels[idx]
+    #print(f"{labels[idx]}, {confidence}")
+    if confidence > 0.5:
+        return labels[idx]
+    else:
+        return ""
