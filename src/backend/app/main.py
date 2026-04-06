@@ -4,13 +4,14 @@ import numpy as np
 import torch
 
 # import from local files
-from core.loader import get_model, get_onnx_model, get_labels
-from core.predictor import predict, onnx_predict
-from core.tgcn.formatter import convert_format_to_55, normalize_x_y_data
-from core.transformers.gloss_to_sentence import Gloss_to_Sentence_Model
-from core.utils.motion_analyzer import movement_score, update_ema
+from app.core.loader import get_model, get_onnx_model, get_labels
+from app.core.predictor import predict, onnx_predict
+from app.core.tgcn.formatter import convert_format_to_55, normalize_x_y_data
+from app.core.transformers.gloss_to_sentence import Gloss_to_Sentence_Model
+from app.core.utils.motion_analyzer import movement_score, update_ema
 
-DIR = "/home/sharmg36"
+DIR = "/home/sharmg36" # server dir
+# DIR = "/Users/gauravsharma/Documents/capstone" # local dir
 MOVEMENT_THRESHOLD = 0.8
 WINDOW_SIZE = 50
 INPUT_SIZE = 55

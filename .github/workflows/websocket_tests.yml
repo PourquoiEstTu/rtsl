@@ -1,5 +1,5 @@
-# DOES NOT WORK ON GITHUB BECAUSE SERVER REQUIRES MCMASTER VPN
-# name: Server Unit Tests
+# DOES NOT WORK ON GITHUB BECAUSE REQUIRES MODEL HOSTED IN REPO
+# name: Websocket Unit Tests
 # on: push
 
 # jobs:
@@ -23,4 +23,4 @@
 #         run: pip install -r requirements.txt
 
 #       - name: Run pytest
-#         run: python3 -m pytest app/tests/test_server.py
+#         run: python3 -m pytest app/tests/test_websocket.py
