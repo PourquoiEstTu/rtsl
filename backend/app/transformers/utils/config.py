@@ -1,3 +1,7 @@
+# IMPORTANT
+# This file is for experimenting with training T5/BART models on ASL gloss → English` translation.
+# It is not used in the main application and may contain experimental code.`
+
 from dataclasses import dataclass, field
 from typing import Optional
 from pathlib import Path
@@ -18,7 +22,7 @@ class ModelConfig:
 
 @dataclass
 class DataConfig:
-    use_flores: bool = True  # 2M-Flores-ASL (small, high-quality)
+    use_flores: bool = False  # 2M-Flores-ASL (small, high-quality)
     use_aslg: bool = False  # ASLG-PC12 (large, synthetic)
     
     # Validation split

@@ -1,3 +1,6 @@
+# IMPORTANT
+# This file is for experimenting with training T5/BART models on ASL gloss → English` translation.
+# It is not used in the main application and may contain experimental code.`
 from __future__ import annotations
 
 import logging
@@ -12,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class DatasetOptions:
-    use_aslg: bool = True
+    use_aslg: bool = False
     use_flores: bool = False
 
 
