@@ -31,7 +31,8 @@ function goToCamera() {
 
 function goToWebExtension() {
   console.log("Navigating to web extension...");
-  router.push("/web_extension");
+  window.location.href =
+    "https://github.com/PourquoiEstTu/rtsl/releases/tag/v0.1.0";
 }
 
 function goToAbout() {
@@ -60,7 +61,12 @@ function goToAbout() {
         <p class="home-card-desc">Translate ASL to English</p>
       </div>
 
-      <div class="home-card" data-testid="plugin-card" v-if="isDesktop" @click="goToWebExtension">
+      <div
+        class="home-card"
+        data-testid="plugin-card"
+        v-if="isDesktop"
+        @click="goToWebExtension"
+      >
         <div class="home-icon flex items-center justify-center h-[90px]">
           <ExtensionIcon />
         </div>
