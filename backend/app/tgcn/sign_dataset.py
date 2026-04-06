@@ -330,26 +330,26 @@ def k_copies_fixed_length_sequential_sampling(frame_start, frame_end, num_sample
     return frames_to_sample
 
 
-if __name__ == '__main__':
-    root = '/u50/chandd9/capstone/rtsl/backend/app'
+# if __name__ == '__main__':
+#     root = '/u50/chandd9/capstone/rtsl/backend/app'
     
-    split_file = os.path.join(root, 'splits/asl100.json')
-    pose_data_root = f"/u50/chandd9/downloads/tgcn_data"
+#     split_file = os.path.join(root, 'splits/asl100.json')
+#     pose_data_root = f"/u50/chandd9/downloads/tgcn_data"
     
-    num_samples = 64
+#     num_samples = 64
     
-    train_dataset = Sign_Dataset(index_file_path=split_file, split=['train', 'val'], 
-                        pose_root=pose_data_root, img_transforms=None, 
-                        video_transforms=None, num_samples=num_samples)
+#     train_dataset = Sign_Dataset(index_file_path=split_file, split=['train', 'val'], 
+#                         pose_root=pose_data_root, img_transforms=None, 
+#                         video_transforms=None, num_samples=num_samples)
     
-    train_data_loader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=64, shuffle=True, num_workers=1)
+#     train_data_loader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=64, shuffle=True, num_workers=1)
     
-    cnt = 0
-    for batch_idx, data in enumerate(train_data_loader):
-        print(batch_idx)
-        x = data[0]
-        y = data[1]
-        print(x.size())
-        print(y.size())
+#     cnt = 0
+#     for batch_idx, data in enumerate(train_data_loader):
+#         print(batch_idx)
+#         x = data[0]
+#         y = data[1]
+#         print(x.size())
+#         print(y.size())
 
-    print(k_copies_fixed_length_sequential_sampling(0, 2, 20, num_copies=3))
+#     print(k_copies_fixed_length_sequential_sampling(0, 2, 20, num_copies=3))

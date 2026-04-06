@@ -9,7 +9,7 @@ from sys import exit
 import torch
 import configparser
 
-ROOT = "/u50/chandd9/capstone/rtsl/backend/app"
+ROOT = "." # or just use "." 
 
 from tgcn_model import GCN_muti_att
 

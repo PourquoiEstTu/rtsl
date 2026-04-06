@@ -119,7 +119,7 @@ def normal_run(split_file, pose_data_root, configs, save_model_to=None, labels_t
             best_epoch_num = epoch
             early_stop_counter = 0  # reset counter on improvement
 
-            torch.save(model.state_dict(), f"splits/{configs.subset.replace('asl','')}/{best_epoch_num}_{best_test_acc:.4f}.pth")
+            torch.save(model.state_dict(), f"outputs/{configs.subset.replace('asl','')}/{best_epoch_num}_{best_test_acc:.4f}.pth")
             print(f"New best model saved: epoch={best_epoch_num}, val_acc={best_test_acc:.4f}")
         else:
             early_stop_counter += 1
@@ -138,7 +138,7 @@ def normal_run(split_file, pose_data_root, configs, save_model_to=None, labels_t
     utils.plot_confusion_matrix(val_gts, val_preds, classes=class_names, normalize=False, save_to='outputs/val-conf-mat')
 
     # print test results
-    best_model_path = f"splits/{configs.subset.replace('asl','')}/{best_epoch_num}_{best_test_acc:.4f}.pth"
+    best_model_path = f"outputs/{configs.subset.replace('asl','')}/{best_epoch_num}_{best_test_acc:.4f}.pth"
     model.load_state_dict(torch.load(best_model_path, weights_only=False))
     print(f"Loaded best model from: {best_model_path}")
 
@@ -472,12 +472,11 @@ def train_and_plot_subsets(subset_configs):
 #         subset_configs=subset_configs
 #     )
 
-# pt files run test
+# Test run
 if __name__ == "__main__":
-    root = '/u50/chandd9/capstone/rtsl/backend/app/' # My path of the project root directory
-
-    config_file = os.path.join(root, 'config3.ini')
+    config_file = 'configs/config3.ini'
     configs = Config(config_file)
+    root = configs.root
 
     logging.basicConfig(filename='outputs/{}.log'.format(os.path.basename(config_file)[:-4]), level=logging.DEBUG, filemode='w+')
 
