@@ -133,7 +133,7 @@ describe("Camera button functionality", () => {
 
     const wrapper = mountCamera();
 
-    const keypoint = wrapper.findComponent({
+    wrapper.findComponent({
       name: "KeypointTransceiver",
     });
   });
@@ -167,5 +167,143 @@ describe("Camera button functionality", () => {
     });
 
     expect(keypoint.props("isOn")).toBe(false);
+  });
+});
+
+describe("Camera recording button", () => {
+  const sendMock = vi.fn();
+  const openMock = vi.fn();
+  const closeMock = vi.fn();
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  function mountCamera() {
+    return mount(Camera, {
+      global: {
+        stubs: {
+          Sidebar: true,
+          TranslationBox: true,
+          ChatHistoryButton: true,
+          PhoneSidebarButton: true,
+
+          Button: {
+            emits: ["click"],
+            template: `
+              <button
+                class="toggle-btn"
+                @click="$emit('click')"
+              >
+                Toggle
+              </button>
+            `,
+          },
+
+          KeypointTransceiver: {
+            name: "KeypointTransceiver",
+
+            props: {
+              isOn: {
+                type: Boolean,
+                required: true,
+              },
+            },
+
+            data() {
+              return {
+                currentState: this.isOn,
+              };
+            },
+
+            watch: {
+              isOn(newValue: boolean) {
+                this.currentState = newValue;
+
+                if (newValue) {
+                  openMock();
+                  sendMock(
+                    JSON.stringify({
+                      action: "start-recording",
+                    })
+                  );
+                } else {
+                  sendMock(
+                    JSON.stringify({
+                      action: "stop-recording",
+                    })
+                  );
+                  closeMock();
+                }
+              },
+            },
+
+            template: `<div class="recording-state">{{ currentState }}</div>`,
+          },
+        },
+      },
+    });
+  }
+
+  it("starts recording after the first button click", async () => {
+    setScreenWidth(1200);
+
+    const wrapper = mountCamera();
+
+    expect(wrapper.find(".recording-state").text()).toBe("false");
+
+    await wrapper.find(".toggle-btn").trigger("click");
+    await nextTick();
+
+    expect(wrapper.find(".recording-state").text()).toBe("true");
+    expect(openMock).toHaveBeenCalledTimes(1);
+    expect(sendMock).toHaveBeenCalledWith(
+      JSON.stringify({ action: "start-recording" })
+    );
+  });
+
+  it("stops recording after the second button click", async () => {
+    setScreenWidth(1200);
+
+    const wrapper = mountCamera();
+    const button = wrapper.find(".toggle-btn");
+
+    await button.trigger("click");
+    await nextTick();
+
+    await button.trigger("click");
+    await nextTick();
+
+    expect(wrapper.find(".recording-state").text()).toBe("false");
+    expect(sendMock).toHaveBeenLastCalledWith(
+      JSON.stringify({ action: "stop-recording" })
+    );
+    expect(closeMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("alternates recording state on repeated clicks", async () => {
+    setScreenWidth(1200);
+
+    const wrapper = mountCamera();
+    const button = wrapper.find(".toggle-btn");
+
+    for (let i = 0; i < 5; i++) {
+      await button.trigger("click");
+      await nextTick();
+    }
+
+    expect(wrapper.find(".recording-state").text()).toBe("true");
+    expect(openMock).toHaveBeenCalledTimes(3);
+    expect(closeMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("does not start recording before the button is clicked", () => {
+    setScreenWidth(1200);
+
+    mountCamera();
+
+    expect(openMock).not.toHaveBeenCalled();
+    expect(sendMock).not.toHaveBeenCalled();
+    expect(closeMock).not.toHaveBeenCalled();
   });
 });
