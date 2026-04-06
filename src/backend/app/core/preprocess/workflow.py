@@ -44,17 +44,17 @@ os.makedirs(FLATTENED_OUTPUT_DIR, exist_ok=True)
 # INITIALIZE MEDIAPIPE HOLISTIC
 # essentially uses the mediapipe holistic model to extract hands and pose features
 # comment out if not needed when running this file
-# mp_holistic = mp.solutions.holistic
-# holistic = mp_holistic.Holistic(
-#     static_image_mode=False,
-#     model_complexity=1,
-#     smooth_landmarks=True,
-#     enable_segmentation=False, # mediapipe crashes when true? 
-#         # someone else run this file with this and refine_face_landmarks=True as well
-#     refine_face_landmarks=False,
-#     min_detection_confidence=0.5,
-#     min_tracking_confidence=0.5
-# )
+mp_holistic = mp.solutions.holistic
+holistic = mp_holistic.Holistic(
+    static_image_mode=False,
+    model_complexity=1,
+    smooth_landmarks=True,
+    enable_segmentation=False, # mediapipe crashes when true? 
+        # someone else run this file with this and refine_face_landmarks=True as well
+    refine_face_landmarks=False,
+    min_detection_confidence=0.5,
+    min_tracking_confidence=0.5
+)
 
 # extract features from a video
 def extract_features(video_path: str):
