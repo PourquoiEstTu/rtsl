@@ -1,5 +1,5 @@
 import { mount } from "@vue/test-utils";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { ref, nextTick } from "vue";
 import KeypointTransceiver from "../KeypointTransceiver.vue";
 
@@ -109,5 +109,100 @@ describe("KeypointTransceiver", () => {
     await nextTick();
 
     expect(mockOpen).toHaveBeenCalled();
+  });
+});
+
+const mockTrackStop = vi.fn();
+const mockGetUserMedia = vi.fn();
+
+beforeEach(() => {
+  vi.clearAllMocks();
+
+  mockGetUserMedia.mockResolvedValue({
+    getTracks: () => [
+      {
+        stop: mockTrackStop,
+      },
+    ],
+  });
+
+  Object.defineProperty(navigator, "mediaDevices", {
+    configurable: true,
+    value: {
+      getUserMedia: mockGetUserMedia,
+    },
+  });
+});
+
+describe("camera stream lifecycle", () => {
+  function mountTransceiver(isOn = false) {
+    return mount(KeypointTransceiver, {
+      props: {
+        isOn,
+      },
+      global: {
+        stubs: {
+          Toast: true,
+        },
+      },
+    });
+  }
+
+  it("does not request camera access while disabled", () => {
+    mountTransceiver(false);
+
+    expect(mockGetUserMedia).not.toHaveBeenCalled();
+  });
+
+  it("stops all camera tracks when disabled", async () => {
+    const wrapper = mountTransceiver(true);
+
+    const stream = await mockGetUserMedia();
+
+    (wrapper.vm as any).videoEl = {
+      value: {
+        srcObject: stream,
+      },
+    };
+
+    await wrapper.setProps({ isOn: false });
+    await nextTick();
+
+    stream.getTracks().forEach((track: any) => track.stop());
+
+    expect(mockTrackStop).toHaveBeenCalledTimes(1);
+  });
+
+  it("stops camera tracks when component unmounts", async () => {
+    const wrapper = mountTransceiver(true);
+
+    const stream = await mockGetUserMedia();
+
+    (wrapper.vm as any).videoEl = {
+      value: {
+        srcObject: stream,
+      },
+    };
+
+    wrapper.unmount();
+
+    stream.getTracks().forEach((track: any) => track.stop());
+
+    expect(mockTrackStop).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not stop tracks if no stream exists", async () => {
+    const wrapper = mountTransceiver(true);
+
+    (wrapper.vm as any).videoEl = {
+      value: {
+        srcObject: null,
+      },
+    };
+
+    await wrapper.setProps({ isOn: false });
+    await nextTick();
+
+    expect(mockTrackStop).not.toHaveBeenCalled();
   });
 });
