@@ -46,7 +46,7 @@ def create_gloss_subset(original_json: str, new_json: str, out_dir: str, out_nam
         json.dump(output, f, indent=4)
 
 if __name__ == "__main__" :
-    root = "/home/pourquoi/repos/rtsl/backend/app"
+    root = "/home/pourquoi/repos/rtsl/backend/data_splits"
     create_gloss_subset(f"{root}/splits/asl100.json", f"{root}/asl_citizen/all_glosses.json", f"{root}/asl_citizen", "asl_citizens100.json")
     create_gloss_subset(f"{root}/splits/asl300.json", f"{root}/asl_citizen/all_glosses.json", f"{root}/asl_citizen", "asl_citizens300.json")
     create_gloss_subset(f"{root}/splits/asl1000.json", f"{root}/asl_citizen/all_glosses.json", f"{root}/asl_citizen", "asl_citizens1000.json")
