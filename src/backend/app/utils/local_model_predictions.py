@@ -21,8 +21,8 @@ if NUM_CLASSES not in [100, 300, 1000, 2000]:
     exit()
 
 def get_model():
-    checkpoint_path = f"{DIR}/rtsl/backend/models/checkpoints/asl{NUM_CLASSES}/pytorch_model.bin"
-    config_path = f"{DIR}/rtsl/backend/models/configs/asl{NUM_CLASSES}.ini"
+    checkpoint_path = f"{DIR}/rtsl/src/backend/models/checkpoints/asl{NUM_CLASSES}/pytorch_model.bin"
+    config_path = f"{DIR}/rtsl/src/backend/models/configs/asl{NUM_CLASSES}.ini"
     config = Config(config_path)
     
     # initalize model
@@ -43,7 +43,7 @@ def get_model():
     return model
 
 def get_labels():
-    labels_path = f"{DIR}/rtsl/backend/data_splits/{NUM_CLASSES}/class_to_idx.json"
+    labels_path = f"{DIR}/rtsl/src/backend/data_splits/{NUM_CLASSES}/class_to_idx.json"
     with open(labels_path, 'r') as f:
         labels = [w for w in json.load(f)]
     return labels

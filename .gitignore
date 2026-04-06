@@ -4,7 +4,7 @@ __pycache__/
 *.egg-info/
 venv/
 .env
-backend/.venv/
+src/backend/.venv/
 rtsl/
 
 # models / data
@@ -30,16 +30,16 @@ build/
 .DS_Store
 
 # ML outputs
-backend/translation/outputs/
-backend/translation/logs/
-backend/translation/cache/
+src/backend/translation/outputs/
+src/backend/translation/logs/
+src/backend/translation/cache/
 
 # Model weights
 *.safetensors
 *.bin
 *.pt
-backend/translation/outputs/
-backend/translation/logs/
+src/backend/translation/outputs/
+src/backend/translation/logs/
 
 
 # Hugging Face cache
@@ -63,5 +63,5 @@ events.out.tfevents.*
 landmarks.json
 
 # misc
-backend/app/local
+src/backend/app/local
 dist/
