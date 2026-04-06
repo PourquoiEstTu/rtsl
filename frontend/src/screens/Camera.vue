@@ -54,10 +54,12 @@ async function onNewSentence(sentence: string) {
 watch(translatedSentence, () => {
   translationHistory.value.push(translatedSentence.value);
 });
+
+const keypointsOn = ref(false);
 </script>
 
 <template>
-  <div>
+  <div class="parent">
     <aside v-if="isDesktop" class="sidebar">
       <div>
         <span class="sidebar-title">Translator</span>
@@ -72,12 +74,17 @@ watch(translatedSentence, () => {
     <main>
       <div class="outer-container lg:p-2!">
         <div class="camera-panel h-full! lg:rounded-t-4xl">
-          <KeypointTransceiver @new-word="onNewWord" @new-sentence="onNewSentence" />
+          <KeypointTransceiver @new-word="onNewWord" @new-sentence="onNewSentence" :is-on="keypointsOn" />
           <div class="background-gradient"></div>
 
           <div class="relative w-full h-full">
-            <div v-if="translatedWord" class="absolute inset-0 flex items-start justify-center pointer-events-none">
-              <div class="px-4! py-2! mt-3! bg-gradient-to-b from-[#e9f6ff] to-[#a6d0f1] rounded-md text-black">
+            <div
+              v-if="translatedWord"
+              class="absolute inset-0 flex items-start justify-center pointer-events-none"
+            >
+              <div
+                class="px-4! py-2! mt-3! bg-gradient-to-b from-[#e9f6ff] to-[#a6d0f1] rounded-md text-black"
+              >
                 {{ translatedWord }}
               </div>
             </div>
@@ -92,10 +99,13 @@ watch(translatedSentence, () => {
           <PhoneSidebarButton v-if="!isDesktop" />
 
           <div class="button-container">
-            <Button class="button border-5! rounded-full!" />
+            <Button @click="keypointsOn = !keypointsOn" class="button border-5! rounded-full!" />
           </div>
         </div>
-        <TranslationBox class="translation-box" :translation="translatedSentence" />
+        <TranslationBox
+          class="translation-box"
+          :translation="translatedSentence"
+        />
       </div>
     </main>
   </div>

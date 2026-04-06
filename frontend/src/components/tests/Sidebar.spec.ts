@@ -44,7 +44,7 @@ describe("Sidebar navigation", () => {
     expect(links[2]!.text()).toBe("About");
   });
 
-  it("Navigates to / (Home) when clicking Translator", async () => {
+  it("Navigates to / (Home) when clicking Home", async () => {
     const wrapper = mountSidebar();
     const links = wrapper.findAllComponents({ name: "RouterLink" });
 

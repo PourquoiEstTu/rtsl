@@ -28,7 +28,7 @@ def get_model(parent_dir, num_classes):
     return model
 
 def get_onnx_model(parent_dir, num_classes):
-    onnx_path = f"{parent_dir}/rtsl/backend/models/checkpoints/asl{num_classes}/model.onnx"
+    onnx_path = f"{parent_dir}/rtsl/backend/models/checkpoints/asl{num_classes}/asl{num_classes}.onnx"
     session_options = onnxruntime.SessionOptions()
     session_options.graph_optimization_level = onnxruntime.GraphOptimizationLevel.ORT_ENABLE_ALL
     

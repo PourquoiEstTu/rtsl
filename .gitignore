@@ -9,6 +9,7 @@ rtsl/
 
 # models / data
 *.onnx
+*.onnx.data
 *.pt
 /data/
 
