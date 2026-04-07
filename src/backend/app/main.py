@@ -132,7 +132,7 @@ async def websocket_endpoint(websocket: WebSocket):
                     input_data[0, node_idx, t*2 + 1] = y_val
                 
             # only predict if hands in frame     
-            if np.sum(left) + np.sum(right) != 0:
+            if np.any(left) or np.any(right):
                 if model_info[0] != "onyx":
                     input_data = torch.from_numpy(input_data)
                 current_pred = prediction_function(model, labels, input_data).upper()

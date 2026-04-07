@@ -90,7 +90,7 @@ def convert_format_to_55(pose_keypoints, multi_hand_keypoints, hand_handedness):
             for keypoint in single_hand_keypoints:
                 x = keypoint["x"] * 256.0
                 y = keypoint["y"] * 256.0
-                points.append((1.0, 1.0, 1.0))
+                points.append((x, y, 1.0))
             
             if hand[0]["categoryName"] == "Left":
                 left_hand = points
