@@ -8,21 +8,20 @@ import torch
 from tgcn_model import GCN_muti_att
 from configs import Config
 from pose_extractor import PoseExtractor
+from pathlib import Path
 
-DIR = "/Users/gauravsharma/Documents/capstone"
-NUM_CLASSES = 300
+import csv
+
+DIR = Path(__file__).parent
+NUM_CLASSES = 10
 INPUT_SIZE = 55
 WINDOW_SIZE = 50
 MOVEMENT_THRESHOLD = 1.2
 PAUSE_THRESHOLD = 20 # number of frames
 
-if NUM_CLASSES not in [100, 300, 1000, 2000]:
-    print("ERROR - INVALID NUM_CLASSES")
-    exit()
-
 def get_model():
-    checkpoint_path = f"{DIR}/rtsl/src/backend/models/checkpoints/asl{NUM_CLASSES}/pytorch_model.bin"
-    config_path = f"{DIR}/rtsl/src/backend/models/configs/asl{NUM_CLASSES}.ini"
+    checkpoint_path = DIR / "94_0.8346.pth"
+    config_path = DIR / "config2.ini"
     config = Config(config_path)
     
     # initalize model
@@ -42,19 +41,42 @@ def get_model():
 
     return model
 
+def generate_class_integer_mappings(json_path, max_classes=None):
+    with open(json_path, "r") as f:
+        data = json.load(f)
+
+    # extract gloss names
+    all_glosses = sorted([entry["gloss"] for entry in data])
+
+    if max_classes is not None:
+        glosses = all_glosses[:max_classes]
+    else:
+        glosses = all_glosses
+
+    class_to_idx = {g: i for i, g in enumerate(glosses)}
+    idx_to_class = {i: g for i, g in enumerate(glosses)}
+
+    return idx_to_class, class_to_idx
+
 def get_labels():
-    labels_path = f"{DIR}/rtsl/src/backend/data_splits/{NUM_CLASSES}/class_to_idx.json"
-    with open(labels_path, 'r') as f:
-        labels = [w for w in json.load(f)]
+    return sorted(["YES", "NO", "HELP", "EAT", "DRINK", "WANT", "FINISH", "GO", "WHAT", "WHO"])
+
+    dataset_json = "asl_citizen/asl_citizens100.json"   # or whatever your dataset file is
+    idx_to_class, class_to_idx = generate_class_integer_mappings(
+        dataset_json,
+        max_classes=NUM_CLASSES
+    )
+    labels = [idx_to_class[i] for i in range(len(idx_to_class))]
     return labels
      
 def predict(model, labels, seq):
     logits = model(seq)
     probabilities = torch.softmax(logits, dim=1)
+
     idx = torch.argmax(probabilities, dim=1).item()
     confidence = float(probabilities[0, idx])
-    # print(f"idx: {idx}, confidence: {confidence}")
-    return labels[idx]
+
+    return labels[idx], confidence
 
 def movement_score(landmarks_frames,hand_weight=3):
     hand_indices = list(range(13))  # adjust based on your hand landmark indices
@@ -108,9 +130,14 @@ def main():
     gloss_sequence = [""]
     
     while True:
+        # with open('data.csv', 'w', newline='') as f:
+        #     writer = csv.writer(f)
+        #     writer.writerows(processed)
         ret, frame = cap.read()
         if not ret:
             break
+
+        print(len(processed))
         
         # flip camera
         frame = cv2.flip(frame, 1)
@@ -175,6 +202,8 @@ def main():
         if (len(processed) > (WINDOW_SIZE - 1)):
             processed = processed[1:WINDOW_SIZE]
         processed.append(xy_frame)
+        # save preprocessed frames
+        # np.save(DIR / "outputs/preprocessed_frames.npy", np.array(processed))
         
         # Pad to exactly NUM_SAMPLES frames
         if len(processed) < WINDOW_SIZE:
@@ -207,9 +236,15 @@ def main():
                 
             # only print if hands in frame     
             if np.sum(left) + np.sum(right) != 0:
-                current_pred = predict(model, labels, torch.from_numpy(input_data))
-                # print(current_pred)
-                add_to_sequence(gloss_sequence, last_pred, current_pred)
+                # current_pred = predict(model, labels, torch.from_numpy(input_data))
+                # # print(current_pred)
+                # add_to_sequence(gloss_sequence, last_pred, current_pred)
+                
+                current_pred, confidence = predict(model, labels, torch.from_numpy(input_data))
+                # print(f"Predicted: {current_pred}, Confidence: {confidence:.4f}")
+                if confidence > 0.5:
+                    add_to_sequence(gloss_sequence, last_pred, current_pred)
+                    last_pred = current_pred
                 last_pred = current_pred
         else:
             pause_counter += 1
