@@ -1,14 +1,23 @@
-# rtsl
-Real Time Sign Language - An app to translate sign language in real time
+# RTSL
 
-## Backend Setup
-Please [install pyenv](https://github.com/pyenv/pyenv?tab=readme-ov-file#installation), which we will use to make sure we are all on the same Python version. It lets you set local versions, so that you do not need to mess with your system version (and potentially break other projects you have).
+Real Time Sign Language: An app to translate sign language in real time.
 
-Todo: create a "run.sh" that handles setting up venv.
+**Try it out yourself at** https://rtsl.cas.mcmaster.ca/ (requires a connection to McMaster wifi).
+
+This app displays word-by-word translations at the top of the screen. Once the signer ends their sentence, the pause is detected an the translated sentence is displayed.
+
+We provide a website, app (PWA), and Chrome extension.
+
+## Run Frontend Locally
+
+Requires `npm`.
+
+```bash
+cd src/frontend
+npm i
+npm run dev
 ```
-# install pyenv if needed
-pyenv install --skip-existing 3.13.3
-pyenv virtualenv 3.13.3 rtsl-env
-pyenv local rtsl-env
-pip install -r requirements.txt
-```
+
+For the web extension, see the Releases.
+
+## Run Backend Locally
