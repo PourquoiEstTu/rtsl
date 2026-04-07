@@ -104,14 +104,15 @@ async def websocket_endpoint(websocket: WebSocket):
             processed = processed[1:WINDOW_SIZE]
         processed.append(xy_frame)
         
-        # Pad to exactly NUM_SAMPLES frames (occurs at the very beginning) - TODO: replace with interpolation?
+        # Wait until we have enough frames for features
         if len(processed) < WINDOW_SIZE:
-            # Pad with last frame
-            last_frame = processed[-1] if processed else np.zeros((INPUT_SIZE, 2), dtype=np.float32)
-            num_padding = WINDOW_SIZE - len(processed)
-            for _ in range(num_padding):
-                processed.append(last_frame.copy())
-            # print(f"[PREPROCESS] Padded {num_padding} frames to reach {WINDOW_SIZE}")
+            continue 
+            # # Pad with last frame
+            # last_frame = processed[-1] if processed else np.zeros((INPUT_SIZE, 2), dtype=np.float32)
+            # num_padding = WINDOW_SIZE - len(processed)
+            # for _ in range(num_padding):
+            #     processed.append(last_frame.copy())
+            # # print(f"[PREPROCESS] Padded {num_padding} frames to reach {WINDOW_SIZE}")
          
         ema_score = update_ema(ema_score, movement_score(processed[-5:]))
         if ema_score > MOVEMENT_THRESHOLD:
@@ -132,7 +133,7 @@ async def websocket_endpoint(websocket: WebSocket):
                     input_data[0, node_idx, t*2 + 1] = y_val
                 
             # only predict if hands in frame     
-            if np.sum(left) + np.sum(right) != 0:
+            if np.any(left) or np.any(right):
                 if model_info[0] != "onyx":
                     input_data = torch.from_numpy(input_data)
                 current_pred = prediction_function(model, labels, input_data).upper()
