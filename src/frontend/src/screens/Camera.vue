@@ -10,6 +10,8 @@ import PhoneSidebarButton from "@/components/PhoneSidebarButton.vue";
 import KeypointTransceiver from "@/components/KeypointTransceiver.vue";
 import SelectModelButton from "@/components/SelectModelButton.vue";
 import { textToSpeech } from "@/utils/tts";
+import SettingsButton from "@/components/SettingsButton.vue";
+import { useLocalStorage } from "@vueuse/core";
 
 // Track screen width
 const screenWidth = ref(window.innerWidth);
@@ -34,6 +36,8 @@ let wordTimeout: ReturnType<typeof setTimeout> | null = null;
 const translatedSentence = ref<string>("Waiting for sign input...");
 const translationHistory = ref<string[]>([]);
 
+const tts = useLocalStorage("tts", true);
+
 function onNewWord(word: string) {
   translatedWord.value = word;
   if (wordTimeout) clearTimeout(wordTimeout);
@@ -42,6 +46,8 @@ function onNewWord(word: string) {
 
 async function onNewSentence(sentence: string) {
   translatedSentence.value = sentence;
+
+  if (!tts.value) return;
 
   const audio = await textToSpeech(sentence, {
     engine: "neural",
@@ -93,6 +99,7 @@ const keypointsOn = ref(false);
           <div class="absolute! top-[2%] right-[5%] lg:right-[2%]">
             <div class="flex gap-4">
               <SelectModelButton />
+              <SettingsButton />
               <ChatHistoryButton :translations="translationHistory" />
             </div>
           </div>
