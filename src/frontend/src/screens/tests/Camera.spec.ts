@@ -28,6 +28,7 @@ describe("Rendering Camera Components", () => {
           PhoneSidebarButton: true,
           KeypointTransceiver: true,
           SelectModelButton: true,
+          SettingsButton: true,
         },
       },
     });
@@ -44,19 +45,13 @@ describe("Rendering Camera Components", () => {
 
     // Main screen elements
     expect(wrapper.findComponent({ name: "Button" }).exists()).toBe(true);
-    expect(wrapper.findComponent({ name: "TranslationBox" }).exists()).toBe(
-      true
-    );
+    expect(wrapper.findComponent({ name: "TranslationBox" }).exists()).toBe(true);
 
     // KeypointTransceiver
-    expect(
-      wrapper.findComponent({ name: "KeypointTransceiver" }).exists()
-    ).toBe(true);
+    expect(wrapper.findComponent({ name: "KeypointTransceiver" }).exists()).toBe(true);
 
     // ChatHistoryButton
-    expect(wrapper.findComponent({ name: "ChatHistoryButton" }).exists()).toBe(
-      true
-    );
+    expect(wrapper.findComponent({ name: "ChatHistoryButton" }).exists()).toBe(true);
 
     // Background gradient element
     expect(wrapper.find(".background-gradient").exists()).toBe(true);
@@ -65,9 +60,7 @@ describe("Rendering Camera Components", () => {
     expect(wrapper.find(".button-container").exists()).toBe(true);
 
     // PhoneSidebarButton should NOT appear on desktop
-    expect(wrapper.findComponent({ name: "PhoneSidebarButton" }).exists()).toBe(
-      false
-    );
+    expect(wrapper.findComponent({ name: "PhoneSidebarButton" }).exists()).toBe(false);
   });
 
   it("shows PhoneSidebarButton on small screens", () => {
@@ -83,13 +76,12 @@ describe("Rendering Camera Components", () => {
           ChatHistoryButton: true,
           PhoneSidebarButton: true,
           KeypointTransceiver: true,
+          SettingsButton: true,
         },
       },
     });
 
-    expect(wrapper.findComponent({ name: "PhoneSidebarButton" }).exists()).toBe(
-      true
-    );
+    expect(wrapper.findComponent({ name: "PhoneSidebarButton" }).exists()).toBe(true);
 
     // Sidebar should be hidden in mobile layout
     expect(wrapper.findComponent({ name: "Sidebar" }).exists()).toBe(false);
@@ -107,6 +99,7 @@ describe("Camera button functionality", () => {
           ChatHistoryButton: true,
           PhoneSidebarButton: true,
           SelectModelButton: true,
+          SettingsButton: true,
 
           Button: {
             emits: ["click"],
@@ -191,6 +184,7 @@ describe("Camera recording button", () => {
           ChatHistoryButton: true,
           PhoneSidebarButton: true,
           SelectModelButton: true,
+          SettingsButton: true,
 
           Button: {
             emits: ["click"],
@@ -229,13 +223,13 @@ describe("Camera recording button", () => {
                   sendMock(
                     JSON.stringify({
                       action: "start-recording",
-                    })
+                    }),
                   );
                 } else {
                   sendMock(
                     JSON.stringify({
                       action: "stop-recording",
-                    })
+                    }),
                   );
                   closeMock();
                 }
@@ -261,9 +255,7 @@ describe("Camera recording button", () => {
 
     expect(wrapper.find(".recording-state").text()).toBe("true");
     expect(openMock).toHaveBeenCalledTimes(1);
-    expect(sendMock).toHaveBeenCalledWith(
-      JSON.stringify({ action: "start-recording" })
-    );
+    expect(sendMock).toHaveBeenCalledWith(JSON.stringify({ action: "start-recording" }));
   });
 
   it("stops recording after the second button click", async () => {
@@ -279,9 +271,7 @@ describe("Camera recording button", () => {
     await nextTick();
 
     expect(wrapper.find(".recording-state").text()).toBe("false");
-    expect(sendMock).toHaveBeenLastCalledWith(
-      JSON.stringify({ action: "stop-recording" })
-    );
+    expect(sendMock).toHaveBeenLastCalledWith(JSON.stringify({ action: "stop-recording" }));
     expect(closeMock).toHaveBeenCalledTimes(1);
   });
 

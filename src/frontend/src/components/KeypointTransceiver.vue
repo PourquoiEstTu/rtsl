@@ -51,6 +51,8 @@ watch(status, (newStatus) => {
   }
 });
 
+const drawKeypoints = useLocalStorage("drawKeypoints", true);
+
 onBeforeUnmount(landmarkerService.stop);
 
 onMounted(async () => {
@@ -128,12 +130,14 @@ onMounted(async () => {
       close();
     }
 
-    if (handLandmarkerResults?.landmarks.length) {
-      drawHandLandmarks(canvasCtx, handLandmarkerResults, canvasEl.value.width, canvasEl.value.height);
-    }
+    if (drawKeypoints.value) {
+      if (handLandmarkerResults?.landmarks.length) {
+        drawHandLandmarks(canvasCtx, handLandmarkerResults, canvasEl.value.width, canvasEl.value.height);
+      }
 
-    if (poseLandmarkerResults?.landmarks.length) {
-      drawPoseLandmarks(canvasCtx, poseLandmarkerResults, canvasEl.value.width, canvasEl.value.height);
+      if (poseLandmarkerResults?.landmarks.length) {
+        drawPoseLandmarks(canvasCtx, poseLandmarkerResults, canvasEl.value.width, canvasEl.value.height);
+      }
     }
 
     landmarkerService.animationFrameId.value = window.requestAnimationFrame(predictWebcam);
