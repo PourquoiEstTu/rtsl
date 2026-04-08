@@ -22,7 +22,9 @@ For the web extension, see the Releases.
 
 ## Run Backend Locally (HTTP)
 
-Requires `uvicorn`. Additionally, must alter websocket address in `src/frontend/src/components/KeypointTransceiver.vue` (Comment out line 20 and uncomment line 21).
+Requires `uvicorn`. 
+Must alter websocket address in `src/frontend/src/components/KeypointTransceiver.vue` (Comment out line 20 and uncomment line 21). 
+Must download and overwrite `src/backend/models` with `models` folder under releases.
 
 ```bash
 cd src/backend
