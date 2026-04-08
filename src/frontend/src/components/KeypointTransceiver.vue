@@ -17,7 +17,8 @@ const isOnComputed = computed(() => props.isOn);
 
 const landmarkerService = useLandmarkerService();
 const toast = useToast();
-const { status, data, send, open, close } = useWebSocket("wss://rtsl.cas.mcmaster.ca:8000/ws");
+// const { status, data, send, open, close } = useWebSocket("wss://rtsl.cas.mcmaster.ca:8000/ws"); // use this line on server
+const { status, data, send, open, close } = useWebSocket("ws://localhost:8000/ws"); // use this line instead when running locally
 
 const emit = defineEmits(["newWord", "newSentence"]);
 

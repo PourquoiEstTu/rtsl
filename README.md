@@ -20,4 +20,11 @@ npm run dev
 
 For the web extension, see the Releases.
 
-## Run Backend Locally
+## Run Backend Locally (HTTP)
+
+Requires `uvicorn`. Additionally, must alter websocket address in `src/frontend/src/components/KeypointTransceiver.vue` (Comment out line 20 and uncomment line 21).
+
+```bash
+cd src/backend
+uvicorn app.main:app --host 0.0.0.0 --port 8000
+```
