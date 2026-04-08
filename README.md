@@ -2,6 +2,10 @@
 
 Real Time Sign Language: An app to translate sign language in real time.
 
+![Mobile Example Gif](misc/media/mobile_example.gif)
+
+![Extension Example Gif](misc/media/extension_example.gif)
+
 **Try it out yourself at** https://rtsl.cas.mcmaster.ca/ (requires a connection to McMaster wifi).
 
 This app displays word-by-word translations at the top of the screen. Once the signer ends their sentence, the pause is detected an the translated sentence is displayed.
