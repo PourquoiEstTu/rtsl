@@ -2,6 +2,8 @@
 
 Real Time Sign Language: An app to translate sign language in real time.
 
+All documents/poster/video is located under misc. 
+
 ![Mobile Example Gif](misc/media/mobile_example.gif)
 
 ![Extension Example Gif](misc/media/extension_example.gif)
@@ -34,3 +36,5 @@ Must download and overwrite `src/backend/models` with `models` folder under rele
 cd src/backend
 uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
+
+This model was trained by ASL Citizen, which was compiled by Microsoft.
